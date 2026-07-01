@@ -22,6 +22,12 @@ export interface DownloadTarget {
     artifactName: string
     /** Matches asset names in the GitHub release for OS detection. */
     matchers: RegExp[]
+    /**
+     * Direct download URL for a hosted installer. When set, the card is
+     * immediately live and links straight to this file, bypassing the
+     * GitHub release gating. Leave undefined for platforms without a build.
+     */
+    directUrl?: string
 }
 
 export interface Testimonial {
@@ -112,6 +118,10 @@ export const PILLARS: { icon: LucideIcon; title: string; body: string; floatDura
     },
 ]
 
+// Public CDN prefix where signed installers are hosted (DigitalOcean Spaces).
+export const DOWNLOAD_BASE =
+    'https://businessesppall.nyc3.cdn.digitaloceanspaces.com/downloads/'
+
 export const DOWNLOADS: DownloadTarget[] = [
     {
         os: 'windows',
@@ -119,6 +129,7 @@ export const DOWNLOADS: DownloadTarget[] = [
         sublabel: 'Windows 10 & 11',
         artifactName: 'latest.msi',
         matchers: [/latest\.msi$/i, /\.msi$/i, /\.exe$/i],
+        directUrl: `${DOWNLOAD_BASE}PromptTax-Setup.exe`,
     },
     {
         os: 'macos',

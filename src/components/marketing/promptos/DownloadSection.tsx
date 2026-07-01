@@ -81,8 +81,12 @@ export function DownloadSection() {
 
     // Downloads are only "live" once the channel is enabled AND assets resolved.
     const isLive = RELEASE_CHANNEL_LIVE && releaseState === 'ready'
+    // A hosted installer (directUrl) makes its card live regardless of the
+    // GitHub release channel.
+    const anyLive = isLive || DOWNLOADS.some((d) => Boolean(d.directUrl))
 
     const hrefFor = (target: DownloadTarget): string => {
+        if (target.directUrl) return target.directUrl
         const asset =
             assets.find((a) => a.name.toLowerCase() === target.artifactName.toLowerCase()) ||
             assets.find((a) => target.matchers.some((matcher) => matcher.test(a.name)))
@@ -98,7 +102,7 @@ export function DownloadSection() {
     const helperLabel =
         releaseState === 'loading'
             ? t('download.statusLoading')
-            : isLive
+            : anyLive
               ? t('download.statusLive')
               : t('download.statusPilot')
 
@@ -133,7 +137,10 @@ export function DownloadSection() {
                         const Icon = OS_ICON[target.os]
                         const isDetected = target.os === detected
                         const isPressed = target.os === pressedCard
-                        const statusLabel = isLive
+                        // This specific card is live if it has a hosted installer
+                        // or the GitHub channel resolved assets.
+                        const targetLive = isLive || Boolean(target.directUrl)
+                        const statusLabel = targetLive
                             ? target.artifactName
                             : releaseState === 'loading'
                               ? t('download.resolving')
@@ -141,13 +148,13 @@ export function DownloadSection() {
 
                         const cardClassName = `po-release-card po-glow-border ${isDetected ? 'po-release-card-detected' : ''} ${
                             isPressed ? 'po-release-card-pressed' : ''
-                        } ${isLive ? '' : 'po-release-card-soon'}`
+                        } ${targetLive ? '' : 'po-release-card-soon'}`
 
                         const cardInner = (
                             <>
                                 <div className="po-release-card-badge-row">
                                     <span className="po-release-card-badge">{isDetected ? t('download.badgeDetected') : t('download.badgeDesktop')}</span>
-                                    <span className={`po-release-card-badge po-release-card-badge-${isLive ? 'ready' : releaseState}`}>
+                                    <span className={`po-release-card-badge po-release-card-badge-${targetLive ? 'ready' : releaseState}`}>
                                         {statusLabel}
                                     </span>
                                 </div>
@@ -157,19 +164,19 @@ export function DownloadSection() {
                                 <div className="po-release-card-body">
                                     <div className="po-release-card-title-row">
                                         <span className="po-release-card-title">{target.label}</span>
-                                        {isLive ? (
+                                        {targetLive ? (
                                             <DownloadIcon className="h-3.5 w-3.5 text-[var(--po-muted)] transition-transform duration-300 group-hover:translate-y-0.5" />
                                         ) : null}
                                     </div>
                                     <div className="po-mono po-release-card-copy">{target.sublabel}</div>
                                     <div className="po-mono po-release-card-artifact">
-                                        {isLive ? target.artifactName : t('download.notifyArtifact')}
+                                        {targetLive ? target.artifactName : t('download.notifyArtifact')}
                                     </div>
                                 </div>
                             </>
                         )
 
-                        return isLive ? (
+                        return targetLive ? (
                             <a
                                 key={target.os}
                                 href={hrefFor(target)}
