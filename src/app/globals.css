@@ -1,0 +1,867 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import workflow guidance styling overrides */
+
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 222.2 84% 4.9%;
+        
+        /* Status colors */
+        --success: 142 76% 36%;              /* green-600 */
+        --success-foreground: 0 0% 100%;     /* white */
+        --warning: 25 95% 53%;               /* orange-600 */
+        --warning-foreground: 0 0% 100%;     /* white */
+        --info: 217 91% 60%;                 /* blue-600 */
+        --info-foreground: 0 0% 100%;        /* white */
+        
+        /* Financial indicators */
+        --financial-positive: 142 76% 36%;      /* green-600 */
+        --financial-positive-bg: 142 76% 97%;   /* green-50 */
+        --financial-negative: 0 84% 60%;        /* red-600 */
+        --financial-negative-bg: 0 84% 97%;     /* red-50 */
+        --financial-neutral: 215 16% 47%;       /* gray-600 */
+        
+        /* Term indicators */
+        --term-long: 217 91% 60%;               /* blue-600 */
+        --term-long-bg: 214 95% 93%;            /* blue-100 */
+        --term-short: 25 95% 53%;               /* orange-600 */
+        --term-short-bg: 24 95% 88%;            /* orange-100 */
+        
+        /* Workflow phases */
+        --phase-active: var(--primary);
+        --phase-completed: var(--success);
+        --phase-upcoming: var(--muted);
+        
+        /* Connection status */
+        --connection-online: var(--success);
+        --connection-offline: var(--destructive);
+        --connection-pending: var(--warning);
+        
+        /* Card spacing */
+        --card-padding: 1rem;           /* 16px - p-4 */
+        --card-padding-compact: 0.75rem; /* 12px - p-3 */
+
+
+        --card: 0 0% 100%;
+        --card-foreground: 222.2 84% 4.9%;
+
+        --popover: 0 0% 100%;
+        --popover-foreground: 222.2 84% 4.9%;
+
+        --primary: 222.2 47.4% 11.2%;
+        --primary-foreground: 210 40% 98%;
+
+        --secondary: 210 40% 96.1%;
+        --secondary-foreground: 222.2 47.4% 11.2%;
+
+        --muted: 210 40% 96.1%;
+        --muted-foreground: 215.4 16.3% 46.9%;
+
+        --accent: 210 40% 96.1%;
+        --accent-foreground: 222.2 47.4% 11.2%;
+
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 210 40% 98%;
+
+        --border: 214.3 31.8% 91.4%;
+        --input: 214.3 31.8% 91.4%;
+        --ring: 222.2 84% 4.9%;
+
+        --radius: 0.5rem;
+
+        --sidebar-background: 0 0% 98%;
+
+        --sidebar-foreground: 240 5.3% 26.1%;
+
+        --sidebar-primary: 240 5.9% 10%;
+
+        --sidebar-primary-foreground: 0 0% 98%;
+
+        --sidebar-accent: 240 4.8% 95.9%;
+
+        --sidebar-accent-foreground: 240 5.9% 10%;
+
+        --sidebar-border: 220 13% 91%;
+
+        --sidebar-ring: 217.2 91.2% 59.8%;
+
+        /* Custom dashboard variables used in components */
+        --color-action-subtle-bg: var(--muted);
+        --color-text-accent: var(--foreground);
+        --color-border-subtle: var(--border);
+
+        /* Fallback font variables (system stacks) to avoid remote font fetches at build time */
+        --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell,
+            Helvetica Neue, Arial, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+        --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+    }
+
+    .dark {
+        --background: 222.2 84% 4.9%;
+        --foreground: 210 40% 98%;
+
+        --card: 222.2 84% 4.9%;
+        --card-foreground: 210 40% 98%;
+
+        --popover: 222.2 84% 4.9%;
+        --popover-foreground: 210 40% 98%;
+
+        --primary: 210 40% 98%;
+        --primary-foreground: 222.2 47.4% 11.2%;
+
+        --secondary: 217.2 32.6% 17.5%;
+        --secondary-foreground: 210 40% 98%;
+
+        --muted: 217.2 32.6% 17.5%;
+        --muted-foreground: 215 20.2% 65.1%;
+
+        --accent: 217.2 32.6% 17.5%;
+        --accent-foreground: 210 40% 98%;
+
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 210 40% 98%;
+
+        --border: 217.2 32.6% 17.5%;
+        --input: 217.2 32.6% 17.5%;
+        --ring: 212.7 26.8% 83.9%;
+        --sidebar-background: 240 5.9% 10%;
+        --sidebar-foreground: 240 4.8% 95.9%;
+        --sidebar-primary: 224.3 76.3% 48%;
+        --sidebar-primary-foreground: 0 0% 100%;
+        --sidebar-accent: 240 3.7% 15.9%;
+        --sidebar-accent-foreground: 240 4.8% 95.9%;
+        --sidebar-border: 240 3.7% 15.9%;
+        --sidebar-ring: 217.2 91.2% 59.8%;
+
+        /* Dark mode mappings for custom vars */
+        --color-action-subtle-bg: var(--muted);
+        --color-text-accent: var(--foreground);
+        --color-border-subtle: var(--border);
+        
+        /* Status colors - dark mode */
+        --success: 142 71% 45%;              /* green-500 */
+        --success-foreground: 0 0% 100%;     /* white */
+        --warning: 25 95% 63%;               /* orange-500 */
+        --warning-foreground: 0 0% 100%;     /* white */
+        --info: 217 91% 70%;                 /* blue-500 */
+        --info-foreground: 0 0% 100%;        /* white */
+        
+        /* Financial indicators - dark mode */
+        --financial-positive: 142 71% 45%;      /* green-500 */
+        --financial-positive-bg: 142 76% 8%;    /* green-900/20 */
+        --financial-negative: 0 72% 51%;        /* red-500 */
+        --financial-negative-bg: 0 84% 8%;      /* red-900/20 */
+        
+        /* Term indicators - dark mode */
+        --term-long: 217 91% 70%;
+        --term-long-bg: 217 91% 12%;
+        --term-short: 25 95% 63%;
+        --term-short-bg: 25 95% 12%;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+/* Component-level utilities for dashboard KPI cards */
+@layer components {
+    .stat-card {
+        @apply bg-card text-card-foreground border border-border rounded-lg shadow-sm;
+    }
+    .stat-card__body {
+        @apply p-2 sm:p-4 flex flex-col gap-1;
+    }
+    .stat-card__body.stat-card--horizontal {
+        @apply flex-row items-center gap-2 sm:gap-3;
+    }
+    .stat-card--compact .stat-card__body {
+        @apply p-2 sm:p-3;
+    }
+    .stat-card__icon {
+        @apply rounded-md p-1.5 sm:p-2 inline-flex items-center justify-center flex-shrink-0;
+    }
+    .stat-card__title {
+        @apply text-xs text-muted-foreground;
+    }
+    .stat-card__value {
+        @apply text-sm sm:text-lg font-semibold text-foreground;
+    }
+    .stat-card__sub {
+        @apply text-xs text-muted-foreground;
+    }
+
+    /* Workflow steps sidebar */
+    .workflow-steps {
+        @apply flex flex-col gap-2;
+    }
+    .workflow-steps__item {
+        @apply w-full flex items-start gap-3 rounded-lg border border-border bg-card px-3 py-2 text-left transition;
+    }
+    .workflow-steps__item.is-clickable {
+        @apply cursor-pointer hover:bg-accent hover:text-accent-foreground;
+    }
+    .workflow-steps__item.is-current {
+        @apply bg-accent/40;
+    }
+    .workflow-steps__item.is-locked {
+        @apply opacity-60 cursor-not-allowed;
+    }
+    .workflow-steps__icon {
+        @apply mt-0.5 inline-flex h-6 w-6 items-center justify-center rounded-md bg-muted text-muted-foreground;
+    }
+    .workflow-steps__icon.is-current {
+        @apply bg-primary text-primary-foreground;
+    }
+    .workflow-steps__icon.is-completed {
+        @apply bg-green-600/10 text-green-600;
+    }
+    .workflow-steps__title {
+        @apply text-sm font-medium leading-tight text-foreground;
+    }
+    .workflow-steps__desc {
+        @apply text-xs text-muted-foreground;
+    }
+    .workflow-steps__badge {
+        @apply rounded-sm bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground;
+    }
+}
+
+/* Accessibility Styles */
+/* Screen reader only content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+}
+
+/* High contrast mode styles */
+.high-contrast {
+    --tw-text-opacity: 1;
+    --tw-bg-opacity: 1;
+}
+
+.high-contrast * {
+    border-color: currentColor !important;
+}
+
+/* Reduced motion styles */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+}
+
+/* Focus indicators */
+*:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+}
+
+/* Ensure minimum touch targets */
+@media (hover: none) and (pointer: coarse) {
+    button,
+    [role='button'],
+    input[type='button'],
+    input[type='submit'],
+    input[type='reset'] {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* Skip link styling */
+#skip-to-main {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    z-index: 1000;
+}
+
+#skip-to-main:focus {
+    top: 6px;
+}
+
+/* Custom scrollbar styles for dialog content */
+.dialog-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground)) hsl(var(--muted));
+}
+
+.dialog-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dialog-scroll::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 3px;
+}
+
+.dialog-scroll::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground));
+    border-radius: 3px;
+}
+
+.dialog-scroll::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--foreground));
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* Professional CPA Chat HTML-Enriched Content Styles */
+@layer components {
+    /* Main container for HTML-enriched CPA responses */
+    .cpa-response-content {
+        @apply text-sm text-foreground leading-relaxed max-w-full overflow-x-auto;
+    }
+
+    /* Typography - Professional headings */
+    .cpa-response-content h3 {
+        @apply text-lg font-bold text-foreground mt-4 mb-2 first:mt-0 break-words;
+    }
+
+    .cpa-response-content h4 {
+        @apply text-base font-semibold text-foreground mt-3 mb-2 break-words;
+    }
+
+    /* Lists - Structured formatting */
+    .cpa-response-content ul {
+        @apply list-disc list-inside space-y-1 my-2 break-words;
+    }
+
+    .cpa-response-content ol {
+        @apply list-decimal list-inside space-y-1 my-2 break-words;
+    }
+
+    .cpa-response-content li {
+        @apply text-sm text-foreground ml-2 break-words;
+    }
+
+    /* Tables - Financial data presentation */
+    .cpa-response-content table {
+        @apply w-full border-collapse my-4 max-w-full block overflow-x-auto;
+    }
+
+    .cpa-response-content thead {
+        @apply bg-gray-50 dark:bg-gray-800;
+    }
+
+    .cpa-response-content th {
+        @apply px-4 py-2 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border border-gray-300 dark:border-gray-600 whitespace-nowrap;
+    }
+
+    .cpa-response-content td {
+        @apply px-4 py-2 text-sm text-foreground border border-gray-300 dark:border-gray-600 break-words;
+    }
+
+    .cpa-response-content tr:nth-child(even) {
+        @apply bg-gray-50/50 dark:bg-gray-800/50;
+    }
+
+    /* Alert boxes - Important notices */
+    .cpa-response-content .alert {
+        @apply rounded-lg px-4 py-3 my-3 border-l-4 break-words;
+    }
+
+    .cpa-response-content .alert-info {
+        @apply bg-blue-50 dark:bg-blue-950 border-blue-500 text-blue-900 dark:text-blue-100;
+    }
+
+    .cpa-response-content .alert-warning {
+        @apply bg-yellow-50 dark:bg-yellow-950 border-yellow-500 text-yellow-900 dark:text-yellow-100;
+    }
+
+    .cpa-response-content .alert-error {
+        @apply bg-red-50 dark:bg-red-950 border-red-500 text-red-900 dark:text-red-100;
+    }
+
+    .cpa-response-content .alert-success {
+        @apply bg-green-50 dark:bg-green-950 border-green-500 text-green-900 dark:text-green-100;
+    }
+
+    /* Code blocks - Form numbers and references */
+    .cpa-response-content code {
+        @apply bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-xs font-mono text-foreground;
+    }
+
+    .cpa-response-content pre {
+        @apply bg-gray-100 dark:bg-gray-800 p-4 rounded-lg my-3 overflow-x-auto;
+    }
+
+    .cpa-response-content pre code {
+        @apply bg-transparent p-0;
+    }
+
+    /* Badges - Status indicators */
+    .cpa-response-content .badge {
+        @apply inline-flex items-center px-2 py-1 rounded text-xs font-medium;
+    }
+
+    .cpa-response-content .badge-required {
+        @apply bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300;
+    }
+
+    .cpa-response-content .badge-optional {
+        @apply bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300;
+    }
+
+    .cpa-response-content .badge-deadline {
+        @apply bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300;
+    }
+
+    /* Paragraphs and spacing */
+    .cpa-response-content p {
+        @apply my-2 text-sm text-foreground leading-relaxed;
+    }
+
+    .cpa-response-content p:first-child {
+        @apply mt-0;
+    }
+
+    .cpa-response-content p:last-child {
+        @apply mb-0;
+    }
+
+    /* Strong emphasis */
+    .cpa-response-content strong {
+        @apply font-semibold text-foreground;
+    }
+
+    /* Links - Tax form references */
+    .cpa-response-content a {
+        @apply text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300;
+    }
+
+    /* Dividers */
+    .cpa-response-content hr {
+        @apply my-4 border-border;
+    }
+
+    /* Next steps section */
+    .cpa-response-content .next-steps {
+        @apply bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4 my-4;
+    }
+
+    .cpa-response-content .next-steps h4 {
+        @apply text-blue-900 dark:text-blue-100 font-semibold mb-2 mt-0;
+    }
+
+    .cpa-response-content .next-steps ol {
+        @apply list-decimal list-inside space-y-2 text-blue-900 dark:text-blue-100;
+    }
+
+    /* Form references */
+    .cpa-response-content .form-ref {
+        @apply inline-flex items-center gap-1 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 px-2 py-1 rounded text-xs font-medium;
+    }
+
+    /* Calculation results */
+    .cpa-response-content .calculation-result {
+        @apply bg-green-50 dark:bg-green-950 border-2 border-green-500 rounded-lg p-4 my-3;
+    }
+
+    .cpa-response-content .calculation-result .amount {
+        @apply text-2xl font-bold text-green-700 dark:text-green-300;
+    }
+}
+
+/* Custom animations for crypto progress tracker */
+@layer utilities {
+    /* Financial amount utilities */
+    .financial-positive {
+        color: hsl(var(--financial-positive));
+    }
+    
+    .financial-negative {
+        color: hsl(var(--financial-negative));
+    }
+    
+    .financial-positive-bg {
+        background-color: hsl(var(--financial-positive-bg));
+    }
+    
+    .financial-negative-bg {
+        background-color: hsl(var(--financial-negative-bg));
+    }
+    
+    /* Term badge utilities */
+    .badge-term-long {
+        background-color: hsl(var(--term-long-bg));
+        color: hsl(var(--term-long));
+        border-color: transparent;
+    }
+    
+    .badge-term-short {
+        background-color: hsl(var(--term-short-bg));
+        color: hsl(var(--term-short));
+        border-color: transparent;
+    }
+    
+    /* Workflow phase utilities */
+    .phase-active {
+        background-color: hsl(var(--phase-active));
+        color: hsl(var(--primary-foreground));
+    }
+    
+    .phase-completed {
+        background-color: hsl(var(--phase-completed));
+        color: hsl(var(--success-foreground));
+    }
+    
+    .phase-upcoming {
+        background-color: hsl(var(--phase-upcoming));
+        color: hsl(var(--muted-foreground));
+    }
+    
+    /* Connection status utilities */
+    .connection-online {
+        color: hsl(var(--connection-online));
+    }
+    
+    .connection-offline {
+        color: hsl(var(--connection-offline));
+    }
+    
+    .connection-pending {
+        color: hsl(var(--connection-pending));
+    }
+
+    @keyframes shimmer {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(100%);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(4px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-shimmer {
+        animation: shimmer 2s infinite;
+    }
+
+    .animate-fadeIn {
+        animation: fadeIn 0.3s ease-out;
+    }
+}
+
+/* ============================================================================
+   CUSTOM SCROLLBAR STYLES
+   ============================================================================ */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-thumb {
+    background: #475569;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* ============================================================================
+   GLASSMORPHISM UTILITIES
+   ============================================================================ */
+@layer utilities {
+    .glass-panel {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(226, 232, 240, 0.6);
+    }
+
+    .dark .glass-panel {
+        background: rgba(15, 23, 42, 0.95);
+        border: 1px solid rgba(71, 85, 105, 0.6);
+    }
+}
+
+/* ============================================================================
+   FLOAT ANIMATION
+   ============================================================================ */
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* ============================================================================
+   TYPING INDICATOR ANIMATION
+   ============================================================================ */
+.typing-dot {
+    animation: typing 1.4s infinite ease-in-out both;
+}
+
+.typing-dot:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes typing {
+    0%,
+    80%,
+    100% {
+        transform: scale(0);
+        opacity: 0.3;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ============================================================================
+   CONTAINER QUERIES FOR ROBUST RESPONSIVENESS
+   ============================================================================ */
+.cq-panel {
+    container-type: inline-size;
+    container-name: document-panel;
+}
+
+.smart-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@container document-panel (min-width: 550px) {
+    .smart-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .smart-col-span-2 {
+        grid-column: span 2;
+    }
+}
+
+@container document-panel (min-width: 950px) {
+    .smart-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .smart-col-span-2 {
+        grid-column: span 2;
+    }
+}
+
+/* ============================================================================
+   PANEL TRANSITION STYLES
+   ============================================================================ */
+#left-panel,
+#right-panel,
+#sidebar {
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                flex-grow 0.3s ease,
+                opacity 0.3s ease;
+}
+
+/* ============================================================================
+   PDF PAGE SHADOW
+   ============================================================================ */
+.pdf-page-shadow {
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.2);
+}
+
+.dark .pdf-page-shadow {
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================================================
+   TOOLTIP ARROW
+   ============================================================================ */
+.tooltip-arrow::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 4px 4px 4px 0;
+    border-style: solid;
+    border-color: transparent #1e293b transparent transparent;
+}
+
+.dark .tooltip-arrow::before {
+    border-color: transparent #0f172a transparent transparent;
+}
+
+/* Tooltip arrow variations */
+.tooltip-arrow-right::before {
+    left: auto;
+    right: -4px;
+    border-width: 4px 0 4px 4px;
+    border-color: transparent transparent transparent #1e293b;
+}
+
+.dark .tooltip-arrow-right::before {
+    border-color: transparent transparent transparent #0f172a;
+}
+
+.tooltip-arrow-top::before {
+    left: 50%;
+    top: -4px;
+    transform: translateX(-50%);
+    border-width: 0 4px 4px 4px;
+    border-color: transparent transparent #1e293b transparent;
+}
+
+.dark .tooltip-arrow-top::before {
+    border-color: transparent transparent #0f172a transparent;
+}
+
+.tooltip-arrow-bottom::before {
+    left: 50%;
+    top: auto;
+    bottom: -4px;
+    transform: translateX(-50%);
+    border-width: 4px 4px 0 4px;
+    border-color: #1e293b transparent transparent transparent;
+}
+
+.dark .tooltip-arrow-bottom::before {
+    border-color: #0f172a transparent transparent transparent;
+}
+
+/* ============================================================================
+   SMOOTH RENDERING IMPROVEMENTS
+   ============================================================================ */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Focus visible improvements */
+*:focus-visible {
+    outline: 2px solid #2e4984;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.dark *:focus-visible {
+    outline-color: #60a5fa;
+}
+
+/* Prevent horizontal scrolling and viewport overflow on mobile devices */
+@media screen and (max-width: 768px) {
+    html {
+        overflow-x: hidden !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+    }
+    
+    body {
+        overflow-x: hidden !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Ensure all direct children respect viewport width */
+    body > *,
+    #__next,
+    main,
+    [role="main"] {
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Fix grid and flex containers */
+    .grid,
+    [class*="grid-cols"] {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Ensure containers don't exceed viewport */
+    .container,
+    [class*="container"] {
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+    
+    /* Fix any element that might overflow */
+    * {
+        max-width: 100vw !important;
+    }
+}

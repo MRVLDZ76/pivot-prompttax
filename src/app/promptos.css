@@ -1,0 +1,3526 @@
+/* ---------------------------------------------------------------------------
+   PromptOS landing — scoped, professional AuthKit-inspired styling.
+   Everything is namespaced under `.promptos` so it never leaks into the rest
+   of the app's Tailwind/HSL theme. Tailwind handles layout/spacing in the TSX;
+   this file owns the few effects that are painful in utility classes
+   (animated glow border, fading grid, sweeping beam, pulse, seamless marquee).
+--------------------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap');
+
+@property --promptos-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.quote {
+  font-size: 2.25rem;
+  line-height: 1.4;
+  color: #ffffff;
+  font-weight: 300;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: -0.02em;
+}
+
+
+.promptos {
+    --po-bg: #050505;
+    --po-panel: #0c0c0d;
+    --po-panel-2: #0a0a0a;
+    --po-panel-3: #101117;
+    --po-border: rgba(255, 255, 255, 0.08);
+    --po-border-med: rgba(255, 255, 255, 0.13);
+    --po-fg: #ffffff;
+    --po-muted: rgba(255, 255, 255, 0.46);
+    --po-faint: rgba(255, 255, 255, 0.26);
+    --po-accent: #3b6ff5;
+    --po-accent-soft: rgba(59, 111, 245, 0.16);
+    --po-ok: #4cc38a;
+
+    background: var(--po-bg);
+    color: var(--po-fg);
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    min-height: 100vh;
+    overflow-x: hidden;
+    --po-parallax-x: 0px;
+    --po-parallax-y: 0px;
+    --po-tilt-x: 0deg;
+    --po-tilt-y: 0deg;
+}
+
+.promptos.po-app-shell {
+    position: relative;
+    isolation: isolate;
+}
+
+.promptos .po-app-content {
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.996);
+    transition:
+        opacity 540ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 680ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+.promptos.po-app-shell-revealing .po-app-content,
+.promptos.po-app-shell-done .po-app-content {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+}
+
+.promptos .po-boot-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 18%, rgba(32, 58, 112, 0.18), transparent 28%),
+        radial-gradient(circle at 50% 64%, rgba(10, 24, 52, 0.22), transparent 46%),
+        #050505;
+    transition:
+        opacity 420ms ease,
+        visibility 420ms ease;
+    will-change: opacity;
+}
+
+.promptos.po-app-shell-revealing .po-boot-layer {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.promptos .po-boot-ambient {
+    position: absolute;
+    inset: -12%;
+    background:
+        radial-gradient(circle at 50% 24%, rgba(78, 109, 182, 0.22), transparent 26%),
+        radial-gradient(circle at 50% 58%, rgba(37, 57, 94, 0.18), transparent 40%);
+    filter: blur(18px);
+    opacity: 0;
+    transform: scale(0.94);
+    animation: po-boot-ambient 1400ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.promptos .po-boot-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(circle at 50% 48%, rgba(0, 0, 0, 1), transparent 76%);
+    opacity: 0;
+    transform: scale(1.04);
+    animation: po-boot-grid 1500ms cubic-bezier(0.22, 1, 0.36, 1) 820ms forwards;
+}
+
+.promptos .po-boot-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.promptos .po-boot-particle {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: rgba(220, 232, 255, 0.34);
+    box-shadow: 0 0 14px rgba(132, 164, 232, 0.16);
+    opacity: 0;
+    animation: po-boot-particle 8.4s linear infinite;
+    will-change: transform, opacity;
+}
+
+.promptos .po-boot-particle-a {
+    left: 28%;
+    top: 38%;
+    animation-delay: 0.4s;
+}
+
+.promptos .po-boot-particle-b {
+    left: 63%;
+    top: 32%;
+    animation-delay: 1.2s;
+}
+
+.promptos .po-boot-particle-c {
+    left: 39%;
+    top: 66%;
+    animation-delay: 1.9s;
+}
+
+.promptos .po-boot-particle-d {
+    left: 71%;
+    top: 61%;
+    animation-delay: 2.6s;
+}
+
+.promptos .po-boot-signature {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+}
+
+.promptos .po-boot-mark-shell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 162px;
+    height: 162px;
+    border-radius: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.038), rgba(255, 255, 255, 0.014)),
+        rgba(10, 14, 22, 0.92);
+    box-shadow:
+        0 30px 120px rgba(0, 0, 0, 0.56),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.96);
+    animation:
+        po-boot-logo-in 620ms cubic-bezier(0.22, 1, 0.36, 1) 250ms forwards,
+        po-boot-logo-pulse 3800ms ease-in-out 1060ms infinite;
+    will-change: transform, opacity;
+}
+
+.promptos .po-boot-mark-bloom {
+    position: absolute;
+    inset: -24px;
+    border-radius: inherit;
+    background: radial-gradient(circle at 50% 40%, rgba(96, 132, 214, 0.2), transparent 62%);
+    filter: blur(18px);
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.promptos .po-boot-reflection {
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 28%),
+        radial-gradient(circle at 50% 18%, rgba(160, 191, 255, 0.08), transparent 48%);
+    opacity: 0;
+    animation: po-boot-reflection-in 760ms cubic-bezier(0.22, 1, 0.36, 1) 320ms forwards;
+    pointer-events: none;
+}
+
+.promptos .po-boot-scan {
+    position: absolute;
+    inset: 12px;
+    overflow: hidden;
+    border-radius: 30px;
+    opacity: 0;
+    animation: po-boot-scan-fade 880ms cubic-bezier(0.22, 1, 0.36, 1) 840ms forwards;
+    pointer-events: none;
+}
+
+.promptos .po-boot-scan-core {
+    position: absolute;
+    top: -18%;
+    bottom: -18%;
+    width: 42px;
+    background:
+        linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 24%, rgba(255, 255, 255, 0.46) 48%, rgba(182, 210, 255, 0.12) 72%, transparent 100%);
+    filter: blur(0.2px);
+    transform: translate3d(-138px, 0, 0) skewX(-16deg);
+    box-shadow: 0 0 24px rgba(154, 190, 255, 0.14);
+    animation: po-boot-scan-pass 920ms cubic-bezier(0.22, 1, 0.36, 1) 860ms forwards;
+}
+
+.promptos .po-boot-wordmark,
+.promptos .po-boot-tagline {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+    will-change: transform, opacity;
+}
+
+.promptos .po-boot-wordmark {
+    font-size: clamp(1.85rem, 4vw, 2.55rem);
+    font-weight: 600;
+    letter-spacing: -0.05em;
+    color: rgba(255, 255, 255, 0.94);
+    animation: po-boot-copy-in 520ms cubic-bezier(0.22, 1, 0.36, 1) 520ms forwards;
+}
+
+.promptos .po-boot-tagline {
+    font-size: 0.78rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(216, 227, 250, 0.46);
+    animation: po-boot-copy-in 560ms cubic-bezier(0.22, 1, 0.36, 1) 690ms forwards;
+}
+
+.promptos .po-brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 0 22px rgba(95, 140, 255, 0.28));
+}
+
+.promptos .po-brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.promptos .po-brand-mark-dim {
+    opacity: 0.72;
+    filter: drop-shadow(0 0 14px rgba(95, 140, 255, 0.14));
+}
+
+.promptos .po-hero-logo-wrap {
+    transition: transform 420ms ease, filter 420ms ease;
+}
+
+.promptos .po-hero-logo-live {
+    transform: scale(var(--po-hero-logo-intensity, 1));
+    filter: saturate(1.02);
+}
+
+.promptos .po-hero-logo-live .po-brand-mark {
+    filter: drop-shadow(0 0 22px rgba(95, 140, 255, calc(0.22 * var(--po-hero-logo-intensity, 1))));
+}
+
+.promptos .po-brand-wordmark {
+    letter-spacing: -0.025em;
+    text-shadow: 0 0 18px rgba(108, 148, 255, 0.08);
+}
+
+.promptos .po-logo-stage {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 92px;
+    height: 92px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    background:
+        radial-gradient(circle at 50% 34%, rgba(129, 165, 255, 0.2), transparent 54%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015)),
+        rgba(10, 10, 14, 0.88);
+    box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.promptos .po-logo-stage::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% - 4px);
+    width: 240px;
+    height: 260px;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at bottom, rgba(157, 185, 255, 0.42), rgba(105, 145, 255, 0.11) 36%, transparent 72%);
+    filter: blur(14px);
+    pointer-events: none;
+}
+
+.promptos .po-headline-soft {
+    color: rgba(216, 229, 255, 0.92);
+}
+
+.promptos .po-hero-chip {
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 999px;
+    padding: 0.5rem 0.8rem;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+}
+
+.promptos .po-understanding-wrap {
+    height: 110px;
+}
+
+.promptos .po-understanding-stage {
+    position: relative;
+    height: 100%;
+}
+
+.promptos .po-understanding-panel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(-8px);
+    transition:
+        opacity 250ms ease,
+        filter 250ms ease,
+        transform 250ms ease;
+    pointer-events: none;
+}
+
+.promptos .po-understanding-panel-active {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+    transition:
+        opacity 350ms cubic-bezier(0.22, 1, 0.36, 1),
+        filter 350ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 350ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.promptos .po-understanding-line {
+    margin: 0;
+    max-width: 680px;
+    font-size: 21px;
+    line-height: 1.4;
+    letter-spacing: -0.025em;
+    color: rgba(225, 235, 255, 0.9);
+}
+
+.promptos .po-understanding-panel-final {
+    align-items: flex-start;
+}
+
+.promptos .po-understanding-final-copy {
+    margin: 0;
+    max-width: 700px;
+    font-size: 16px;
+    line-height: 1.72;
+    color: var(--po-muted);
+}
+
+.promptos .po-hero-shell {
+    position: relative;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: clamp(28px, 4vw, 60px) clamp(14px, 3vw, 52px) clamp(24px, 3vw, 52px);
+    border-radius: 34px;
+    overflow: hidden;
+    transform: perspective(1600px) rotateX(var(--po-tilt-x)) rotateY(var(--po-tilt-y));
+    transition: transform 180ms ease-out;
+}
+
+.promptos .po-hero-shell-bg {
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: inherit;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(123, 163, 255, 0.08), transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(123, 163, 255, 0.04), transparent 42%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.008)),
+        #07090f;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 40px 140px rgba(0, 0, 0, 0.52);
+}
+
+.promptos .po-hero-shell-glow {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 70%;
+    height: 380px;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center top, rgba(122, 162, 255, 0.12), transparent 68%);
+    filter: blur(28px);
+    pointer-events: none;
+}
+
+.promptos .po-hero-shell-noise {
+    position: absolute;
+    inset: 0;
+    opacity: 0.08;
+    background-image:
+        radial-gradient(rgba(255, 255, 255, 0.28) 0.6px, transparent 0.6px),
+        radial-gradient(rgba(90, 112, 160, 0.18) 0.7px, transparent 0.7px);
+    background-size: 18px 18px, 30px 30px;
+    background-position: 0 0, 10px 12px;
+    mix-blend-mode: screen;
+    pointer-events: none;
+}
+
+.promptos .po-hero-shell-spotlight {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    width: 360px;
+    height: 430px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, rgba(175, 205, 255, 0.18), rgba(107, 147, 255, 0.04) 38%, transparent 74%);
+    clip-path: polygon(47% 0, 53% 0, 100% 100%, 0 100%);
+    filter: blur(18px);
+    opacity: 0.95;
+    pointer-events: none;
+}
+
+.promptos .po-hero-window {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    width: min(100%, 1080px);
+    margin: 0 auto;
+    border-radius: 28px;
+    border: 1px solid var(--po-border-med);
+    background: rgba(9, 11, 16, 0.86);
+    box-shadow:
+        0 40px 130px rgba(0, 0, 0, 0.56),
+        0 0 42px rgba(105, 145, 255, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(14px);
+    transform: translate3d(calc(var(--po-parallax-x) * 0.45), calc(var(--po-parallax-y) * 0.45), 0);
+    transition: transform 160ms ease-out;
+}
+
+.promptos .po-hero-window-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 44px;
+    border-bottom: 1px solid var(--po-border);
+    padding: 0 16px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+}
+
+.promptos .po-window-line {
+    display: inline-block;
+    height: 8px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.promptos .po-window-line-short {
+    width: 22px;
+}
+
+.promptos .po-window-line-long {
+    width: 44px;
+}
+
+.promptos .po-hero-window-label {
+    margin-left: 8px;
+    font-size: 11px;
+    color: var(--po-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.promptos .po-hero-image-wrap {
+    position: relative;
+    padding: clamp(10px, 1.7vw, 18px);
+    background:
+        radial-gradient(circle at 50% 0%, rgba(122, 162, 255, 0.07), transparent 36%),
+        rgba(5, 7, 13, 0.74);
+}
+
+.promptos .po-hero-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+        0 24px 80px rgba(0, 0, 0, 0.46),
+        0 0 34px rgba(95, 140, 255, 0.08);
+}
+
+.promptos .po-hero-image-vignette {
+    position: absolute;
+    inset: 18px;
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at 50% 0%, transparent 36%, rgba(0, 0, 0, 0.08) 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 10%, transparent 90%, rgba(0, 0, 0, 0.18));
+    pointer-events: none;
+}
+
+.promptos .po-hero-memory-core {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) translate3d(calc(var(--po-parallax-x) * 0.2), calc(var(--po-parallax-y) * 0.2), 0);
+    width: 240px;
+    height: 240px;
+    pointer-events: none;
+}
+
+.promptos .po-hero-memory-core-ring {
+    position: absolute;
+    inset: 22px;
+    border-radius: 999px;
+    border: 1px solid rgba(115, 156, 255, 0.28);
+    box-shadow:
+        0 0 60px rgba(95, 140, 255, 0.12),
+        inset 0 0 30px rgba(95, 140, 255, 0.08);
+    animation: po-core-breathe 7.5s ease-in-out infinite;
+}
+
+.promptos .po-hero-memory-core-ring-2 {
+    inset: 0;
+    opacity: 0.48;
+    animation-duration: 10s;
+}
+
+.promptos .po-hero-memory-core-label {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 168px;
+    padding: 12px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(115, 156, 255, 0.26);
+    background: rgba(8, 10, 14, 0.78);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.46),
+        0 0 30px rgba(95, 140, 255, 0.12);
+    backdrop-filter: blur(14px);
+}
+
+.promptos .po-hero-memory-core-label span {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.52);
+}
+
+.promptos .po-hero-memory-core-label strong {
+    font-size: 15px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.92);
+    letter-spacing: -0.02em;
+}
+
+.promptos .po-hero-activity {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    background: rgba(8, 10, 14, 0.74);
+    backdrop-filter: blur(12px);
+    padding: 0.5rem 0.8rem;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.64);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
+}
+
+.promptos .po-hero-activity-left {
+    left: 32px;
+    bottom: 34px;
+}
+
+.promptos .po-hero-activity-right {
+    right: 32px;
+    bottom: 34px;
+}
+
+.promptos .po-hero-traces {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.promptos .po-hero-trace {
+    fill: none;
+    stroke: rgba(115, 156, 255, 0.18);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-dasharray: 8 18;
+    animation: po-path-flow 9s linear infinite;
+}
+
+.promptos .po-hero-trace-b { animation-delay: 1.4s; }
+.promptos .po-hero-trace-c { animation-delay: 2.8s; }
+.promptos .po-hero-trace-d { animation-delay: 4.2s; }
+.promptos .po-hero-trace-e { animation-delay: 1.8s; }
+
+@keyframes po-boot-ambient {
+    0% {
+        opacity: 0;
+        transform: scale(0.94);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes po-boot-grid {
+    0% {
+        opacity: 0;
+        transform: scale(1.04);
+    }
+    100% {
+        opacity: 0.34;
+        transform: scale(1);
+    }
+}
+
+@keyframes po-boot-logo-in {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 12px, 0) scale(0.96);
+    }
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+}
+
+@keyframes po-boot-copy-in {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 10px, 0);
+    }
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes po-boot-scan {
+    0% {
+        opacity: 0;
+        transform: translate3d(-96px, 0, 0) skewX(-14deg);
+    }
+    20% {
+        opacity: 0.72;
+    }
+    80% {
+        opacity: 0.42;
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(96px, 0, 0) skewX(-14deg);
+    }
+}
+
+@keyframes po-boot-reflection-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes po-boot-scan-fade {
+    0% {
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.18;
+    }
+}
+
+@keyframes po-boot-scan-pass {
+    0% {
+        transform: translate3d(-138px, 0, 0) skewX(-16deg);
+        opacity: 0;
+    }
+    12% {
+        opacity: 0.28;
+    }
+    42% {
+        opacity: 0.88;
+    }
+    72% {
+        opacity: 0.34;
+    }
+    100% {
+        transform: translate3d(148px, 0, 0) skewX(-16deg);
+        opacity: 0;
+    }
+}
+
+@keyframes po-boot-logo-pulse {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+        box-shadow:
+            0 30px 120px rgba(0, 0, 0, 0.56),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    50% {
+        transform: translate3d(0, 0, 0) scale(1.012);
+        box-shadow:
+            0 34px 130px rgba(0, 0, 0, 0.6),
+            0 0 26px rgba(92, 128, 205, 0.12),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+}
+
+@keyframes po-boot-particle {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 14px, 0) scale(0.8);
+    }
+    18% {
+        opacity: 0.45;
+    }
+    82% {
+        opacity: 0.14;
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(0, -52px, 0) scale(1.1);
+    }
+}
+.promptos .po-hero-trace-f { animation-delay: 3.4s; }
+
+.promptos .po-hero-pulse {
+    fill: rgba(201, 219, 255, 0.96);
+    filter: drop-shadow(0 0 12px rgba(122, 162, 255, 0.78));
+    opacity: 0.88;
+}
+
+.promptos .po-hero-pulse-delay-1,
+.promptos .po-hero-pulse-delay-2,
+.promptos .po-hero-pulse-delay-3,
+.promptos .po-hero-pulse-delay-4,
+.promptos .po-hero-pulse-delay-5 {
+    opacity: 0.72;
+}
+
+.promptos .po-hero-chip-row {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.promptos .po-hero-float-pill {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    background: rgba(8, 10, 14, 0.78);
+    backdrop-filter: blur(12px);
+    padding: 0.62rem 0.95rem;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.66);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.42);
+    transform: translate3d(calc(var(--po-parallax-x) * 0.9), calc(var(--po-parallax-y) * 0.9), 0);
+    animation: po-float-idle 11s ease-in-out infinite;
+}
+
+.promptos .po-hero-float-pill-1 { left: 26px; top: 108px; }
+.promptos .po-hero-float-pill-2 { right: 28px; top: 136px; }
+.promptos .po-hero-float-pill-3 { right: 62px; bottom: 64px; }
+
+.promptos .po-hero-float-pill-2 { animation-delay: 1.8s; }
+.promptos .po-hero-float-pill-3 { animation-delay: 3.4s; }
+
+.promptos .po-hero-system-node {
+    position: absolute;
+    z-index: 3;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: rgba(9, 11, 16, 0.78);
+    backdrop-filter: blur(12px);
+    padding: 0.58rem 0.75rem;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.68);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.36);
+    transform: translate3d(calc(var(--po-parallax-x) * 0.65), calc(var(--po-parallax-y) * 0.65), 0);
+    animation: po-node-breathe 9s ease-in-out infinite;
+}
+
+.promptos .po-hero-node-docs { left: 48px; bottom: 102px; }
+.promptos .po-hero-node-agents { left: 34px; top: 188px; animation-delay: 1.2s; }
+.promptos .po-hero-node-taxcore { left: 50%; top: 92px; transform: translateX(-50%) translate3d(calc(var(--po-parallax-x) * 0.55), calc(var(--po-parallax-y) * 0.55), 0); animation-delay: 2.4s; }
+.promptos .po-hero-node-irs { right: 54px; top: 196px; animation-delay: 3.2s; }
+.promptos .po-hero-node-timeline { right: 82px; bottom: 100px; animation-delay: 4.4s; }
+.promptos .po-hero-node-recommendations { right: 38px; top: 100px; animation-delay: 5.6s; }
+.promptos .po-hero-node-cpa { left: 66px; top: 100px; animation-delay: 6.2s; }
+
+.promptos .po-ask-scene-wrap {
+    position: relative;
+    width: min(560px, 92vw);
+}
+
+.promptos .po-ask-scene {
+    position: relative;
+    border: 1px solid var(--po-border-med);
+    border-radius: 30px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015)),
+        rgba(8, 10, 14, 0.9);
+    box-shadow:
+        0 34px 120px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    padding: 22px;
+}
+
+.promptos .po-ask-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.promptos .po-ask-query {
+    margin-top: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 18px;
+    padding: 13px 15px;
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.promptos .po-ask-answer {
+    margin-top: 14px;
+    border: 1px solid rgba(110, 152, 255, 0.18);
+    border-radius: 20px;
+    padding: 15px 16px;
+    background: linear-gradient(180deg, rgba(59, 111, 245, 0.1), rgba(59, 111, 245, 0.03));
+}
+
+.promptos .po-ask-answer-title {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(201, 219, 255, 0.66);
+    margin-bottom: 8px;
+}
+
+.promptos .po-ask-answer p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.promptos .po-ask-proof-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.promptos .po-ask-proof-card {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 18px;
+    padding: 12px 13px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.promptos .po-ask-proof-card-accent {
+    border-color: rgba(110, 152, 255, 0.18);
+    background: linear-gradient(180deg, rgba(59, 111, 245, 0.08), rgba(59, 111, 245, 0.02));
+}
+
+.promptos .po-ask-proof-card span {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.44);
+}
+
+.promptos .po-ask-proof-card strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.88);
+}
+
+.promptos .po-ask-proof-card p {
+    margin: 6px 0 0;
+    font-size: 12px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.56);
+}
+
+.promptos .po-ask-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.promptos .po-ask-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.promptos .po-ask-progress-dot {
+    width: 22px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    transition: all 220ms ease;
+}
+
+.promptos .po-ask-progress-dot-live {
+    width: 34px;
+    background: linear-gradient(90deg, rgba(138, 176, 255, 0.9), rgba(84, 127, 255, 0.92));
+    box-shadow: 0 0 18px rgba(95, 140, 255, 0.2);
+}
+
+.promptos .po-ask-chip {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    padding: 0.42rem 0.7rem;
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 11px;
+}
+
+.promptos .po-ask-chip-live {
+    border-color: rgba(110, 152, 255, 0.2);
+    color: rgba(212, 228, 255, 0.9);
+}
+
+@keyframes po-core-breathe {
+    0%,
+    100% {
+        transform: scale(0.99);
+        opacity: 0.72;
+    }
+    50% {
+        transform: scale(1.02);
+        opacity: 1;
+    }
+}
+
+@keyframes po-float-idle {
+    0%,
+    100% {
+        translate: 0 0;
+    }
+    50% {
+        translate: 0 -4px;
+    }
+}
+
+@keyframes po-node-breathe {
+    0%,
+    100% {
+        opacity: 0.82;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.36);
+    }
+    50% {
+        opacity: 1;
+        box-shadow: 0 22px 60px rgba(0, 0, 0, 0.42), 0 0 22px rgba(95, 140, 255, 0.08);
+    }
+}
+
+.promptos .po-hero-vignette {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(122, 162, 255, 0.11), transparent 35%),
+        radial-gradient(circle at 50% 12%, rgba(122, 162, 255, 0.08), transparent 44%);
+    transform: translateX(var(--po-hero-light-shift, 0px));
+    transition: transform 420ms ease;
+    pointer-events: none;
+}
+
+.promptos .po-spotlight {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    width: 360px;
+    height: 420px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, rgba(174, 201, 255, 0.26), rgba(109, 146, 255, 0.08) 32%, transparent 74%);
+    clip-path: polygon(48% 0, 52% 0, 100% 100%, 0 100%);
+    filter: blur(18px);
+    opacity: 0.95;
+    transform: translateX(calc(-50% + var(--po-hero-light-shift, 0px)));
+    transition: transform 420ms ease, opacity 420ms ease;
+    pointer-events: none;
+}
+
+.promptos .po-feature-spotlight {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    width: 340px;
+    height: 460px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, rgba(175, 205, 255, 0.2), rgba(107, 147, 255, 0.06) 35%, transparent 72%);
+    clip-path: polygon(47% 0, 53% 0, 100% 100%, 0 100%);
+    filter: blur(20px);
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+.promptos .po-doc-chip {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    padding: 0.35rem 0.6rem;
+    background: rgba(8, 10, 14, 0.82);
+    backdrop-filter: blur(10px);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.62);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.38);
+}
+
+.promptos .po-doc-chip-a {
+    top: 10px;
+    left: 8%;
+}
+
+.promptos .po-doc-chip-b {
+    top: 36px;
+    right: 10%;
+}
+
+.promptos .po-doc-chip-c {
+    bottom: 14px;
+    left: 18%;
+}
+
+.promptos .po-scene-wrap {
+    position: relative;
+    width: min(520px, 88vw);
+    height: 340px;
+}
+
+.promptos .po-scene-main {
+    position: absolute;
+    inset: 24px 44px;
+    border: 1px solid var(--po-border-med);
+    border-radius: 28px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015)),
+        rgba(8, 10, 14, 0.86);
+    box-shadow:
+        0 40px 120px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(18px);
+    padding: 22px;
+}
+
+.promptos .po-scene-main-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.promptos .po-scene-center {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 112px;
+    margin-top: 14px;
+    margin-bottom: 14px;
+}
+
+.promptos .po-scene-orb {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 50% 38%, rgba(182, 206, 255, 0.34), rgba(95, 140, 255, 0.18) 30%, rgba(59, 111, 245, 0.06) 56%, transparent 72%);
+    filter: blur(6px);
+}
+
+.promptos .po-scene-rows {
+    display: grid;
+    gap: 10px;
+}
+
+.promptos .po-scene-row {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.promptos .po-scene-row-accent {
+    border-color: rgba(112, 154, 255, 0.24);
+    background: linear-gradient(180deg, rgba(59, 111, 245, 0.11), rgba(59, 111, 245, 0.04));
+}
+
+.promptos .po-scene-float {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+}
+
+.promptos .po-scene-float-a {
+    top: 42px;
+    left: 0;
+    width: 132px;
+    height: 84px;
+    border-radius: 18px;
+}
+
+.promptos .po-scene-float-b {
+    right: 0;
+    top: 72px;
+    width: 128px;
+    height: 96px;
+    border-radius: 20px;
+}
+
+.promptos .po-scene-float-c {
+    right: 18px;
+    bottom: 22px;
+    width: 144px;
+    height: 72px;
+    border-radius: 18px;
+}
+
+.promptos .po-scene-side {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    background: rgba(10, 12, 18, 0.72);
+    backdrop-filter: blur(10px);
+    padding: 0.55rem 0.8rem;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.64);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.38);
+}
+
+.promptos .po-scene-side-left {
+    left: 18px;
+}
+
+.promptos .po-scene-side-right {
+    right: 12px;
+}
+
+.promptos .po-system-wrap {
+    position: relative;
+    width: min(540px, 92vw);
+    height: 360px;
+}
+
+.promptos .po-system-lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.promptos .po-system-path {
+    fill: none;
+    stroke: rgba(115, 156, 255, 0.28);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-dasharray: 8 14;
+    animation: po-path-flow 8s linear infinite;
+}
+
+.promptos .po-system-path-delay-1 {
+    animation-delay: 1.2s;
+}
+
+.promptos .po-system-path-delay-2 {
+    animation-delay: 2.4s;
+}
+
+.promptos .po-system-path-delay-3 {
+    animation-delay: 3.6s;
+}
+
+@keyframes po-path-flow {
+    from {
+        stroke-dashoffset: 0;
+    }
+    to {
+        stroke-dashoffset: -66;
+    }
+}
+
+.promptos .po-system-node {
+    position: absolute;
+    min-width: 118px;
+    max-width: 150px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 12px 14px;
+    background: rgba(9, 11, 16, 0.8);
+    backdrop-filter: blur(12px);
+    box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.46),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.promptos .po-system-node-accent {
+    border-color: rgba(110, 152, 255, 0.24);
+    background: linear-gradient(180deg, rgba(59, 111, 245, 0.12), rgba(59, 111, 245, 0.04));
+}
+
+.promptos .po-system-node-core {
+    min-width: 156px;
+    text-align: center;
+    box-shadow:
+        0 26px 80px rgba(0, 0, 0, 0.52),
+        0 0 40px rgba(95, 140, 255, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.promptos .po-node-docs { top: 34px; left: 26px; }
+.promptos .po-node-evidence { top: 34px; left: 198px; }
+.promptos .po-node-rule { top: 34px; right: 20px; }
+.promptos .po-node-irs { bottom: 40px; right: 34px; }
+.promptos .po-node-memory { bottom: 36px; left: 182px; }
+
+.promptos .po-system-caption {
+    position: absolute;
+    left: 24px;
+    bottom: 10px;
+}
+
+.promptos .po-dialog-wrap {
+    position: relative;
+    width: min(520px, 90vw);
+    height: 360px;
+}
+
+.promptos .po-dialog-spotlight {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    width: 320px;
+    height: 420px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, rgba(175, 205, 255, 0.18), rgba(107, 147, 255, 0.05) 34%, transparent 72%);
+    clip-path: polygon(47% 0, 53% 0, 100% 100%, 0 100%);
+    filter: blur(22px);
+    pointer-events: none;
+}
+
+.promptos .po-dialog-panel {
+    position: absolute;
+    inset: 30px 42px;
+    border: 1px solid var(--po-border-med);
+    border-radius: 28px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015)),
+        rgba(8, 10, 14, 0.87);
+    padding: 20px;
+    box-shadow:
+        0 40px 120px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.promptos .po-dialog-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.promptos .po-dialog-thread {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.promptos .po-dialog-bubble {
+    width: fit-content;
+    max-width: 88%;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 18px;
+    padding: 11px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.74);
+    font-size: 13px;
+    line-height: 1.45;
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.34);
+}
+
+.promptos .po-dialog-bubble-primary {
+    border-color: rgba(110, 152, 255, 0.26);
+    background: linear-gradient(180deg, rgba(59, 111, 245, 0.14), rgba(59, 111, 245, 0.05));
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.promptos .po-dialog-bubble-soft {
+    opacity: 0.88;
+}
+
+.promptos .po-dialog-footer {
+    display: flex;
+    gap: 8px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+
+.promptos .po-activity-pill {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    padding: 0.45rem 0.65rem;
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 11px;
+}
+
+.promptos .po-activity-pill-live {
+    border-color: rgba(110, 152, 255, 0.22);
+    color: rgba(218, 231, 255, 0.92);
+    box-shadow: 0 0 22px rgba(95, 140, 255, 0.12);
+}
+
+.promptos .po-release-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 999px;
+    padding: 0.62rem 0.95rem;
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.52);
+    font-size: 12px;
+}
+
+.promptos .po-release-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+}
+
+.promptos .po-release-status-dot-loading {
+    background: rgba(189, 205, 238, 0.7);
+    box-shadow: 0 0 0 0 rgba(189, 205, 238, 0.32);
+    animation: po-release-pulse 1.8s ease-in-out infinite;
+}
+
+.promptos .po-release-status-dot-ready {
+    background: rgba(110, 210, 164, 0.84);
+}
+
+.promptos .po-release-status-dot-fallback {
+    background: rgba(222, 186, 92, 0.76);
+}
+
+.promptos .po-download-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.promptos .po-release-card {
+    position: relative;
+    display: flex;
+    min-height: 236px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(71, 101, 166, 0.12), transparent 52%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018)),
+        rgba(10, 11, 15, 0.92);
+    padding: 20px;
+    text-align: left;
+    transition:
+        transform 220ms ease,
+        border-color 220ms ease,
+        box-shadow 220ms ease,
+        background 220ms ease;
+    will-change: transform;
+}
+
+.promptos .po-release-card:hover {
+    transform: translate3d(0, -4px, 0);
+    border-color: rgba(255, 255, 255, 0.13);
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.4);
+}
+
+.promptos .po-release-card-pressed {
+    transform: translate3d(0, -1px, 0) scale(0.985);
+}
+
+.promptos .po-release-card-detected {
+    box-shadow: 0 28px 96px rgba(0, 0, 0, 0.46), 0 0 26px rgba(95, 140, 255, 0.1);
+}
+
+.promptos .po-release-card-badge-row {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.promptos .po-release-card-badge {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    padding: 0.38rem 0.58rem;
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.promptos .po-release-card-badge-ready {
+    color: rgba(212, 229, 255, 0.76);
+}
+
+.promptos .po-release-card-badge-loading {
+    color: rgba(212, 229, 255, 0.58);
+}
+
+.promptos .po-release-card-badge-fallback {
+    color: rgba(236, 211, 154, 0.76);
+}
+
+.promptos .po-release-card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.promptos .po-release-card-body {
+    display: grid;
+    gap: 8px;
+}
+
+.promptos .po-release-card-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.94);
+    letter-spacing: -0.03em;
+}
+
+.promptos .po-release-card-title {
+    flex: 1;
+}
+
+.promptos .po-release-card-copy {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.48);
+}
+
+.promptos .po-release-card-artifact {
+    font-size: 12px;
+    color: rgba(202, 217, 247, 0.76);
+}
+
+.promptos .po-footer-shell {
+    position: relative;
+    overflow: hidden;
+}
+
+.promptos .po-footer-depth {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.promptos .po-footer-radial {
+    position: absolute;
+    left: 50%;
+    top: 8%;
+    width: 720px;
+    height: 380px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle at center, rgba(66, 94, 154, 0.22), transparent 66%);
+    filter: blur(24px);
+}
+
+.promptos .po-footer-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 88px 88px;
+    mask-image: radial-gradient(circle at 50% 28%, rgba(0, 0, 0, 1), transparent 78%);
+    opacity: 0.3;
+}
+
+.promptos .po-footer-light {
+    position: absolute;
+    left: 18%;
+    top: 18%;
+    width: 420px;
+    height: 260px;
+    background: linear-gradient(90deg, transparent, rgba(192, 214, 255, 0.08), transparent);
+    filter: blur(12px);
+    animation: po-footer-light-drift 12s ease-in-out infinite;
+}
+
+.promptos .po-footer-particles {
+    position: absolute;
+    inset: 0;
+}
+
+.promptos .po-footer-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(207, 222, 255, 0.24);
+    animation: po-footer-particle 10s linear infinite;
+}
+
+.promptos .po-footer-particle-a { left: 34%; top: 34%; animation-delay: 0.8s; }
+.promptos .po-footer-particle-b { left: 58%; top: 28%; animation-delay: 2s; }
+.promptos .po-footer-particle-c { left: 66%; top: 56%; animation-delay: 3.1s; }
+
+.promptos .po-footer-signature {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.promptos .po-footer-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.94);
+    text-decoration: none;
+}
+
+.promptos .po-footer-kicker {
+    margin-top: 16px;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(212, 226, 255, 0.48);
+}
+
+.promptos .po-footer-manifesto {
+    margin-top: 18px;
+    font-size: clamp(30px, 4vw, 42px);
+    line-height: 1.06;
+    letter-spacing: -0.05em;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.promptos .po-footer-values {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.promptos .po-footer-value {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    padding: 0.58rem 0.9rem;
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 12px;
+}
+
+.promptos .po-footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.promptos .po-footer-link {
+    color: rgba(255, 255, 255, 0.62);
+    text-decoration: none;
+    transition: color 180ms ease;
+}
+
+.promptos .po-footer-link:hover {
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.promptos .po-footer-closing {
+    margin-top: 30px;
+    color: rgba(255, 255, 255, 0.44);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.promptos .po-footer-note {
+    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.42);
+    font-size: 13px;
+}
+
+@keyframes po-release-pulse {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(189, 205, 238, 0.32);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba(189, 205, 238, 0);
+    }
+}
+
+@keyframes po-footer-light-drift {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0);
+        opacity: 0.4;
+    }
+    50% {
+        transform: translate3d(120px, 8px, 0);
+        opacity: 0.72;
+    }
+}
+
+@keyframes po-footer-particle {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0) scale(0.8);
+    }
+    20% {
+        opacity: 0.44;
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(0, -62px, 0) scale(1.1);
+    }
+}
+
+.promptos .po-dialog-side {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    background: rgba(10, 12, 18, 0.72);
+    backdrop-filter: blur(10px);
+    padding: 0.55rem 0.8rem;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.64);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.38);
+}
+
+.promptos .po-dialog-side-left {
+    left: 8px;
+    top: 120px;
+}
+
+.promptos .po-dialog-side-right {
+    right: 4px;
+    bottom: 70px;
+}
+
+.promptos *,
+.promptos *::before,
+.promptos *::after {
+    box-sizing: border-box;
+}
+
+.promptos .po-mono {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+}
+
+/* Fading grid background ---------------------------------------------------- */
+.po-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 44px 44px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 30%, transparent 80%);
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 30%, transparent 80%);
+    pointer-events: none;
+}
+
+/* Soft radial glow ---------------------------------------------------------- */
+.po-glow {
+    position: absolute;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, var(--po-accent-soft) 0%, transparent 70%);
+}
+
+/* Animated glow border (the key AuthKit trick) ------------------------------ */
+.po-glow-border {
+    position: relative;
+    isolation: isolate;
+}
+.po-glow-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+        var(--promptos-angle),
+        transparent 35%,
+        rgba(59, 111, 245, 0.85) 50%,
+        transparent 65%
+    );
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: po-rotate-border 6s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+@keyframes po-rotate-border {
+    to {
+        --promptos-angle: 360deg;
+    }
+}
+
+/* Top hairline highlight on cards ------------------------------------------- */
+.po-hairline::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 18%;
+    right: 18%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.45), transparent);
+    pointer-events: none;
+}
+
+/* Pulsing status dot -------------------------------------------------------- */
+.po-pulse {
+    animation: po-pulse 2.4s ease-in-out infinite;
+}
+@keyframes po-pulse {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(76, 195, 138, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 0 5px rgba(76, 195, 138, 0);
+    }
+}
+
+/* Sweeping light beam ------------------------------------------------------- */
+.po-beam {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(59, 111, 245, 0.7), transparent);
+    animation: po-beam 5s ease-in-out infinite;
+    pointer-events: none;
+}
+@keyframes po-beam {
+    0% {
+        left: 4%;
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.7;
+    }
+    80% {
+        opacity: 0.7;
+    }
+    100% {
+        left: 96%;
+        opacity: 0;
+    }
+}
+
+/* Seamless marquee ---------------------------------------------------------- */
+.po-marquee {
+    display: flex;
+    width: max-content;
+    animation: po-scroll-left 38s linear infinite;
+}
+.po-marquee.po-reverse {
+    animation-direction: reverse;
+}
+.po-marquee-wrap:hover .po-marquee {
+    animation-play-state: paused;
+}
+@keyframes po-scroll-left {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* Mid-page section system -------------------------------------------------- */
+.promptos {
+    --po-accent-2: #9ec0ef;
+    --po-accent-faint: rgba(186, 207, 247, 0.26);
+    --po-panel-deep: #080808;
+}
+
+.promptos .po-mid-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.promptos .po-section-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+}
+
+.promptos .po-section-badge::before,
+.promptos .po-section-badge::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(186, 207, 247, 0.3));
+}
+
+.promptos .po-section-badge::before {
+    right: 100%;
+    margin-right: 12px;
+}
+
+.promptos .po-section-badge::after {
+    left: 100%;
+    margin-left: 12px;
+    background: linear-gradient(to left, transparent, rgba(186, 207, 247, 0.3));
+}
+
+.promptos .po-section-badge-left {
+    justify-content: flex-start;
+}
+
+.promptos .po-section-badge-text {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(186, 215, 247, 0.8);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.promptos .po-mid-heading {
+    margin-bottom: 16px;
+    font-size: clamp(36px, 4vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.042em;
+    line-height: 1.06;
+    text-wrap: balance;
+}
+
+.promptos .po-mid-heading-left {
+    text-align: left;
+}
+
+.promptos .po-mid-heading-soft {
+    color: rgba(255, 255, 255, 0.32);
+}
+
+.promptos .po-mid-copy {
+    max-width: 460px;
+    font-size: 15px;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.44);
+}
+
+.promptos .po-mid-copy-left {
+    margin-left: 0;
+    text-align: left;
+}
+
+.promptos .po-mid-copy-spaced {
+    margin-bottom: 24px;
+}
+
+.promptos .po-trust-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.promptos .po-trust-grid,
+.promptos .po-trust-glow,
+.promptos .po-trust-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.promptos .po-trust-grid {
+    opacity: 0.24;
+}
+
+.promptos .po-trust-grid-mask {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.032) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.032) 1px, transparent 1px);
+    background-size: 40px 40px;
+    -webkit-mask-image: radial-gradient(circle at 50% 28%, #000 22%, transparent 80%);
+    mask-image: radial-gradient(circle at 50% 28%, #000 22%, transparent 80%);
+}
+
+.promptos .po-trust-glow {
+    top: -4%;
+    left: 50%;
+    width: 720px;
+    height: 300px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle at top, rgba(59, 111, 245, 0.08), transparent 68%);
+    filter: blur(18px);
+}
+
+.promptos .po-trust-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(192, 212, 255, 0.18);
+    box-shadow: 0 0 12px rgba(96, 146, 255, 0.12);
+    opacity: 0;
+    animation: po-trust-particle 9.8s linear infinite;
+}
+
+.promptos .po-trust-particle-a { left: 18%; top: 24%; animation-delay: 0.6s; }
+.promptos .po-trust-particle-b { left: 72%; top: 20%; animation-delay: 2.1s; }
+.promptos .po-trust-particle-c { left: 28%; top: 68%; animation-delay: 3.3s; }
+.promptos .po-trust-particle-d { left: 78%; top: 62%; animation-delay: 4.5s; }
+
+.promptos .po-trust-intro {
+    position: relative;
+    z-index: 1;
+}
+
+.promptos .po-trust-copy {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.promptos .po-trust-card {
+    position: relative;
+    border-radius: 28px;
+    overflow: hidden;
+}
+
+.promptos .po-trust-card::before {
+    background: conic-gradient(
+        from var(--angle),
+        transparent 0deg,
+        transparent 132deg,
+        rgba(118, 158, 244, 0.28) 178deg,
+        rgba(168, 196, 255, 0.34) 206deg,
+        transparent 238deg,
+        transparent 360deg
+    );
+    opacity: 0;
+    animation: po-trust-border-rotate 4s linear infinite;
+    transition: opacity 240ms ease;
+}
+
+.promptos .po-trust-card:hover::before,
+.promptos .po-trust-card:focus-within::before {
+    opacity: 0.78;
+}
+
+.promptos .po-trust-card-shell {
+    position: relative;
+    min-height: 280px;
+    padding: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02)),
+        rgba(9, 11, 16, 0.76);
+    backdrop-filter: blur(18px);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 28px 80px rgba(0, 0, 0, 0.36);
+    transition:
+        transform 240ms ease,
+        background 240ms ease,
+        box-shadow 240ms ease,
+        border-color 240ms ease;
+    animation: po-trust-float var(--po-float-duration, 7s) ease-in-out infinite;
+}
+
+.promptos .po-trust-card:hover .po-trust-card-shell,
+.promptos .po-trust-card:focus-within .po-trust-card-shell {
+    transform: translate3d(0, -5px, 0);
+    border-color: rgba(255, 255, 255, 0.12);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03)),
+        rgba(11, 13, 18, 0.82);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 34px 96px rgba(0, 0, 0, 0.42);
+}
+
+.promptos .po-trust-beam {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(170, 204, 255, 0.5), transparent);
+    opacity: 0.5;
+    animation: po-trust-beam 4.6s ease-in-out infinite;
+}
+
+.promptos .po-trust-card-top {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 22px;
+}
+
+.promptos .po-trust-icon-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.035);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    transition: filter 240ms ease, background 240ms ease;
+}
+
+.promptos .po-trust-card:hover .po-trust-icon-wrap,
+.promptos .po-trust-card:focus-within .po-trust-icon-wrap {
+    filter: brightness(1.08);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.promptos .po-trust-icon {
+    width: 24px;
+    height: 24px;
+    color: rgba(196, 217, 255, 0.92);
+}
+
+.promptos .po-trust-status-dot {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(107, 160, 255, 0.9);
+    box-shadow: 0 0 0 0 rgba(107, 160, 255, 0.32);
+    animation: po-trust-status-pulse 2.8s ease-in-out infinite;
+}
+
+.promptos .po-trust-title {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: rgba(255, 255, 255, 0.94);
+}
+
+.promptos .po-trust-body {
+    position: relative;
+    z-index: 1;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.promptos .po-feature-slider-wrap {
+    overflow: hidden;
+    padding: 64px 0 80px;
+}
+
+.promptos .po-feature-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 0;
+    width: max-content;
+    margin: 0 auto;
+}
+
+.promptos .po-feature-slider-fragment {
+    display: flex;
+    align-items: center;
+}
+
+.promptos .po-feature-item {
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    animation: po-feature-intro 0.6s ease forwards;
+}
+
+.promptos .po-feature-icon-wrap {
+    display: flex;
+    width: 88px;
+    cursor: default;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.promptos .po-feature-icon-wrap:hover .po-feature-icon-box {
+    transform: translateY(-2px);
+    filter: brightness(1.6);
+}
+
+.promptos .po-feature-icon-wrap:hover .po-feature-icon-label {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.promptos .po-feature-icon-box {
+    position: relative;
+    display: flex;
+    width: 48px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
+        #111;
+    transition: transform 0.3s ease, filter 0.3s ease;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.promptos .po-feature-icon-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.15) 50%, transparent 70%);
+    transform: translateX(-100%);
+}
+
+.promptos .po-feature-icon-wrap:hover .po-feature-icon-box::after {
+    animation: po-feature-shine 0.55s ease forwards;
+}
+
+.promptos .po-feature-icon-svg {
+    width: 28px;
+    height: 28px;
+    opacity: 0.76;
+}
+
+.promptos .po-feature-icon-label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.32);
+    text-align: center;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+}
+
+.promptos .po-feature-sep {
+    position: relative;
+    width: 64px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.promptos .po-feature-sep::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(to right, rgba(186, 207, 247, 0.24), rgba(186, 207, 247, 0.24)),
+        radial-gradient(circle 12px at 50% 50%, transparent calc(50% - 1.5px), rgba(186, 207, 247, 0.2) calc(50% - 1px), transparent 50%),
+        radial-gradient(circle 2px at 50% 50%, rgba(186, 207, 247, 0.6) calc(50% - 0.5px), transparent 50%);
+    background-position: 0 50%, 50% 50%, 50% 50%;
+    background-repeat: no-repeat;
+    background-size: 100% 1px, auto, auto;
+}
+
+.promptos .po-feature-sep-revealed::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(to right, rgba(186, 207, 247, 0.08), rgba(186, 207, 247, 0.08)),
+        radial-gradient(circle 12px at 50% 50%, transparent calc(50% - 1.5px), rgba(186, 207, 247, 0.08) calc(50% - 1px), transparent 50%);
+    background-position: 0 50%, 50% 50%;
+    background-repeat: no-repeat;
+    background-size: 100% 1px, auto;
+    -webkit-mask-image: linear-gradient(90deg, #000 80%, transparent);
+    mask-image: linear-gradient(90deg, #000 80%, transparent);
+    -webkit-mask-size: 200% 100%;
+    mask-size: 200% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    animation: po-sep-reveal 0.9s ease forwards;
+}
+
+.promptos .po-stat-row {
+    display: grid;
+    border-top: 1px solid var(--po-border);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.promptos .po-stat-cell {
+    padding: 36px 40px;
+    text-align: center;
+    border-right: 1px solid var(--po-border);
+}
+
+.promptos .po-stat-cell-last {
+    border-right: none;
+}
+
+.promptos .po-stat-value {
+    margin-bottom: 6px;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+}
+
+.promptos .po-stat-label {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.promptos .po-watcher-visual-wrap {
+    min-height: 420px;
+}
+
+.promptos .po-watcher-visual {
+    position: relative;
+    display: flex;
+    min-height: 420px;
+    align-items: center;
+    justify-content: center;
+}
+
+.promptos .po-ring-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.promptos .po-ring-shell {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: radial-gradient(circle at center, rgba(59, 111, 245, 0.04), transparent 74%);
+}
+
+.promptos .po-ring {
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(104, 145, 235, 0.14);
+    border-radius: 999px;
+    box-shadow:
+        inset 0 0 0 1px rgba(186, 207, 247, 0.02),
+        0 0 22px rgba(59, 111, 245, 0.05);
+}
+
+.promptos .po-ring::before {
+    content: '';
+    position: absolute;
+    inset: 10%;
+    border-radius: inherit;
+    border: 1px solid rgba(186, 207, 247, 0.04);
+    opacity: 0.7;
+}
+
+.promptos .po-ring-sweep {
+    position: absolute;
+    inset: -1px;
+    border-radius: 999px;
+    animation: po-ring-rotate linear infinite;
+    filter: drop-shadow(0 0 10px rgba(59, 111, 245, 0.18));
+}
+
+.promptos .po-ring-sweep::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+        from 0deg,
+        transparent 56%,
+        rgba(79, 125, 224, 0.1) 68%,
+        rgba(97, 154, 255, 0.68) 76%,
+        rgba(193, 221, 255, 0.42) 81%,
+        transparent 90%
+    );
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+.promptos .po-vault-center {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    width: 80px;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(122, 170, 255, 0.22);
+    border-radius: 20px;
+    background:
+        radial-gradient(circle at 50% 24%, rgba(87, 124, 208, 0.18), transparent 58%),
+        #0d1016;
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.04),
+        0 0 30px rgba(59, 111, 245, 0.12),
+        0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.promptos .po-vault-center::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(194, 220, 255, 0.34), transparent);
+}
+
+.promptos .po-doc-fly {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: #111;
+    padding: 8px 12px;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.52);
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+    opacity: 0;
+    animation: po-doc-fly 6s ease-in-out infinite;
+}
+
+.promptos .po-doc-fly-a { top: 14%; left: 8%; animation-duration: 5s; }
+.promptos .po-doc-fly-b { top: 22%; right: 6%; animation-duration: 6.5s; animation-delay: 1.8s; }
+.promptos .po-doc-fly-c { bottom: 18%; left: 10%; animation-duration: 7s; animation-delay: 3.2s; }
+.promptos .po-doc-fly-d { right: 8%; bottom: 20%; animation-duration: 5.5s; animation-delay: 0.8s; }
+
+.promptos .po-event-log {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    background: #0a0a0a;
+}
+
+.promptos .po-event-log::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 15%;
+    right: 15%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+}
+
+.promptos .po-event-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 10px 16px;
+    color: rgba(255, 255, 255, 0.22);
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+}
+
+.promptos .po-event-head-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: rgba(140, 210, 130, 0.8);
+    animation: po-event-blink 2s ease infinite;
+}
+
+.promptos .po-event-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 10px 16px;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: po-event-row-reveal 0.55s ease forwards;
+}
+
+.promptos .po-event-row:last-child {
+    border-bottom: none;
+}
+
+.promptos .po-event-dot {
+    width: 6px;
+    height: 6px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    margin-top: 4px;
+}
+
+.promptos .po-event-body {
+    flex: 1;
+}
+
+.promptos .po-event-title {
+    font-size: 12px;
+    line-height: 1.3;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.promptos .po-event-meta,
+.promptos .po-event-time {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+}
+
+.promptos .po-event-meta {
+    margin-top: 2px;
+    color: rgba(255, 255, 255, 0.22);
+}
+
+.promptos .po-event-time {
+    margin-top: 3px;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.18);
+}
+
+.promptos .po-benefit-list {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.promptos .po-benefit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.promptos .po-benefit-icon {
+    margin-top: 1px;
+    display: flex;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    background: #0f0f0f;
+}
+
+.promptos .po-benefit-title {
+    margin-bottom: 3px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.promptos .po-benefit-body {
+    font-size: 13px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.38);
+}
+
+.promptos .po-action-tabs {
+    display: flex;
+    gap: 2px;
+    width: fit-content;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 3px;
+}
+
+.promptos .po-action-tab {
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    padding: 7px 16px;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+}
+
+.promptos .po-action-tab-on {
+    background: #fff;
+    color: #000;
+    font-weight: 500;
+}
+
+.promptos .po-action-benefits {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.promptos .po-action-benefit-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.promptos .po-action-benefit-dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.promptos .po-action-panel {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: var(--po-panel-deep);
+}
+
+.promptos .po-action-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+}
+
+.promptos .po-action-panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 12px 18px;
+}
+
+.promptos .po-action-panel-title,
+.promptos .po-action-status,
+.promptos .po-cmd-prompt,
+.promptos .po-cmd-text,
+.promptos .po-output-preview,
+.promptos .po-partner-pct,
+.promptos .po-partner-badge,
+.promptos .po-secondary-action-text,
+.promptos .po-secondary-action-enter {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+}
+
+.promptos .po-action-panel-title {
+    color: rgba(255, 255, 255, 0.28);
+    font-size: 11px;
+}
+
+.promptos .po-action-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: rgba(140, 210, 130, 0.7);
+    font-size: 10px;
+}
+
+.promptos .po-action-status-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: rgba(140, 210, 130, 0.8);
+    animation: po-event-blink 2s ease infinite;
+}
+
+.promptos .po-partner-list {
+    padding: 8px 0;
+}
+
+.promptos .po-partner-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 10px 18px;
+}
+
+.promptos .po-partner-row:last-child {
+    border-bottom: none;
+}
+
+.promptos .po-partner-row::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    background: rgba(255, 255, 255, 0.025);
+    transition: transform 1.2s ease;
+    transition-delay: var(--fill-delay, 0s);
+}
+
+.promptos .po-partner-row-filling::after {
+    transform: scaleX(1);
+}
+
+.promptos .po-partner-avatar,
+.promptos .po-benefit-icon,
+.promptos .po-secondary-action-icon {
+    position: relative;
+    z-index: 1;
+}
+
+.promptos .po-partner-avatar {
+    display: flex;
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.promptos .po-partner-name,
+.promptos .po-partner-pct,
+.promptos .po-partner-badge {
+    position: relative;
+    z-index: 1;
+}
+
+.promptos .po-partner-name {
+    flex: 1;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 12px;
+}
+
+.promptos .po-partner-pct {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 11px;
+}
+
+.promptos .po-partner-badge {
+    border: 1px solid;
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 9.5px;
+    transition: all 0.4s ease;
+}
+
+.promptos .po-partner-badge-pending {
+    color: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.promptos .po-partner-badge-gen {
+    color: rgba(186, 207, 247, 0.8);
+    border-color: rgba(186, 207, 247, 0.2);
+    background: rgba(186, 207, 247, 0.05);
+}
+
+.promptos .po-partner-badge-done {
+    color: rgba(140, 210, 130, 0.8);
+    border-color: rgba(140, 210, 130, 0.2);
+    background: rgba(140, 210, 130, 0.05);
+}
+
+.promptos .po-gen-progress {
+    height: 2px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.promptos .po-gen-progress-fill {
+    height: 100%;
+    border-radius: 1px;
+    background: rgba(186, 207, 247, 0.5);
+    transition: width 0.2s linear;
+}
+
+.promptos .po-output-preview {
+    margin: 14px 18px;
+    display: grid;
+    gap: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    background: #0d0d0d;
+    padding: 12px 14px;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+.promptos .po-output-preview-head {
+    margin-bottom: 6px;
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.promptos .po-output-preview span {
+    color: rgba(186, 207, 247, 0.6);
+}
+
+.promptos .po-output-preview-ok {
+    color: rgba(140, 210, 130, 0.7) !important;
+}
+
+.promptos .po-action-cmd {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: #060606;
+    padding: 10px 18px;
+}
+
+.promptos .po-cmd-prompt {
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 11px;
+}
+
+.promptos .po-cmd-text {
+    flex: 1;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.promptos .po-cmd-run {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 4px 12px;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+}
+
+.promptos .po-cmd-run-running {
+    border-color: rgba(186, 207, 247, 0.3);
+    background: rgba(186, 207, 247, 0.05);
+    color: rgba(186, 207, 247, 0.7);
+}
+
+.promptos .po-cmd-run-done {
+    border-color: rgba(140, 210, 130, 0.2);
+    color: rgba(140, 210, 130, 0.75);
+}
+
+.promptos .po-secondary-actions {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.promptos .po-secondary-action-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 8px;
+    background: #080808;
+    padding: 11px 16px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.promptos .po-secondary-action-row:hover {
+    border-color: rgba(255, 255, 255, 0.14);
+    transform: translateY(-1px);
+}
+
+.promptos .po-secondary-action-icon {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.promptos .po-secondary-action-text {
+    flex: 1;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.promptos .po-secondary-action-enter {
+    color: rgba(255, 255, 255, 0.18);
+    font-size: 10px;
+}
+
+.promptos .po-footer-shell {
+    position: relative;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(122, 162, 255, 0.08), transparent 34%),
+        rgba(0, 0, 0, 0.92);
+}
+
+.promptos .po-footer-heading,
+.promptos .po-legal-aside-label,
+.promptos .po-legal-company-label,
+.promptos .po-legal-section-kicker,
+.promptos .po-legal-meta {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.34);
+}
+
+.promptos .po-footer-link {
+    color: rgba(255, 255, 255, 0.72);
+    transition: color 0.2s ease;
+}
+
+.promptos .po-footer-link:hover {
+    color: #fff;
+}
+
+.promptos .po-legal-page {
+    position: relative;
+    min-height: 100vh;
+}
+
+.promptos .po-legal-backdrop {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(122, 162, 255, 0.08), transparent 30%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 18%),
+        #000;
+    pointer-events: none;
+}
+
+.promptos .po-legal-nav-link,
+.promptos .po-legal-download-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border-radius: 0.5rem;
+    padding: 0.45rem 0.8rem;
+    font-size: 13px;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.promptos .po-legal-nav-link {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--po-muted);
+}
+
+.promptos .po-legal-nav-link:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #fff;
+}
+
+.promptos .po-legal-download-link {
+    background: #fff;
+    color: #000;
+    font-weight: 600;
+}
+
+.promptos .po-legal-download-link:hover {
+    background: rgba(255, 255, 255, 0.88);
+}
+
+.promptos .po-legal-title {
+    max-width: 12ch;
+    margin-bottom: 16px;
+    font-size: clamp(42px, 5vw, 68px);
+    line-height: 0.98;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    text-wrap: balance;
+}
+
+.promptos .po-legal-description {
+    max-width: 620px;
+    font-size: 16px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.48);
+}
+
+.promptos .po-legal-meta {
+    margin-top: 18px;
+}
+
+.promptos .po-legal-aside {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--po-border-med);
+    border-radius: 26px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015)),
+        rgba(8, 10, 14, 0.9);
+    padding: 24px;
+    box-shadow:
+        0 34px 120px rgba(0, 0, 0, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.promptos .po-legal-toc {
+    margin-top: 18px;
+    display: grid;
+    gap: 8px;
+}
+
+.promptos .po-legal-toc-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.025);
+    padding: 11px 13px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 13px;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.promptos .po-legal-toc-link:hover {
+    border-color: rgba(110, 152, 255, 0.22);
+    background: rgba(59, 111, 245, 0.08);
+    color: #fff;
+}
+
+.promptos .po-legal-toc-index {
+    color: rgba(255, 255, 255, 0.32);
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+}
+
+.promptos .po-legal-company-card {
+    margin-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    padding-top: 22px;
+}
+
+.promptos .po-legal-company-name {
+    margin-top: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.promptos .po-legal-company-address {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.46);
+}
+
+.promptos .po-legal-section {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 24px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015)),
+        rgba(8, 10, 14, 0.9);
+    box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.46),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.promptos .po-legal-section-inner {
+    padding: 28px 28px 30px;
+}
+
+.promptos .po-legal-copy {
+    margin-top: 14px;
+    display: grid;
+    gap: 14px;
+    max-width: 860px;
+    font-size: 15px;
+    line-height: 1.85;
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.promptos .po-legal-copy p {
+    margin: 0;
+}
+
+.promptos .po-legal-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 10px;
+}
+
+.promptos .po-legal-list li {
+    position: relative;
+    padding-left: 18px;
+}
+
+.promptos .po-legal-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.8em;
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: rgba(158, 192, 239, 0.8);
+    transform: translateY(-50%);
+}
+
+@keyframes po-feature-intro {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes po-trust-border-rotate {
+    to {
+        --angle: 360deg;
+    }
+}
+
+@keyframes po-trust-float {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+    50% {
+        transform: translate3d(0, -4px, 0);
+    }
+}
+
+@keyframes po-trust-status-pulse {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(107, 160, 255, 0.28);
+        opacity: 0.9;
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba(107, 160, 255, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes po-trust-beam {
+    0% {
+        left: 6%;
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.5;
+    }
+    80% {
+        opacity: 0.5;
+    }
+    100% {
+        left: 94%;
+        opacity: 0;
+    }
+}
+
+@keyframes po-trust-particle {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0) scale(0.8);
+    }
+    20% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(0, -44px, 0) scale(1.05);
+    }
+}
+
+@keyframes po-feature-shine {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes po-sep-reveal {
+    from {
+        -webkit-mask-position: 200% 0;
+        mask-position: 200% 0;
+    }
+    to {
+        -webkit-mask-position: 0 0;
+        mask-position: 0 0;
+    }
+}
+
+@keyframes po-ring-rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes po-doc-fly {
+    0% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.96);
+    }
+    18% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+    }
+    90% {
+        opacity: 0;
+        transform: scale(0.5) translate(8px, 24px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.96);
+    }
+}
+
+@keyframes po-event-row-reveal {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes po-event-blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* Respect reduced motion ---------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    .promptos .po-glow-border::before,
+    .promptos .po-pulse,
+    .promptos .po-beam,
+    .promptos .po-marquee,
+    .promptos .po-feature-item,
+    .promptos .po-feature-sep-revealed::after,
+    .promptos .po-ring-sweep,
+    .promptos .po-doc-fly,
+    .promptos .po-event-row,
+    .promptos .po-action-status-dot,
+    .promptos .po-trust-card::before,
+    .promptos .po-trust-card-shell,
+    .promptos .po-trust-beam,
+    .promptos .po-trust-status-dot,
+    .promptos .po-trust-particle {
+        animation: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .promptos .po-hero-shell {
+        width: 100%;
+        padding: 22px 8px 12px;
+        border-radius: 24px;
+    }
+
+    .promptos .po-understanding-wrap {
+        height: 118px;
+    }
+
+    .promptos .po-understanding-line {
+        font-size: 17px;
+    }
+
+    .promptos .po-understanding-final-copy {
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+    .promptos .po-trust-card-shell {
+        min-height: 0;
+        padding: 24px;
+    }
+
+    .promptos .po-trust-title {
+        font-size: 20px;
+    }
+
+    .promptos .po-hero-window-bar {
+        height: 38px;
+    }
+
+    .promptos .po-hero-image-wrap {
+        padding: 8px;
+    }
+
+    .promptos .po-hero-image-vignette {
+        inset: 8px;
+    }
+
+    .promptos .po-hero-float-pill,
+    .promptos .po-hero-system-node {
+        display: none;
+    }
+
+    .promptos .po-hero-memory-core {
+        width: 138px;
+        height: 138px;
+        top: 50%;
+    }
+
+    .promptos .po-hero-memory-core-label {
+        width: 108px;
+        padding: 8px 10px;
+    }
+
+    .promptos .po-hero-memory-core-label strong {
+        font-size: 12px;
+    }
+
+    .promptos .po-hero-window {
+        width: 100%;
+        border-radius: 20px;
+    }
+
+    .promptos .po-ask-scene-wrap {
+        width: min(94vw, 480px);
+    }
+
+    .promptos .po-ask-proof-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .promptos .po-ask-progress-dot {
+        width: 16px;
+    }
+
+    .promptos .po-ask-progress-dot-live {
+        width: 28px;
+    }
+
+    .promptos .po-section-badge::before,
+    .promptos .po-section-badge::after {
+        width: 24px;
+    }
+
+    .promptos .po-mid-heading {
+        font-size: clamp(30px, 9vw, 40px);
+    }
+
+    .promptos .po-feature-slider-wrap {
+        padding: 44px 0 56px;
+    }
+
+    .promptos .po-feature-slider {
+        justify-content: flex-start;
+        padding: 0 22px;
+    }
+
+    .promptos .po-feature-icon-wrap {
+        width: 82px;
+    }
+
+    .promptos .po-feature-sep {
+        width: 42px;
+    }
+
+    .promptos .po-stat-row {
+        grid-template-columns: 1fr;
+    }
+
+    .promptos .po-stat-cell {
+        border-right: none;
+        border-bottom: 1px solid var(--po-border);
+        padding: 26px 24px;
+    }
+
+    .promptos .po-stat-cell-last {
+        border-bottom: none;
+    }
+
+    .promptos .po-watcher-visual-wrap,
+    .promptos .po-watcher-visual {
+        min-height: 500px;
+    }
+
+    .promptos .po-doc-fly {
+        font-size: 9px;
+        padding: 7px 10px;
+    }
+
+    .promptos .po-event-time {
+        display: none;
+    }
+
+    .promptos .po-action-tabs {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .promptos .po-action-panel-head,
+    .promptos .po-action-cmd {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .promptos .po-cmd-text,
+    .promptos .po-secondary-action-text {
+        width: 100%;
+    }
+
+    .promptos .po-partner-row {
+        flex-wrap: wrap;
+    }
+
+    .promptos .po-partner-name {
+        min-width: calc(100% - 40px);
+    }
+
+    .promptos .po-legal-nav {
+        height: auto;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+
+    .promptos .po-legal-title {
+        max-width: none;
+        font-size: clamp(34px, 11vw, 48px);
+    }
+
+    .promptos .po-legal-description {
+        font-size: 15px;
+    }
+
+    .promptos .po-legal-aside,
+    .promptos .po-legal-section-inner {
+        padding: 22px 18px;
+    }
+
+    .promptos .po-hero-activity {
+        display: none;
+    }
+
+    .promptos .po-scene-wrap {
+        width: min(94vw, 460px);
+        height: 320px;
+    }
+
+    .promptos .po-scene-main {
+        inset: 24px 22px;
+    }
+
+    .promptos .po-scene-side {
+        display: none;
+    }
+
+    .promptos .po-system-wrap,
+    .promptos .po-dialog-wrap {
+        width: min(94vw, 480px);
+        height: 380px;
+    }
+
+    .promptos .po-dialog-panel,
+    .promptos .po-scene-main {
+        inset: 24px 18px;
+    }
+
+    .promptos .po-system-node {
+        min-width: 96px;
+        padding: 10px 12px;
+    }
+
+    .promptos .po-node-docs { top: 30px; left: 8px; }
+    .promptos .po-node-evidence { top: 30px; left: 128px; }
+    .promptos .po-node-rule { top: 30px; right: 8px; }
+    .promptos .po-node-irs { bottom: 58px; right: 18px; }
+    .promptos .po-node-memory { bottom: 56px; left: 132px; }
+
+    .promptos .po-system-caption,
+    .promptos .po-dialog-side {
+        display: none;
+    }
+}
