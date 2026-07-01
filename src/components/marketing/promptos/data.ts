@@ -186,7 +186,7 @@ export const LATEST_RELEASE_API = `https://api.github.com/repos/${GITHUB_OWNER}/
 // Flip to `true` only once signed public desktop builds are published to the
 // release channel above. While `false`, the download cards show a calm
 // "Coming soon" state and never send visitors to an empty GitHub repo.
-export const RELEASE_CHANNEL_LIVE = false
+export const RELEASE_CHANNEL_LIVE = true
 
 // Where "Get notified" and support links point.
 export const NOTIFY_EMAIL = 'hi@prompt.tax'

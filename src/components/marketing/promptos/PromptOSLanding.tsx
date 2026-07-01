@@ -834,7 +834,7 @@ function ActionPanel({ activeTab, command }: { activeTab: keyof typeof ACTION_TA
                 </div>
 
                 <div className="po-output-preview">
-                    <div className="po-output-preview-head">// Schedule K-1 (Form 1065) · Partner: James R.</div>
+                    <div className="po-output-preview-head">{'//'} Schedule K-1 (Form 1065) · Partner: James R.</div>
                     <div><span>ordinary_income</span>  $47,250.00</div>
                     <div><span>cap_gains_long</span>    $12,400.00</div>
                     <div><span>qbi_deduction</span>     $9,450.00</div>
