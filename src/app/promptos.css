@@ -20,16 +20,6 @@
     inherits: false;
 }
 
-.quote {
-  font-size: 2.25rem;
-  line-height: 1.4;
-  color: #ffffff;
-  font-weight: 300;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  letter-spacing: -0.02em;
-}
-
-
 .promptos {
     --po-bg: #050505;
     --po-panel: #0c0c0d;
@@ -1041,8 +1031,7 @@
     background:
         radial-gradient(circle at 50% 0%, rgba(122, 162, 255, 0.11), transparent 35%),
         radial-gradient(circle at 50% 12%, rgba(122, 162, 255, 0.08), transparent 44%);
-    transform: translateX(var(--po-hero-light-shift, 0px));
-    transition: transform 420ms ease;
+    animation: po-hero-vignette-breathe 7s ease-in-out infinite;
     pointer-events: none;
 }
 
@@ -1053,13 +1042,65 @@
     width: 360px;
     height: 420px;
     transform: translateX(-50%);
+    transform-origin: 50% 0;
     background: linear-gradient(180deg, rgba(174, 201, 255, 0.26), rgba(109, 146, 255, 0.08) 32%, transparent 74%);
     clip-path: polygon(48% 0, 52% 0, 100% 100%, 0 100%);
     filter: blur(18px);
     opacity: 0.95;
-    transform: translateX(calc(-50% + var(--po-hero-light-shift, 0px)));
-    transition: transform 420ms ease, opacity 420ms ease;
+    animation: po-spotlight-breathe 6.5s ease-in-out infinite;
     pointer-events: none;
+}
+
+@keyframes po-hero-vignette-breathe {
+    0%,
+    100% {
+        opacity: 0.85;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes po-spotlight-breathe {
+    0%,
+    100% {
+        opacity: 0.8;
+        transform: translateX(-50%) scaleY(1);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(-50%) scaleY(1.05);
+    }
+}
+
+.promptos .po-hero-disclaimer {
+    margin: 1.25rem auto 0;
+    max-width: 640px;
+    padding: 0 1rem;
+    font-size: 0.8125rem;
+    line-height: 1.65;
+    text-align: center;
+    text-wrap: balance;
+    color: rgba(255, 255, 255, 0.46);
+}
+
+.promptos .po-hero-disclaimer-tight {
+    margin-top: 0.75rem;
+    max-width: 680px;
+}
+
+@media (max-width: 640px) {
+    .promptos .po-hero-disclaimer {
+        font-size: 0.75rem;
+        line-height: 1.6;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .promptos .po-hero-vignette,
+    .promptos .po-spotlight {
+        animation: none;
+    }
 }
 
 .promptos .po-feature-spotlight {
@@ -1434,6 +1475,19 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+@media (max-width: 860px) {
+    .promptos .po-download-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .promptos .po-download-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+}
+
 .promptos .po-release-card {
     position: relative;
     display: flex;
@@ -1471,6 +1525,87 @@
 
 .promptos .po-release-card-detected {
     box-shadow: 0 28px 96px rgba(0, 0, 0, 0.46), 0 0 26px rgba(95, 140, 255, 0.1);
+}
+
+.promptos .po-release-card-soon {
+    cursor: pointer;
+}
+
+.promptos .po-back-to-top {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 60;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(12, 13, 18, 0.82);
+    color: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(12px) scale(0.9);
+    pointer-events: none;
+    transition: opacity 260ms ease, transform 260ms ease, border-color 200ms ease, background 200ms ease;
+}
+
+.promptos .po-back-to-top-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.promptos .po-back-to-top:hover {
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(20, 22, 30, 0.92);
+    color: #fff;
+}
+
+@media (max-width: 560px) {
+    .promptos .po-back-to-top {
+        right: 16px;
+        bottom: 16px;
+        width: 42px;
+        height: 42px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .promptos .po-back-to-top {
+        transition: opacity 200ms ease;
+        transform: none;
+    }
+    .promptos .po-back-to-top-visible {
+        transform: none;
+    }
+}
+
+.promptos .po-release-card-soon .po-release-card-icon {
+    opacity: 0.82;
+}
+
+@media (max-width: 560px) {
+    .promptos .po-release-card {
+        min-height: 0;
+        gap: 16px;
+        padding: 18px;
+        border-radius: 20px;
+    }
+
+    .promptos .po-release-card-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 14px;
+    }
+
+    .promptos .po-release-card-title-row {
+        font-size: 16px;
+    }
 }
 
 .promptos .po-release-card-badge-row {
@@ -3007,6 +3142,28 @@
     font-size: 16px;
     line-height: 1.8;
     color: rgba(255, 255, 255, 0.48);
+}
+
+/* Pricing hero reuses the legal typography but is centered horizontally and
+   vertically, so override the left-aligned block defaults within its scope. */
+.promptos .po-pricing-hero {
+    display: flex;
+    min-height: calc(100vh - 220px);
+    align-items: center;
+    justify-content: center;
+}
+
+.promptos .po-pricing-hero .po-legal-title {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 16ch;
+    text-align: center;
+}
+
+.promptos .po-pricing-hero .po-legal-description {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 .promptos .po-legal-meta {

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowRight, Check, Eye, Activity, FolderOpen, FileText, Download, Users, Grid2X2 } from 'lucide-react'
+import { ArrowRight, ArrowUp, Check, Eye, Activity, FolderOpen, FileText, Download, Users, Grid2X2 } from 'lucide-react'
 import { Reveal } from './Reveal'
 import { HeroMock } from './HeroMock'
 import { DownloadSection } from './DownloadSection'
@@ -265,8 +265,8 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
 
             {/* HERO */}
             <header className="relative overflow-hidden px-6 pb-20 pt-24 text-center">
-                <div className="po-hero-vignette" aria-hidden style={{ ['--po-hero-light-shift' as string]: `${heroSequenceStage * 12}px` }} />
-                <div className="po-spotlight" aria-hidden style={{ ['--po-hero-light-shift' as string]: `${heroSequenceStage * 12}px` }} />
+                <div className="po-hero-vignette" aria-hidden />
+                <div className="po-spotlight" aria-hidden />
                 <div className="po-grid h-[560px]" aria-hidden />
                 <div className="relative mx-auto max-w-3xl">
                     <Reveal>
@@ -306,8 +306,8 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                         </div>
                     </Reveal>
                     <Reveal delay={0.21}>
-                        <p className="quote mx-auto mt-4 max-w-[720px] text-[12px] leading-relaxed text-white/42 sm:text-[13px]">
-                            PromptTax does not silently sync documents, autonomously file, or invent financial facts. Agent activity stays inside explicit product boundaries and every meaningful conclusion stays traceable to evidence.
+                        <p className="po-hero-disclaimer">
+                            PromptTax does not silently sync documents, autonomously file, or invent financial facts. Agent activity stays inside explicit product boundaries, and every meaningful conclusion stays traceable to evidence.
                         </p>
                     </Reveal>
                 </div>
@@ -452,7 +452,30 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
             {/* FOOTER */}
             <PromptOSFooter downloadHref="#download" />
             </div>
+            <BackToTop />
         </div>
+    )
+}
+
+function BackToTop() {
+    const [visible, setVisible] = useState(false)
+
+    useEffect(() => {
+        const onScroll = () => setVisible(window.scrollY > 640)
+        onScroll()
+        window.addEventListener('scroll', onScroll, { passive: true })
+        return () => window.removeEventListener('scroll', onScroll)
+    }, [])
+
+    return (
+        <button
+            type="button"
+            aria-label="Back to top"
+            className={`po-back-to-top ${visible ? 'po-back-to-top-visible' : ''}`}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+            <ArrowUp className="h-4 w-4" strokeWidth={2} />
+        </button>
     )
 }
 

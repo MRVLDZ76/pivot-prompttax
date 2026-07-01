@@ -182,3 +182,12 @@ export const GITHUB_OWNER = 'prompttax'
 export const GITHUB_REPO = 'prompttax'
 export const RELEASES_URL = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/releases`
 export const LATEST_RELEASE_API = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`
+
+// Flip to `true` only once signed public desktop builds are published to the
+// release channel above. While `false`, the download cards show a calm
+// "Coming soon" state and never send visitors to an empty GitHub repo.
+export const RELEASE_CHANNEL_LIVE = false
+
+// Where "Get notified" and support links point.
+export const NOTIFY_EMAIL = 'hi@prompt.tax'
+export const NOTIFY_MAILTO = `mailto:${NOTIFY_EMAIL}?subject=Notify%20me%20when%20PromptTax%20desktop%20is%20available`

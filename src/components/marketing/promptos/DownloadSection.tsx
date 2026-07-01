@@ -1,9 +1,16 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Apple, Monitor, Terminal, Download as DownloadIcon, ArrowUpRight } from 'lucide-react'
+import { Apple, Monitor, Terminal, Download as DownloadIcon, ArrowUpRight, Mail } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { DOWNLOADS, LATEST_RELEASE_API, RELEASES_URL, type DownloadTarget } from './data'
+import {
+    DOWNLOADS,
+    LATEST_RELEASE_API,
+    RELEASES_URL,
+    RELEASE_CHANNEL_LIVE,
+    NOTIFY_MAILTO,
+    type DownloadTarget,
+} from './data'
 
 type OS = DownloadTarget['os']
 
@@ -43,6 +50,12 @@ export function DownloadSection() {
 
     useEffect(() => {
         setDetected(detectOS())
+        // While the public channel isn't live, skip the network call entirely and
+        // present a calm "coming soon" state instead of probing an empty repo.
+        if (!RELEASE_CHANNEL_LIVE) {
+            setReleaseState('fallback')
+            return
+        }
         let active = true
         setReleaseState('loading')
         fetch(LATEST_RELEASE_API, { headers: { Accept: 'application/vnd.github+json' } })
@@ -64,6 +77,9 @@ export function DownloadSection() {
         }
     }, [])
 
+    // Downloads are only "live" once the channel is enabled AND assets resolved.
+    const isLive = RELEASE_CHANNEL_LIVE && releaseState === 'ready'
+
     const hrefFor = (target: DownloadTarget): string => {
         const asset =
             assets.find((a) => a.name.toLowerCase() === target.artifactName.toLowerCase()) ||
@@ -80,9 +96,9 @@ export function DownloadSection() {
     const helperLabel =
         releaseState === 'loading'
             ? 'Checking the latest production release...'
-            : releaseState === 'ready'
+            : isLive
               ? 'Latest signed artifacts pulled from the production release channel.'
-              : 'Release metadata unavailable. Buttons fall back to the latest release page.'
+              : 'Desktop builds are in private pilot. Add your email and we\u2019ll tell you the moment public downloads open.'
 
     return (
         <section id="download" className="relative border-t border-[var(--po-border)] px-6 py-28">
@@ -101,7 +117,7 @@ export function DownloadSection() {
                     ) : null}
                 </p>
 
-                <p className="mx-auto mt-3 max-w-2xl text-[12px] leading-relaxed text-white/42 sm:text-[13px]">
+                <p className="po-hero-disclaimer po-hero-disclaimer-tight">
                     No silent document export. No autonomous filing. No hidden background actions outside the product flow. The system can observe, explain, and prepare — but sensitive actions remain visible and controlled.
                 </p>
 
@@ -115,23 +131,23 @@ export function DownloadSection() {
                         const Icon = OS_ICON[target.os]
                         const isDetected = target.os === detected
                         const isPressed = target.os === pressedCard
-                        const statusLabel =
-                            releaseState === 'ready' ? target.artifactName : releaseState === 'loading' ? 'Resolving latest build' : 'Open release channel'
+                        const statusLabel = isLive
+                            ? target.artifactName
+                            : releaseState === 'loading'
+                              ? 'Resolving latest build'
+                              : 'Coming soon'
 
-                        return (
-                            <a
-                                key={target.os}
-                                href={hrefFor(target)}
-                                className={`po-release-card po-glow-border ${isDetected ? 'po-release-card-detected' : ''} ${
-                                    isPressed ? 'po-release-card-pressed' : ''
-                                }`}
-                                onPointerDown={() => setPressedCard(target.os)}
-                                onPointerUp={() => setPressedCard((current) => (current === target.os ? null : current))}
-                                onPointerLeave={() => setPressedCard((current) => (current === target.os ? null : current))}
-                            >
+                        const cardClassName = `po-release-card po-glow-border ${isDetected ? 'po-release-card-detected' : ''} ${
+                            isPressed ? 'po-release-card-pressed' : ''
+                        } ${isLive ? '' : 'po-release-card-soon'}`
+
+                        const cardInner = (
+                            <>
                                 <div className="po-release-card-badge-row">
                                     <span className="po-release-card-badge">{isDetected ? 'Detected' : 'Desktop'}</span>
-                                    <span className={`po-release-card-badge po-release-card-badge-${releaseState}`}>{statusLabel}</span>
+                                    <span className={`po-release-card-badge po-release-card-badge-${isLive ? 'ready' : releaseState}`}>
+                                        {statusLabel}
+                                    </span>
                                 </div>
                                 <div className="po-release-card-icon">
                                     <Icon className="h-7 w-7 text-[var(--po-fg)]" strokeWidth={1.5} />
@@ -139,37 +155,61 @@ export function DownloadSection() {
                                 <div className="po-release-card-body">
                                     <div className="po-release-card-title-row">
                                         <span className="po-release-card-title">{target.label}</span>
-                                        <DownloadIcon className="h-3.5 w-3.5 text-[var(--po-muted)] transition-transform duration-300 group-hover:translate-y-0.5" />
+                                        {isLive ? (
+                                            <DownloadIcon className="h-3.5 w-3.5 text-[var(--po-muted)] transition-transform duration-300 group-hover:translate-y-0.5" />
+                                        ) : null}
                                     </div>
-                                    <div className="po-mono po-release-card-copy">
-                                        {target.sublabel}
+                                    <div className="po-mono po-release-card-copy">{target.sublabel}</div>
+                                    <div className="po-mono po-release-card-artifact">
+                                        {isLive ? target.artifactName : 'Notify me at launch'}
                                     </div>
-                                    <div className="po-mono po-release-card-artifact">{target.artifactName}</div>
                                 </div>
+                            </>
+                        )
+
+                        return isLive ? (
+                            <a
+                                key={target.os}
+                                href={hrefFor(target)}
+                                className={cardClassName}
+                                onPointerDown={() => setPressedCard(target.os)}
+                                onPointerUp={() => setPressedCard((current) => (current === target.os ? null : current))}
+                                onPointerLeave={() => setPressedCard((current) => (current === target.os ? null : current))}
+                            >
+                                {cardInner}
+                            </a>
+                        ) : (
+                            <a
+                                key={target.os}
+                                href={NOTIFY_MAILTO}
+                                className={cardClassName}
+                                onPointerDown={() => setPressedCard(target.os)}
+                                onPointerUp={() => setPressedCard((current) => (current === target.os ? null : current))}
+                                onPointerLeave={() => setPressedCard((current) => (current === target.os ? null : current))}
+                            >
+                                {cardInner}
                             </a>
                         )
                     })}
                 </div>
 
-                {releaseState === 'ready' ? (
+                {isLive ? (
                     <a
                         href={`${RELEASES_URL}/latest`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="po-mono mt-8 inline-flex items-center gap-1.5 text-xs text-[var(--po-muted)] transition-colors hover:text-[var(--po-fg)]"
                     >
-                        All releases & checksums
+                        All releases &amp; checksums
                         <ArrowUpRight className="h-3.5 w-3.5" />
                     </a>
                 ) : (
                     <a
-                        href={`${RELEASES_URL}/latest`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href={NOTIFY_MAILTO}
                         className="po-mono mt-8 inline-flex items-center gap-1.5 text-xs text-[var(--po-muted)] transition-colors hover:text-[var(--po-fg)]"
                     >
-                        View desktop release status
-                        <ArrowUpRight className="h-3.5 w-3.5" />
+                        <Mail className="h-3.5 w-3.5" />
+                        Get notified when downloads open
                     </a>
                 )}
             </div>
