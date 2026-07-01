@@ -1,0 +1,210 @@
+{
+    "nav": {
+        "product": "Producto",
+        "download": "Descargar",
+        "terms": "Términos",
+        "privacy": "Privacidad",
+        "cta": "Descargar app"
+    },
+    "switcher": {
+        "label": "Idioma",
+        "english": "English",
+        "spanish": "Español",
+        "french": "Français"
+    },
+    "hero": {
+        "badge": "Tu OS de Inteligencia Financiera",
+        "headlineTop": "Tu mundo financiero.",
+        "headlineAccent": "Entendido.",
+        "sequence": [
+            "Leyendo los documentos que eliges.",
+            "Entendiendo tus entidades y tus años.",
+            "Recordando lo que importa — en privado.",
+            "Preparando trabajo en el que puedes confiar."
+        ],
+        "sequenceFinal": "PromptTax lee los documentos que eliges, recuerda lo que importa a lo largo de los años y explica cada recomendación con evidencia — todo en tu propia computadora.",
+        "ctaPrimary": "Descargar gratis",
+        "ctaSecondary": "Ver cómo funciona",
+        "disclaimer": "PromptTax funciona por completo en tu computadora. Nunca sincroniza tus documentos en silencio, no presenta declaraciones por su cuenta ni inventa datos financieros. Nada sale de tu escritorio sin tu permiso, y cada conclusión se puede rastrear hasta su fuente."
+    },
+    "marquee": [
+        "Extracción de Schedule K-1",
+        "Sociedades Formulario 1065",
+        "Mapa de relaciones entre entidades",
+        "Seguimiento BOIR / FinCEN",
+        "Descubrimiento de deducción QBI",
+        "Memoria financiera multianual",
+        "Base de costo de cripto",
+        "Anexos del 1040",
+        "Huella digital de documentos",
+        "Conciencia de plazos",
+        "Vigilancia de carpetas locales",
+        "Respuestas con evidencia enlazada"
+    ],
+    "featureOS": {
+        "badge": "El sistema financiero completo",
+        "headingTop": "Todo lo que tu vida",
+        "headingAccent": "financiera necesita, en un solo lugar.",
+        "copy": "De los documentos a los plazos, de las entidades a los K-1, PromptTax cubre cada aspecto de tu mundo financiero — sin enviar nunca tu material original a la nube de otra persona.",
+        "features": [
+            "Bóveda de documentos",
+            "Extracción de K-1",
+            "Mapa de entidades",
+            "Memoria financiera",
+            "Agentes profundos",
+            "Radar de cumplimiento",
+            "Presentación BOIR",
+            "Revisión de contador"
+        ],
+        "stats": [
+            { "value": "8", "label": "Años fiscales en memoria" },
+            { "value": "$0", "label": "Almacenamiento en la nube requerido" },
+            { "value": "100%", "label": "Local y privado" }
+        ]
+    },
+    "watcher": {
+        "badge": "Inteligencia proactiva",
+        "headingTop": "Ya lo",
+        "headingAccent": "sabe.",
+        "copy1": "Nunca tienes que avisarle a PromptTax cuando llega un documento nuevo. Vigila las carpetas que eliges, leyendo, clasificando y actualizando tu memoria financiera en el momento en que algo cambia — todo en tu equipo.",
+        "copy2": "PromptTax observa en silencio el mundo financiero que le indicas, recuerda lo que importa, explica cada recomendación con evidencia y prepara tus impuestos cuando lo necesitas.",
+        "benefits": [
+            {
+                "title": "Siempre atento",
+                "body": "Supervisa en tiempo real la carpeta de bóveda que eliges y detecta automáticamente altas, cambios y eliminaciones."
+            },
+            {
+                "title": "Clasificación instantánea",
+                "body": "Cada documento nuevo se lee, se clasifica y se vincula a sus entidades antes de que abras la app."
+            },
+            {
+                "title": "Cero trabajo manual",
+                "body": "Coloca un archivo en una carpeta. PromptTax hace el resto — sin flujos de importación ni rituales de carga a la nube."
+            }
+        ]
+    },
+    "actions": {
+        "badge": "De respuestas a acciones",
+        "headingTop": "No solo respuestas.",
+        "headingAccent": "Lo prepara.",
+        "copy": "PromptTax no se detiene en los hallazgos. Pídele generar el Schedule K-1 de cada socio, producir un paquete listo para el contador o redactar tu presentación BOIR — y míralo preparar el trabajo línea por línea, con evidencia.",
+        "tabs": {
+            "k1": {
+                "label": "Generar K-1",
+                "description": "Pídele a PromptTax generar los Schedule K-1 para los 7 socios de ABC Holdings LLC. Lee la declaración de la sociedad, asigna ingresos, deducciones y créditos según el porcentaje de participación, y produce un K-1 completo y listo para el IRS por cada socio."
+            },
+            "export": {
+                "label": "Exportar",
+                "description": "Exporta el K-1 de cada socio como PDF firmado, XML del IRS o JSON estructurado, listo para enviar a cada socio o adjuntar a la declaración de la sociedad. Los archivos se nombran, fechan y organizan automáticamente."
+            },
+            "cpa": {
+                "label": "Paquete de contador",
+                "description": "Compila un paquete de evidencia completo y listo para el contador: K-1, documentos fuente, mapa de entidades, citas de la cadena de confianza y un memorando resumen. Todo lo que tu contador necesita, sin nada de más."
+            }
+        },
+        "benefits": [
+            "Respeta las asignaciones del acuerdo de sociedad",
+            "Aplica el tratamiento QBI §199A por socio",
+            "Vincula cada resultado a los documentos fuente",
+            "Revisable por el contador con auditoría completa",
+            "Exporta como PDF, XML o JSON estructurado"
+        ],
+        "running": "en curso",
+        "done": "listo"
+    },
+    "trust": {
+        "badge": "Confianza por diseño",
+        "heading": "Diseñado para ganarse tu confianza.",
+        "copy": "Cada recomendación se respalda con tus propios documentos, se explica con claridad y siempre permanece bajo tu control.",
+        "cards": [
+            {
+                "title": "Nada sale de tu computadora sin permiso",
+                "body": "PromptTax trabaja desde tu propia Bóveda Financiera y solo accede a las carpetas que eliges. Tus datos permanecen en tu escritorio."
+            },
+            {
+                "title": "Tú mantienes el control",
+                "body": "PromptTax prepara, explica y recomienda. Tú decides qué se envía, se presenta, se comparte o se aprueba."
+            },
+            {
+                "title": "Cada recomendación se explica",
+                "body": "Haz clic en ¿Por qué? para ver el documento, el cálculo, la guía del IRS y el razonamiento detrás de cada sugerencia."
+            }
+        ]
+    },
+    "testimonials": {
+        "eyebrow": "Primeros usuarios",
+        "heading": "Hecho para quienes llevan vidas financieras complejas.",
+        "items": [
+            {
+                "quote": "Manejo una docena de entidades. La temporada de impuestos solía empezar con tres semanas ordenando PDFs. Ahora mi bóveda está organizada antes de terminar mi café.",
+                "name": "Usuario piloto",
+                "role": "Operador multi-entidad"
+            },
+            {
+                "quote": "Cruzó todos los K-1 y me mostró exactamente por qué mis ingresos cambiaron de un año a otro — con la página fuente de cada cifra.",
+                "name": "Usuario piloto",
+                "role": "Inversor LP de fondo"
+            },
+            {
+                "quote": "Que fuera local era innegociable para mí. Mis datos financieros nunca salen de mi equipo, y las respuestas siguen citando su evidencia.",
+                "name": "Usuario piloto",
+                "role": "Fundador enfocado en privacidad"
+            },
+            {
+                "quote": "Lo que más me da confianza es que avisa cuando no sabe. Sin deducciones inventadas, sin totales adivinados.",
+                "name": "Usuario piloto",
+                "role": "Inversor inmobiliario"
+            }
+        ]
+    },
+    "cta": {
+        "eyebrow": "Empieza hoy",
+        "heading": "Toma el control de tu vida financiera.",
+        "ctaPrimary": "Descargar gratis",
+        "ctaSecondary": "Ver cómo funciona"
+    },
+    "download": {
+        "eyebrow": "Piloto de escritorio",
+        "heading": "Ejecuta PromptTax localmente, con inteligencia que controlas.",
+        "copy": "La experiencia de escritorio se está desplegando con cuidado. Tu bóveda permanece local, la actividad del agente permanece acotada y la sincronización en la nube sigue siendo opcional.",
+        "disclaimer": "Sin exportación silenciosa de documentos. Sin presentación autónoma. Sin acciones ocultas en segundo plano fuera del flujo del producto. PromptTax puede observar, explicar y preparar — pero las acciones sensibles permanecen visibles y controladas.",
+        "statusLoading": "Comprobando la última versión de producción...",
+        "statusLive": "Últimos artefactos firmados obtenidos del canal de versiones de producción.",
+        "statusPilot": "Las versiones de escritorio están en piloto privado. Añade tu correo y te avisaremos en cuanto se abran las descargas públicas.",
+        "badgeDetected": "Detectado",
+        "badgeDesktop": "Escritorio",
+        "resolving": "Resolviendo la última versión",
+        "comingSoon": "Muy pronto",
+        "notifyArtifact": "Avísame en el lanzamiento",
+        "allReleases": "Todas las versiones y sumas de verificación",
+        "getNotified": "Recibe aviso cuando abran las descargas"
+    },
+    "footer": {
+        "kicker": "Inteligencia Financiera Personal",
+        "manifestoTop": "Tu mundo financiero.",
+        "manifestoAccent": "Entendido.",
+        "values": [
+            "Privacidad primero",
+            "Funciona localmente",
+            "Motor fiscal determinista",
+            "Respaldado por evidencia"
+        ],
+        "nav": {
+            "download": "Descargar",
+            "pricing": "Precios",
+            "documentation": "Documentación",
+            "support": "Soporte",
+            "privacy": "Privacidad",
+            "terms": "Términos"
+        },
+        "closing": "© 2026 PromptTax",
+        "note1": "Hecho para quienes llevan vidas financieras complejas.",
+        "note2": "PromptTax no es un contador ni un despacho de abogados. No brinda asesoría legal, fiscal ni contable."
+    },
+    "pricing": {
+        "badge": "Precios",
+        "title": "Empieza gratis en escritorio.",
+        "description": "PromptTax es primero para escritorio y gratis para empezar. Descarga la app, conecta los documentos que elijas y toma el control de tu vida financiera — en privado, en tu propia computadora. Los planes en la nube llegarán pronto.",
+        "cta": "Descargar app"
+    }
+}

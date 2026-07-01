@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 
 import { PromptOSFooter } from '@/components/marketing/promptos/PromptOSFooter'
-import { Reveal } from '@/components/marketing/promptos/Reveal'
+import { PricingHero } from '@/components/marketing/promptos/PricingHero'
 
 export const metadata: Metadata = {
   title: 'Pricing',
@@ -18,19 +17,7 @@ export default function PricingPage() {
         <div className="po-spotlight" aria-hidden />
         <div className="po-grid h-[520px]" aria-hidden />
         <div className="relative mx-auto flex max-w-3xl flex-col items-center text-center">
-          <Reveal>
-            <div className="po-section-badge"><span className="po-section-badge-text">Pricing</span></div>
-            <h1 className="po-legal-title">Start free on desktop.</h1>
-            <p className="po-legal-description">
-              Prompt.tax is desktop-first and free to get started. Download the app, connect your
-              documents, and take control of your financial life. Hosted cloud plans are coming soon.
-            </p>
-            <div className="mt-8 flex justify-center">
-              <Link href="/#download" className="po-legal-download-link">
-                Download desktop
-              </Link>
-            </div>
-          </Reveal>
+          <PricingHero />
         </div>
       </header>
 

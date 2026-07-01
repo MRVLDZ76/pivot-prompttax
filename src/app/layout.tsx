@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 
 import './globals.css'
 import './promptos.css'
+import { I18nProvider } from '@/i18n/I18nProvider'
 
 const siteUrl = 'https://prompt.tax'
 
@@ -77,7 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
-        {children}
+        <I18nProvider>{children}</I18nProvider>
       </body>
     </html>
   )

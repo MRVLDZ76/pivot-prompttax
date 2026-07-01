@@ -3546,20 +3546,31 @@
     }
 
     .promptos .po-feature-slider-wrap {
-        padding: 44px 0 56px;
+        overflow: visible;
+        padding: 40px 0 52px;
     }
 
     .promptos .po-feature-slider {
-        justify-content: flex-start;
-        padding: 0 22px;
+        flex-wrap: wrap;
+        width: auto;
+        max-width: 100%;
+        justify-content: center;
+        gap: 22px 6px;
+        padding: 0 16px;
+    }
+
+    .promptos .po-feature-slider-fragment {
+        justify-content: center;
     }
 
     .promptos .po-feature-icon-wrap {
-        width: 82px;
+        width: 74px;
     }
 
+    /* Connector lines only make sense in a single row; hide them once the
+       icons wrap so nothing overflows the viewport on small screens. */
     .promptos .po-feature-sep {
-        width: 42px;
+        display: none;
     }
 
     .promptos .po-stat-row {
@@ -3681,3 +3692,146 @@
         display: none;
     }
 }
+
+/* ---------------------------------------------------------------------------
+   Language switcher
+--------------------------------------------------------------------------- */
+.promptos .po-lang {
+    position: relative;
+    display: inline-flex;
+}
+
+.po-lang-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 9px 0 8px;
+    border-radius: 8px;
+    border: 1px solid var(--po-border-med, rgba(255, 255, 255, 0.14));
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--po-muted, rgba(255, 255, 255, 0.55));
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.po-lang-trigger:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.po-lang-globe {
+    width: 14px;
+    height: 14px;
+}
+
+.po-lang-current {
+    font-variant-numeric: tabular-nums;
+}
+
+.po-lang-caret {
+    transition: transform 0.2s ease;
+    opacity: 0.7;
+}
+
+.po-lang-caret-open {
+    transform: rotate(180deg);
+}
+
+.po-lang-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 60;
+    min-width: 168px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    border-radius: 12px;
+    border: 1px solid var(--po-border-med, rgba(255, 255, 255, 0.14));
+    background: rgba(10, 10, 12, 0.96);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(18px);
+    animation: po-lang-in 0.16s ease;
+}
+
+@keyframes po-lang-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.po-lang-option {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--po-muted, rgba(255, 255, 255, 0.6));
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+    transition: color 0.18s ease, background 0.18s ease;
+}
+
+.po-lang-option:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.po-lang-option-active {
+    color: #fff;
+}
+
+.po-lang-option-short {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 20px;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.po-lang-option-label {
+    flex: 1;
+}
+
+.po-lang-option-check {
+    width: 14px;
+    height: 14px;
+    color: var(--po-accent-2, #7aa2ff);
+}
+
+/* Footer variant: opens upward, centered under the footer nav. */
+.promptos .po-footer-lang {
+    display: flex;
+    justify-content: center;
+    margin: 22px 0 4px;
+}
+
+.promptos .po-footer-lang .po-lang-menu {
+    top: auto;
+    bottom: calc(100% + 8px);
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: po-lang-in-up 0.16s ease;
+}
+
+@keyframes po-lang-in-up {
+    from { opacity: 0; transform: translate(-50%, 6px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+

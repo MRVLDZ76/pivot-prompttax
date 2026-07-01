@@ -9,7 +9,9 @@ import { Reveal } from './Reveal'
 import { HeroMock } from './HeroMock'
 import { DownloadSection } from './DownloadSection'
 import { PromptOSFooter } from './PromptOSFooter'
-import { CAPABILITY_PILLS, PILLARS, TESTIMONIALS } from './data'
+import { LanguageSwitcher } from './LanguageSwitcher'
+import { PILLARS } from './data'
+import { useI18n } from '@/i18n/I18nProvider'
 
 type HeroSequenceStage = 0 | 1 | 2 | 3 | 4
 
@@ -165,6 +167,7 @@ interface PromptOSLandingProps {
 }
 
 export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
+    const { t, tx } = useI18n()
     const [bootState, setBootState] = useState<'booting' | 'revealing' | 'done'>('booting')
     const [heroSequenceStage, setHeroSequenceStage] = useState<HeroSequenceStage>(0)
 
@@ -240,10 +243,10 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                     </Link>
                     <div className="hidden gap-6 md:flex">
                         {[
-                            { label: 'Product', href: '#product' },
-                            { label: 'Download', href: '#download' },
-                            { label: 'Terms', href: '/terms' },
-                            { label: 'Privacy', href: '/privacy' },
+                            { label: t('nav.product'), href: '#product' },
+                            { label: t('nav.download'), href: '#download' },
+                            { label: t('nav.terms'), href: '/terms' },
+                            { label: t('nav.privacy'), href: '/privacy' },
                         ].map((item) => (
                             <a
                                 key={item.label}
@@ -255,12 +258,15 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                         ))}
                     </div>
                 </div>
-                <a
-                    href="#download"
-                    className="flex h-8 items-center gap-1.5 rounded-md bg-white px-3.5 text-[13px] font-medium text-black transition-colors hover:bg-white/88"
-                >
-                    Download desktop <Download className="h-3.5 w-3.5" />
-                </a>
+                <div className="flex items-center gap-2.5">
+                    <LanguageSwitcher />
+                    <a
+                        href="#download"
+                        className="flex h-8 items-center gap-1.5 rounded-md bg-white px-3.5 text-[13px] font-medium text-black transition-colors hover:bg-white/88"
+                    >
+                        {t('nav.cta')} <Download className="h-3.5 w-3.5" />
+                    </a>
+                </div>
             </nav>
 
             {/* HERO */}
@@ -275,15 +281,15 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                                 <DesktopBrandMark size={99} />
                             </div>
                             <div className="po-mono mt-5 inline-flex items-center gap-2 text-xs tracking-[0.04em] text-[var(--po-muted)]">
-                                <span className="text-white/20">—</span> Introducing Prompt.tax OS
+                                <span className="text-white/20">—</span> {t('hero.badge')}
                             </div>
                         </div>
                     </Reveal>
                     <Reveal delay={0.05}>
                         <h1 className="mx-auto max-w-[900px] text-balance text-5xl font-bold leading-[0.98] tracking-[-0.05em] sm:text-6xl md:text-[78px]">
-                            Your financial world.
+                            {t('hero.headlineTop')}
                             <br />
-                            <span className="po-headline-soft">Understood.</span>
+                            <span className="po-headline-soft">{t('hero.headlineAccent')}</span>
                         </h1>
                     </Reveal>
                     <Reveal delay={0.1}>
@@ -295,19 +301,19 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                                 href="#download"
                                 className="flex h-10 items-center gap-1.5 rounded-lg bg-white px-5 text-sm font-medium text-black transition-colors hover:bg-white/88"
                             >
-                                Download desktop <ArrowRight className="h-4 w-4" />
+                                {t('hero.ctaPrimary')} <ArrowRight className="h-4 w-4" />
                             </a>
                             <a
                                 href="#download"
                                 className="flex h-10 items-center rounded-lg border border-[var(--po-border-med)] px-5 text-sm text-[var(--po-muted)] transition-colors hover:border-white/25 hover:text-white"
                             >
-                                Explore desktop pilot
+                                {t('hero.ctaSecondary')}
                             </a>
                         </div>
                     </Reveal>
                     <Reveal delay={0.21}>
                         <p className="po-hero-disclaimer">
-                            PromptTax does not silently sync documents, autonomously file, or invent financial facts. Agent activity stays inside explicit product boundaries, and every meaningful conclusion stays traceable to evidence.
+                            {t('hero.disclaimer')}
                         </p>
                     </Reveal>
                 </div>
@@ -321,7 +327,7 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
             {/* CAPABILITY MARQUEE */}
             <div className="po-marquee-wrap overflow-hidden border-y border-[var(--po-border)] py-4">
                 <div className="po-marquee">
-                    {[...CAPABILITY_PILLS, ...CAPABILITY_PILLS].map((pill, i) => (
+                    {[...tx<string[]>('marquee'), ...tx<string[]>('marquee')].map((pill, i) => (
                         <div
                             key={`${pill}-${i}`}
                             className="flex h-7 shrink-0 items-center gap-2.5 whitespace-nowrap border-r border-[var(--po-border)] px-8 text-[13px] text-[var(--po-muted)]"
@@ -352,21 +358,22 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                 <div className="mx-auto max-w-6xl">
                     <Reveal className="po-trust-intro mb-14 text-center">
                         <div className="po-section-badge">
-                            <span className="po-section-badge-text">Trust by design</span>
+                            <span className="po-section-badge-text">{t('trust.badge')}</span>
                         </div>
                         <h2 className="mx-auto max-w-3xl text-balance text-4xl font-bold tracking-[-0.04em] sm:text-5xl">
-                            Built to earn your trust.
+                            {t('trust.heading')}
                         </h2>
                         <p className="po-trust-copy mx-auto mt-5 max-w-3xl text-balance text-[15px] leading-relaxed text-[var(--po-muted)] sm:text-[17px]">
-                            Every recommendation is backed by your documents, explained clearly, and always stays under your control.
+                            {t('trust.copy')}
                         </p>
                     </Reveal>
                     <div className="grid gap-5 md:grid-cols-3">
                         {PILLARS.map((p, i) => {
                             const Icon = p.icon
+                            const card = tx<{ title: string; body: string }[]>('trust.cards')[i] ?? { title: '', body: '' }
                             return (
                                 <Reveal
-                                    key={p.title}
+                                    key={i}
                                     delay={i * 0.06}
                                     className="po-trust-card po-glow-border"
                                 >
@@ -378,8 +385,8 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                                                 <Icon className="po-trust-icon" strokeWidth={1.5} />
                                             </div>
                                         </div>
-                                        <h4 className="po-trust-title">{p.title}</h4>
-                                        <p className="po-trust-body">{p.body}</p>
+                                        <h4 className="po-trust-title">{card.title}</h4>
+                                        <p className="po-trust-body">{card.body}</p>
                                     </div>
                                 </Reveal>
                             )
@@ -395,24 +402,24 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
             <section className="border-t border-[var(--po-border)]">
                 <Reveal className="border-b border-[var(--po-border)] px-7 py-14 sm:px-10">
                     <div className="po-mono mb-3 text-xs uppercase tracking-[0.06em] text-[var(--po-muted)]">
-                        Early users
+                        {t('testimonials.eyebrow')}
                     </div>
                     <div className="max-w-xl text-balance text-[28px] font-bold leading-[1.1] tracking-[-0.03em] sm:text-[38px]">
-                        Built for people who run complex financial lives.
+                        {t('testimonials.heading')}
                     </div>
                 </Reveal>
                 <div className="grid sm:grid-cols-2">
-                    {TESTIMONIALS.map((t, i) => (
+                    {tx<{ quote: string; name: string; role: string }[]>('testimonials.items').map((t2, i, arr) => (
                         <Reveal
-                            key={t.quote}
+                            key={i}
                             delay={(i % 2) * 0.06}
                             className={`px-7 py-10 sm:px-10 ${
                                 i % 2 === 0 ? 'sm:border-r' : ''
-                            } ${i < TESTIMONIALS.length - 2 ? 'border-b' : ''} border-[var(--po-border)]`}
+                            } ${i < arr.length - 2 ? 'border-b' : ''} border-[var(--po-border)]`}
                         >
-                            <p className="text-[15px] leading-relaxed text-white/80">&ldquo;{t.quote}&rdquo;</p>
-                            <div className="mt-6 text-[13px] font-medium">{t.name}</div>
-                            <div className="mt-0.5 text-[12px] text-[var(--po-muted)]">{t.role}</div>
+                            <p className="text-[15px] leading-relaxed text-white/80">&ldquo;{t2.quote}&rdquo;</p>
+                            <div className="mt-6 text-[13px] font-medium">{t2.name}</div>
+                            <div className="mt-0.5 text-[12px] text-[var(--po-muted)]">{t2.role}</div>
                         </Reveal>
                     ))}
                 </div>
@@ -427,23 +434,23 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                 <div className="po-glow left-1/2 top-0 h-[300px] w-[700px] -translate-x-1/2" aria-hidden />
                 <Reveal className="relative">
                     <div className="po-mono mb-5 text-xs uppercase tracking-[0.06em] text-[var(--po-muted)]">
-                        Start today
+                        {t('cta.eyebrow')}
                     </div>
                     <h2 className="mx-auto max-w-2xl text-balance text-4xl font-bold leading-[1.06] tracking-[-0.04em] sm:text-5xl md:text-6xl">
-                        Take control of your financial life.
+                        {t('cta.heading')}
                     </h2>
                     <div className="mt-9 flex items-center justify-center gap-2.5">
                         <a
                             href="#download"
                             className="flex h-11 items-center gap-1.5 rounded-lg bg-white px-6 text-sm font-medium text-black transition-colors hover:bg-white/88"
                         >
-                            Download desktop <ArrowRight className="h-4 w-4" />
+                            {t('cta.ctaPrimary')} <ArrowRight className="h-4 w-4" />
                         </a>
                         <a
                             href="#download"
                             className="flex h-11 items-center rounded-lg border border-[var(--po-border-med)] px-6 text-sm text-[var(--po-muted)] transition-colors hover:border-white/25 hover:text-white"
                         >
-                            Explore desktop pilot
+                            {t('cta.ctaSecondary')}
                         </a>
                     </div>
                 </Reveal>
@@ -480,12 +487,14 @@ function BackToTop() {
 }
 
 function UnderstandingSequence({ stage }: { stage: HeroSequenceStage }) {
+    const { t, tx } = useI18n()
+    const messages = tx<string[]>('hero.sequence')
     return (
         <div className="po-understanding-wrap mx-auto mt-6 max-w-[760px]" aria-live="polite">
             <div className="po-understanding-stage">
-                {HERO_SEQUENCE_MESSAGES.map((message, index) => (
+                {messages.map((message, index) => (
                     <div
-                        key={message}
+                        key={index}
                         className={`po-understanding-panel ${stage === index ? 'po-understanding-panel-active' : ''}`}
                         aria-hidden={stage !== index}
                     >
@@ -498,7 +507,7 @@ function UnderstandingSequence({ stage }: { stage: HeroSequenceStage }) {
                     aria-hidden={stage !== 4}
                 >
                     <p className="po-understanding-final-copy">
-                        PromptTax reads your documents, remembers what matters across years, and explains every recommendation with evidence.
+                        {t('hero.sequenceFinal')}
                     </p>
                 </div>
             </div>
@@ -538,17 +547,20 @@ function BootSequence({ state }: { state: 'booting' | 'revealing' | 'done' }) {
 }
 
 function FeatureSliderSection() {
+    const { t, tx } = useI18n()
+    const labels = tx<string[]>('featureOS.features')
+    const stats = tx<{ value: string; label: string }[]>('featureOS.stats')
     return (
         <section id="product" className="po-mid-section po-feature-slider-section border-b border-[var(--po-border)]">
             <Reveal className="mx-auto max-w-5xl px-6 pb-0 pt-24 text-center sm:px-10">
-                <div className="po-section-badge"><span className="po-section-badge-text">The complete financial OS</span></div>
+                <div className="po-section-badge"><span className="po-section-badge-text">{t('featureOS.badge')}</span></div>
                 <h2 className="po-mid-heading mx-auto max-w-4xl">
-                    Everything your financial
+                    {t('featureOS.headingTop')}
                     <br />
-                    <span className="po-mid-heading-soft">life needs, in one place.</span>
+                    <span className="po-mid-heading-soft">{t('featureOS.headingAccent')}</span>
                 </h2>
                 <p className="po-mid-copy mx-auto text-center">
-                    From documents to deadlines, entities to K-1s, Prompt.tax covers every surface of your financial world without pushing your source material into someone else&apos;s cloud.
+                    {t('featureOS.copy')}
                 </p>
             </Reveal>
 
@@ -572,7 +584,7 @@ function FeatureSliderSection() {
                                             {feature.svg}
                                         </svg>
                                     </div>
-                                    <span className="po-feature-icon-label">{feature.label}</span>
+                                    <span className="po-feature-icon-label">{labels[index] ?? feature.label}</span>
                                 </div>
                             </div>
                             {index < FINANCIAL_OS_FEATURES.length - 1 ? (
@@ -585,16 +597,16 @@ function FeatureSliderSection() {
 
             <div className="po-stat-row">
                 <div className="po-stat-cell">
-                    <div className="po-stat-value">8</div>
-                    <div className="po-stat-label">Tax years in memory</div>
+                    <div className="po-stat-value">{stats[0]?.value}</div>
+                    <div className="po-stat-label">{stats[0]?.label}</div>
                 </div>
                 <div className="po-stat-cell">
-                    <div className="po-stat-value">$0</div>
-                    <div className="po-stat-label">Cloud storage required</div>
+                    <div className="po-stat-value">{stats[1]?.value}</div>
+                    <div className="po-stat-label">{stats[1]?.label}</div>
                 </div>
                 <div className="po-stat-cell po-stat-cell-last">
-                    <div className="po-stat-value">100%</div>
-                    <div className="po-stat-label">Local and encrypted</div>
+                    <div className="po-stat-value">{stats[2]?.value}</div>
+                    <div className="po-stat-label">{stats[2]?.label}</div>
                 </div>
             </div>
         </section>
@@ -602,6 +614,8 @@ function FeatureSliderSection() {
 }
 
 function WatcherSection() {
+    const { t, tx } = useI18n()
+    const benefits = tx<{ title: string; body: string }[]>('watcher.benefits')
     return (
         <section className="po-mid-section border-b border-[var(--po-border)] px-6 py-24 sm:px-10">
             <div className="mx-auto grid max-w-6xl items-center gap-14 xl:grid-cols-[1.1fr_0.9fr] xl:gap-20">
@@ -664,34 +678,34 @@ function WatcherSection() {
                 </Reveal>
 
                 <Reveal className="order-1 xl:order-2" delay={0.08}>
-                    <div className="po-section-badge po-section-badge-left"><span className="po-section-badge-text">Proactive intelligence</span></div>
+                    <div className="po-section-badge po-section-badge-left"><span className="po-section-badge-text">{t('watcher.badge')}</span></div>
                     <h2 className="po-mid-heading po-mid-heading-left">
-                        It already
+                        {t('watcher.headingTop')}
                         <br />
-                        knows.
+                        {t('watcher.headingAccent')}
                     </h2>
                     <p className="po-mid-copy po-mid-copy-left po-mid-copy-spaced">
-                        You do not have to tell Prompt.tax when a new document arrives. It watches your folders continuously, reading, classifying, and updating your financial memory the moment anything changes.
+                        {t('watcher.copy1')}
                     </p>
                     <p className="po-mid-copy po-mid-copy-left">
-                       PromptTax quietly watches your financial world, remembers what matters, explains every recommendation with evidence, and prepares your taxes when needed.
+                       {t('watcher.copy2')}
                     </p>
 
                     <div className="po-benefit-list">
                         <BenefitItem
                             icon={<Eye className="h-3.5 w-3.5 text-[var(--po-accent-2)]" strokeWidth={1.6} />}
-                            title="Always watching"
-                            body="Monitors your vault folder in real time and detects additions, changes, and deletions automatically."
+                            title={benefits[0]?.title ?? ''}
+                            body={benefits[0]?.body ?? ''}
                         />
                         <BenefitItem
                             icon={<Activity className="h-3.5 w-3.5 text-[var(--po-accent-2)]" strokeWidth={1.6} />}
-                            title="Instant classification"
-                            body="Every new document is read, typed, and linked to its entities before you open the app."
+                            title={benefits[1]?.title ?? ''}
+                            body={benefits[1]?.body ?? ''}
                         />
                         <BenefitItem
                             icon={<FolderOpen className="h-3.5 w-3.5 text-[var(--po-accent-2)]" strokeWidth={1.6} />}
-                            title="Zero manual work"
-                            body="Drop a file in a folder. Prompt.tax does the rest, without import flows or cloud upload rituals."
+                            title={benefits[2]?.title ?? ''}
+                            body={benefits[2]?.body ?? ''}
                         />
                     </div>
                 </Reveal>
@@ -701,6 +715,7 @@ function WatcherSection() {
 }
 
 function ActionsSection() {
+    const { t, tx } = useI18n()
     const [activeTab, setActiveTab] = useState<keyof typeof ACTION_TABS>('k1')
     const activeEntry = ACTION_TABS[activeTab]
 
@@ -708,14 +723,14 @@ function ActionsSection() {
         <section className="po-mid-section border-b border-[var(--po-border)] px-6 py-24 sm:px-10">
             <div className="mx-auto max-w-6xl">
                 <Reveal className="max-w-3xl">
-                    <div className="po-section-badge po-section-badge-left"><span className="po-section-badge-text">From answers to actions</span></div>
+                    <div className="po-section-badge po-section-badge-left"><span className="po-section-badge-text">{t('actions.badge')}</span></div>
                     <h2 className="po-mid-heading po-mid-heading-left">
-                        Not just answers.
+                        {t('actions.headingTop')}
                         <br />
-                        <span className="po-mid-heading-soft">It acts.</span>
+                        <span className="po-mid-heading-soft">{t('actions.headingAccent')}</span>
                     </h2>
                     <p className="po-mid-copy po-mid-copy-left">
-                        Prompt.tax does not stop at insights. Ask it to generate every partner&apos;s Schedule K-1, produce a CPA-ready package, or draft your BOIR filing, then watch it execute line by line.
+                        {t('actions.copy')}
                     </p>
                 </Reveal>
 
@@ -731,7 +746,7 @@ function ActionsSection() {
                                     className={`po-action-tab ${activeTab === key ? 'po-action-tab-on' : ''}`}
                                     onClick={() => setActiveTab(key)}
                                 >
-                                    {ACTION_TABS[key].label}
+                                    {t(`actions.tabs.${key}.label`)}
                                 </button>
                             ))}
                         </div>
@@ -744,18 +759,12 @@ function ActionsSection() {
                                 exit={{ opacity: 0, y: -8 }}
                                 transition={{ duration: 0.26, ease: 'easeOut' }}
                             >
-                                <p className="po-mid-copy po-mid-copy-left mt-8">{activeEntry.description}</p>
+                                <p className="po-mid-copy po-mid-copy-left mt-8">{t(`actions.tabs.${activeTab}.description`)}</p>
                             </motion.div>
                         </AnimatePresence>
 
                         <div className="po-action-benefits">
-                            {[
-                                'Respects partnership agreement allocations',
-                                'Applies §199A QBI treatment per partner',
-                                'Links each output to source documents',
-                                'CPA-reviewable with full audit trail',
-                                'Export as PDF, XML, or structured JSON',
-                            ].map((item) => (
+                            {tx<string[]>('actions.benefits').map((item) => (
                                 <div key={item} className="po-action-benefit-row">
                                     <div className="po-action-benefit-dot" aria-hidden />
                                     {item}

@@ -1,6 +1,10 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
-import { FOOTER_NAV, FOOTER_VALUES } from './data'
+
+import { useI18n } from '@/i18n/I18nProvider'
+import { LanguageSwitcher } from './LanguageSwitcher'
 
 function DesktopBrandMark({ size = 18 }: { size?: number }) {
     return (
@@ -11,6 +15,17 @@ function DesktopBrandMark({ size = 18 }: { size?: number }) {
 }
 
 export function PromptOSFooter({ downloadHref = '/#download' }: { downloadHref?: string }) {
+    const { t, tx } = useI18n()
+    const values = tx<string[]>('footer.values')
+    const nav: { label: string; href: string; external?: boolean }[] = [
+        { label: t('footer.nav.download'), href: '/download' },
+        { label: t('footer.nav.pricing'), href: '/pricing' },
+        { label: t('footer.nav.documentation'), href: '/#product' },
+        { label: t('footer.nav.support'), href: 'mailto:hi@prompt.tax', external: true },
+        { label: t('footer.nav.privacy'), href: '/privacy' },
+        { label: t('footer.nav.terms'), href: '/terms' },
+    ]
+
     return (
         <footer className="po-footer-shell border-t border-[var(--po-border)] px-7 py-20 text-[var(--po-muted)]">
             <div className="po-footer-depth" aria-hidden>
@@ -30,11 +45,11 @@ export function PromptOSFooter({ downloadHref = '/#download' }: { downloadHref?:
                     <span className="po-brand-wordmark text-[18px]">PromptTax</span>
                 </Link>
 
-                <div className="po-footer-kicker">Personal Financial Intelligence</div>
-                <div className="po-footer-manifesto">Your financial world.<br />Understood.</div>
+                <div className="po-footer-kicker">{t('footer.kicker')}</div>
+                <div className="po-footer-manifesto">{t('footer.manifestoTop')}<br />{t('footer.manifestoAccent')}</div>
 
                 <div className="po-footer-values">
-                    {FOOTER_VALUES.map((value) => (
+                    {values.map((value) => (
                         <div key={value} className="po-footer-value">
                             {value}
                         </div>
@@ -42,7 +57,7 @@ export function PromptOSFooter({ downloadHref = '/#download' }: { downloadHref?:
                 </div>
 
                 <nav className="po-footer-nav" aria-label="Footer">
-                    {FOOTER_NAV.map((item) => {
+                    {nav.map((item) => {
                         if (item.external) {
                             return (
                                 <a key={item.label} href={item.href} className="po-footer-link" target="_blank" rel="noreferrer">
@@ -59,9 +74,13 @@ export function PromptOSFooter({ downloadHref = '/#download' }: { downloadHref?:
                     })}
                 </nav>
 
-                <div className="po-footer-closing">© 2026 PromptTax</div>
-                <div className="po-footer-note">Built for people who run complex financial lives.</div>
-                <div className="po-footer-note">PromptTax is not a CPA or law firm. It does not provide legal, tax, or accounting advice.</div>
+                <div className="po-footer-lang">
+                    <LanguageSwitcher variant="compact" />
+                </div>
+
+                <div className="po-footer-closing">{t('footer.closing')}</div>
+                <div className="po-footer-note">{t('footer.note1')}</div>
+                <div className="po-footer-note">{t('footer.note2')}</div>
                 <div className="po-footer-note">Contact: hi@prompt.tax<br />RED PILL SOFTWARE, LLC<br />Address: 7901 4TH ST N, STE 300, ST. PETERSBURG, FL 33702 - USA.</div>
             </div>
         </footer>

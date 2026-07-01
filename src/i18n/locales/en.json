@@ -1,0 +1,210 @@
+{
+    "nav": {
+        "product": "Product",
+        "download": "Download",
+        "terms": "Terms",
+        "privacy": "Privacy",
+        "cta": "Download desktop"
+    },
+    "switcher": {
+        "label": "Language",
+        "english": "English",
+        "spanish": "Español",
+        "french": "Français"
+    },
+    "hero": {
+        "badge": "Your Financial Intelligence OS",
+        "headlineTop": "Your financial world.",
+        "headlineAccent": "Understood.",
+        "sequence": [
+            "Reading the documents you choose.",
+            "Understanding your entities and years.",
+            "Remembering what matters — privately.",
+            "Preparing work you can actually trust."
+        ],
+        "sequenceFinal": "PromptTax reads the documents you choose, remembers what matters across years, and explains every recommendation with evidence — all on your own computer.",
+        "ctaPrimary": "Download free",
+        "ctaSecondary": "See how it works",
+        "disclaimer": "PromptTax runs entirely on your computer. It never silently syncs your documents, files on its own, or invents financial facts. Nothing leaves your desktop without your permission, and every conclusion stays traceable to its source."
+    },
+    "marquee": [
+        "Schedule K-1 extraction",
+        "Form 1065 partnerships",
+        "Entity relationship mapping",
+        "BOIR / FinCEN tracking",
+        "QBI deduction discovery",
+        "Multi-year financial memory",
+        "Crypto cost basis",
+        "1040 schedules",
+        "Document fingerprinting",
+        "Deadline awareness",
+        "Local folder watching",
+        "Evidence-linked answers"
+    ],
+    "featureOS": {
+        "badge": "The complete financial OS",
+        "headingTop": "Everything your financial",
+        "headingAccent": "life needs, in one place.",
+        "copy": "From documents to deadlines, entities to K-1s, PromptTax covers every surface of your financial world — without ever pushing your source material into someone else's cloud.",
+        "features": [
+            "Document vault",
+            "K-1 extraction",
+            "Entity mapping",
+            "Financial memory",
+            "Deep agents",
+            "Compliance radar",
+            "BOIR filing",
+            "CPA review"
+        ],
+        "stats": [
+            { "value": "8", "label": "Tax years in memory" },
+            { "value": "$0", "label": "Cloud storage required" },
+            { "value": "100%", "label": "Local and private" }
+        ]
+    },
+    "watcher": {
+        "badge": "Proactive intelligence",
+        "headingTop": "It already",
+        "headingAccent": "knows.",
+        "copy1": "You never have to tell PromptTax when a new document arrives. It watches the folders you choose, reading, classifying, and updating your financial memory the moment anything changes — all on your machine.",
+        "copy2": "PromptTax quietly observes the financial world you point it to, remembers what matters, explains every recommendation with evidence, and prepares your taxes when you need it.",
+        "benefits": [
+            {
+                "title": "Always watching",
+                "body": "Monitors the vault folder you choose in real time and detects additions, changes, and deletions automatically."
+            },
+            {
+                "title": "Instant classification",
+                "body": "Every new document is read, typed, and linked to its entities before you even open the app."
+            },
+            {
+                "title": "Zero manual work",
+                "body": "Drop a file in a folder. PromptTax does the rest — no import flows, no cloud upload rituals."
+            }
+        ]
+    },
+    "actions": {
+        "badge": "From answers to actions",
+        "headingTop": "Not just answers.",
+        "headingAccent": "It prepares.",
+        "copy": "PromptTax does not stop at insights. Ask it to generate every partner's Schedule K-1, produce a CPA-ready package, or draft your BOIR filing — then watch it prepare the work line by line, with evidence.",
+        "tabs": {
+            "k1": {
+                "label": "Generate K-1s",
+                "description": "Ask PromptTax to generate Schedule K-1s for all 7 partners of ABC Holdings LLC. It reads the partnership return, allocates income, deductions, and credits per ownership percentage, and outputs a complete, IRS-ready K-1 for each partner."
+            },
+            "export": {
+                "label": "Export",
+                "description": "Export every partner K-1 as a signed PDF, IRS XML, or structured JSON, ready to send to each partner or attach to the partnership return. Outputs are named, dated, and organized automatically."
+            },
+            "cpa": {
+                "label": "CPA Package",
+                "description": "Compile a complete CPA-ready evidence package: K-1s, source documents, entity map, trust-chain citations, and a summary memo. Everything your accountant needs, with nothing extra."
+            }
+        },
+        "benefits": [
+            "Respects partnership agreement allocations",
+            "Applies §199A QBI treatment per partner",
+            "Links each output to source documents",
+            "CPA-reviewable with full audit trail",
+            "Export as PDF, XML, or structured JSON"
+        ],
+        "running": "running",
+        "done": "done"
+    },
+    "trust": {
+        "badge": "Trust by design",
+        "heading": "Built to earn your trust.",
+        "copy": "Every recommendation is backed by your own documents, explained clearly, and always stays under your control.",
+        "cards": [
+            {
+                "title": "Nothing leaves your computer without permission",
+                "body": "PromptTax works from your own Financial Vault and only accesses the folders you choose. Your data stays on your desktop."
+            },
+            {
+                "title": "You stay in control",
+                "body": "PromptTax prepares, explains, and recommends. You decide what gets sent, filed, shared, or approved."
+            },
+            {
+                "title": "Every recommendation explains itself",
+                "body": "Click Why? to see the document, the calculation, the IRS guidance, and the reasoning behind every suggestion."
+            }
+        ]
+    },
+    "testimonials": {
+        "eyebrow": "Early users",
+        "heading": "Built for people who run complex financial lives.",
+        "items": [
+            {
+                "quote": "I run a dozen entities. Tax season used to start with three weeks of sorting PDFs. Now my vault is organized before I finish my coffee.",
+                "name": "Pilot user",
+                "role": "Multi-entity operator"
+            },
+            {
+                "quote": "It cross-referenced every K-1 and showed me exactly why my income moved year over year — with the source page for each number.",
+                "name": "Pilot user",
+                "role": "Fund LP investor"
+            },
+            {
+                "quote": "Local-first was non-negotiable for me. My financial data never leaves my machine, and the answers still cite their evidence.",
+                "name": "Pilot user",
+                "role": "Privacy-focused founder"
+            },
+            {
+                "quote": "The thing I trust most is that it tells me when it does not know. No invented deductions, no guessed totals.",
+                "name": "Pilot user",
+                "role": "Real estate investor"
+            }
+        ]
+    },
+    "cta": {
+        "eyebrow": "Start today",
+        "heading": "Take control of your financial life.",
+        "ctaPrimary": "Download free",
+        "ctaSecondary": "See how it works"
+    },
+    "download": {
+        "eyebrow": "Desktop pilot",
+        "heading": "Run PromptTax locally, with intelligence you control.",
+        "copy": "The desktop experience is being rolled out carefully. Your vault stays local, agent activity stays bounded, and cloud sync remains optional.",
+        "disclaimer": "No silent document export. No autonomous filing. No hidden background actions outside the product flow. PromptTax can observe, explain, and prepare — but sensitive actions remain visible and controlled.",
+        "statusLoading": "Checking the latest production release...",
+        "statusLive": "Latest signed artifacts pulled from the production release channel.",
+        "statusPilot": "Desktop builds are in private pilot. Add your email and we'll tell you the moment public downloads open.",
+        "badgeDetected": "Detected",
+        "badgeDesktop": "Desktop",
+        "resolving": "Resolving latest build",
+        "comingSoon": "Coming soon",
+        "notifyArtifact": "Notify me at launch",
+        "allReleases": "All releases & checksums",
+        "getNotified": "Get notified when downloads open"
+    },
+    "footer": {
+        "kicker": "Personal Financial Intelligence",
+        "manifestoTop": "Your financial world.",
+        "manifestoAccent": "Understood.",
+        "values": [
+            "Privacy First",
+            "Runs Locally",
+            "Deterministic Tax Engine",
+            "Evidence Backed"
+        ],
+        "nav": {
+            "download": "Download",
+            "pricing": "Pricing",
+            "documentation": "Documentation",
+            "support": "Support",
+            "privacy": "Privacy",
+            "terms": "Terms"
+        },
+        "closing": "© 2026 PromptTax",
+        "note1": "Built for people who run complex financial lives.",
+        "note2": "PromptTax is not a CPA or law firm. It does not provide legal, tax, or accounting advice."
+    },
+    "pricing": {
+        "badge": "Pricing",
+        "title": "Start free on desktop.",
+        "description": "PromptTax is desktop-first and free to get started. Download the app, connect the documents you choose, and take control of your financial life — privately, on your own computer. Hosted cloud plans are coming soon.",
+        "cta": "Download desktop"
+    }
+}

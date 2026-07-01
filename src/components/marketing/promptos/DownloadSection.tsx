@@ -11,6 +11,7 @@ import {
     NOTIFY_MAILTO,
     type DownloadTarget,
 } from './data'
+import { useI18n } from '@/i18n/I18nProvider'
 
 type OS = DownloadTarget['os']
 
@@ -42,6 +43,7 @@ interface ReleaseAsset {
 type ReleaseState = 'loading' | 'ready' | 'fallback'
 
 export function DownloadSection() {
+    const { t } = useI18n()
     const [detected, setDetected] = useState<OS | null>(null)
     const [assets, setAssets] = useState<ReleaseAsset[]>([])
     const [version, setVersion] = useState<string | null>(null)
@@ -95,30 +97,30 @@ export function DownloadSection() {
 
     const helperLabel =
         releaseState === 'loading'
-            ? 'Checking the latest production release...'
+            ? t('download.statusLoading')
             : isLive
-              ? 'Latest signed artifacts pulled from the production release channel.'
-              : 'Desktop builds are in private pilot. Add your email and we\u2019ll tell you the moment public downloads open.'
+              ? t('download.statusLive')
+              : t('download.statusPilot')
 
     return (
         <section id="download" className="relative border-t border-[var(--po-border)] px-6 py-28">
             <div className="po-glow left-1/2 top-0 h-[260px] w-[680px] -translate-x-1/2" aria-hidden />
             <div className="relative mx-auto max-w-5xl text-center">
                 <div className="po-mono mb-4 text-xs uppercase tracking-[0.16em] text-[var(--po-muted)]">
-                    Desktop pilot
+                    {t('download.eyebrow')}
                 </div>
                 <h2 className="mx-auto max-w-2xl text-balance text-4xl font-bold tracking-[-0.035em] sm:text-5xl">
-                    Run PromptTax locally, with controlled intelligence.
+                    {t('download.heading')}
                 </h2>
                 <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-[var(--po-muted)]">
-                    The desktop experience is being rolled out carefully. Your vault stays local, agent activity stays bounded, and cloud sync remains optional.
+                    {t('download.copy')}
                     {version ? (
                         <span className="po-mono ml-1 text-[var(--po-faint)]">{version}</span>
                     ) : null}
                 </p>
 
                 <p className="po-hero-disclaimer po-hero-disclaimer-tight">
-                    No silent document export. No autonomous filing. No hidden background actions outside the product flow. The system can observe, explain, and prepare — but sensitive actions remain visible and controlled.
+                    {t('download.disclaimer')}
                 </p>
 
                 <div className="po-release-status mx-auto mt-6 max-w-2xl">
@@ -134,8 +136,8 @@ export function DownloadSection() {
                         const statusLabel = isLive
                             ? target.artifactName
                             : releaseState === 'loading'
-                              ? 'Resolving latest build'
-                              : 'Coming soon'
+                              ? t('download.resolving')
+                              : t('download.comingSoon')
 
                         const cardClassName = `po-release-card po-glow-border ${isDetected ? 'po-release-card-detected' : ''} ${
                             isPressed ? 'po-release-card-pressed' : ''
@@ -144,7 +146,7 @@ export function DownloadSection() {
                         const cardInner = (
                             <>
                                 <div className="po-release-card-badge-row">
-                                    <span className="po-release-card-badge">{isDetected ? 'Detected' : 'Desktop'}</span>
+                                    <span className="po-release-card-badge">{isDetected ? t('download.badgeDetected') : t('download.badgeDesktop')}</span>
                                     <span className={`po-release-card-badge po-release-card-badge-${isLive ? 'ready' : releaseState}`}>
                                         {statusLabel}
                                     </span>
@@ -161,7 +163,7 @@ export function DownloadSection() {
                                     </div>
                                     <div className="po-mono po-release-card-copy">{target.sublabel}</div>
                                     <div className="po-mono po-release-card-artifact">
-                                        {isLive ? target.artifactName : 'Notify me at launch'}
+                                        {isLive ? target.artifactName : t('download.notifyArtifact')}
                                     </div>
                                 </div>
                             </>
@@ -200,7 +202,7 @@ export function DownloadSection() {
                         rel="noopener noreferrer"
                         className="po-mono mt-8 inline-flex items-center gap-1.5 text-xs text-[var(--po-muted)] transition-colors hover:text-[var(--po-fg)]"
                     >
-                        All releases &amp; checksums
+                        {t('download.allReleases')}
                         <ArrowUpRight className="h-3.5 w-3.5" />
                     </a>
                 ) : (
@@ -209,7 +211,7 @@ export function DownloadSection() {
                         className="po-mono mt-8 inline-flex items-center gap-1.5 text-xs text-[var(--po-muted)] transition-colors hover:text-[var(--po-fg)]"
                     >
                         <Mail className="h-3.5 w-3.5" />
-                        Get notified when downloads open
+                        {t('download.getNotified')}
                     </a>
                 )}
             </div>
