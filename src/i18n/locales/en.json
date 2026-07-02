@@ -17,15 +17,15 @@
         "headlineTop": "Your financial world.",
         "headlineAccent": "Understood.",
         "sequence": [
-            "Reading the documents you choose.",
-            "Understanding your entities and years.",
-            "Remembering what matters — privately.",
-            "Preparing work you can actually trust."
+            "Reading the {a:documents you choose}.",
+            "Understanding your {a:entities and years}.",
+            "Remembering what {s:matters} — {k:privately}.",
+            "Preparing {s:work you can actually trust}."
         ],
-        "sequenceFinal": "PromptTax reads the documents you choose, remembers what matters across years, and explains every recommendation with evidence — all on your own computer.",
+        "sequenceFinal": "PromptTax reads the documents you choose, remembers what matters across years, and {a:explains every recommendation with evidence} — all on {s:your own computer}.",
         "ctaPrimary": "Download free",
         "ctaSecondary": "See how it works",
-        "disclaimer": "PromptTax runs entirely on your computer. It never silently syncs your documents, files on its own, or invents financial facts. Nothing leaves your desktop without your permission, and every conclusion stays traceable to its source."
+        "disclaimer": "PromptTax runs entirely on your computer. It {s:never} silently syncs your documents, files on its own, or invents financial facts. Nothing leaves your desktop without your permission, and {a:every conclusion stays traceable to its source}."
     },
     "marquee": [
         "Schedule K-1 extraction",
@@ -131,6 +131,26 @@
             }
         ]
     },
+    "aiModels": {
+        "badge": "AI models, your way",
+        "headingTop": "Bring your own intelligence.",
+        "headingAccent": "Local or cloud — you decide.",
+        "copy": "PromptTax never locks you into one model or sends your documents to a black box. Run everything offline on your own machine, or connect a provider you already trust.",
+        "cards": [
+            {
+                "title": "Local models with Ollama",
+                "body": "Install Ollama and run open models entirely on your computer. No internet, no API key, and no data leaving your desktop — ideal for your most sensitive returns."
+            },
+            {
+                "title": "Bring your own API key",
+                "body": "Prefer a frontier model? Paste your own OpenAI, Anthropic, or compatible key. PromptTax uses it directly, and your key and usage stay under your control."
+            },
+            {
+                "title": "Local vs cloud, made clear",
+                "body": "Local models keep every document on-device. Cloud models send only the text needed to answer a question — and PromptTax always shows which mode is active before anything leaves your machine."
+            }
+        ]
+    },
     "testimonials": {
         "eyebrow": "Early users",
         "heading": "Built for people who run complex financial lives.",
@@ -177,7 +197,26 @@
         "comingSoon": "Coming soon",
         "notifyArtifact": "Notify me at launch",
         "allReleases": "All releases & checksums",
-        "getNotified": "Get notified when downloads open"
+        "getNotified": "Get notified when downloads open",
+        "close": "Close",
+        "confirmTitle": "Confirm your download",
+        "confirmSubtitle": "You're about to download the PromptTax desktop installer. Review the details, then confirm to begin.",
+        "confirmPlatformLabel": "Platform",
+        "confirmFileLabel": "Installer",
+        "confirmSourceLabel": "Delivered from",
+        "confirmSourceValue": "PromptTax secure distribution",
+        "confirmAssure1": "The installer runs entirely on your own computer.",
+        "confirmAssure2": "No account or sign-in is required to install.",
+        "confirmAssure3": "Your documents never leave your desktop.",
+        "confirmCancel": "Cancel",
+        "confirmProceed": "Confirm and download",
+        "confirmStarted": "Download started",
+        "confirmStartedNote": "If your download doesn't begin automatically, restart it below.",
+        "confirmRetry": "Restart download",
+        "confirmDone": "Done",
+        "mobileTitle": "Desktop required",
+        "mobileBody": "PromptTax is a desktop application for Windows. Open this page on your Windows computer to install, or email yourself the link for later.",
+        "mobileAction": "Email me the link"
     },
     "footer": {
         "kicker": "Personal Financial Intelligence",

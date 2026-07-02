@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -8,6 +8,7 @@ import { ArrowRight, ArrowUp, Check, Eye, Activity, FolderOpen, FileText, Downlo
 import { Reveal } from './Reveal'
 import { HeroMock } from './HeroMock'
 import { DownloadSection } from './DownloadSection'
+import { AIModelsSection } from './AIModelsSection'
 import { PromptOSFooter } from './PromptOSFooter'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { PILLARS } from './data'
@@ -156,10 +157,10 @@ const HERO_SEQUENCE_HOLD_MS = 1300
 const HERO_SEQUENCE_TRANSITION_MS = 350
 
 const HERO_SEQUENCE_MESSAGES = [
-    'Reading your documents.',
-    'Understanding your financial world.',
-    'Connecting years, entities and evidence.',
-    'Everything. Explained.',
+    'Reading the documents you choose.',
+    'Understanding your entities and years.',
+    'Remembering what matters — privately.',
+    'Preparing work you can actually trust.',
 ] as const
 
 interface PromptOSLandingProps {
@@ -262,9 +263,11 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                     <LanguageSwitcher />
                     <a
                         href="#download"
-                        className="flex h-8 items-center gap-1.5 rounded-md bg-white px-3.5 text-[13px] font-medium text-black transition-colors hover:bg-white/88"
+                        aria-label={t('nav.cta')}
+                        className="flex h-8 items-center gap-1.5 rounded-md bg-white px-2.5 text-[12px] font-medium text-black transition-colors hover:bg-white/88 sm:px-3.5 sm:text-[13px]"
                     >
-                        {t('nav.cta')} <Download className="h-3.5 w-3.5" />
+                        <span className="hidden sm:inline">{t('nav.cta')}</span>
+                        <Download className="h-3.5 w-3.5" />
                     </a>
                 </div>
             </nav>
@@ -313,7 +316,7 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                     </Reveal>
                     <Reveal delay={0.21}>
                         <p className="po-hero-disclaimer">
-                            {t('hero.disclaimer')}
+                            {renderEmphasis(t('hero.disclaimer'))}
                         </p>
                     </Reveal>
                 </div>
@@ -394,6 +397,9 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                     </div>
                 </div>
             </section>
+
+            {/* AI MODELS */}
+            <AIModelsSection />
 
             {/* DOWNLOAD */}
             <DownloadSection />
@@ -486,6 +492,33 @@ function BackToTop() {
     )
 }
 
+const EM_CLASS: Record<string, string> = {
+    a: 'po-em-accent',
+    s: 'po-em-strong',
+    k: 'po-em-ok',
+}
+
+/** Renders lightweight inline emphasis markers from i18n strings.
+ *  Syntax: {a:accent} {s:strong} {k:ok/green}. Localizable per language. */
+function renderEmphasis(text: string): ReactNode {
+    const parts: ReactNode[] = []
+    const re = /\{([ask]):([^}]*)\}/g
+    let last = 0
+    let key = 0
+    let match: RegExpExecArray | null
+    while ((match = re.exec(text)) !== null) {
+        if (match.index > last) parts.push(text.slice(last, match.index))
+        parts.push(
+            <span key={key++} className={EM_CLASS[match[1]]}>
+                {match[2]}
+            </span>,
+        )
+        last = match.index + match[0].length
+    }
+    if (last < text.length) parts.push(text.slice(last))
+    return parts
+}
+
 function UnderstandingSequence({ stage }: { stage: HeroSequenceStage }) {
     const { t, tx } = useI18n()
     const messages = tx<string[]>('hero.sequence')
@@ -498,7 +531,7 @@ function UnderstandingSequence({ stage }: { stage: HeroSequenceStage }) {
                         className={`po-understanding-panel ${stage === index ? 'po-understanding-panel-active' : ''}`}
                         aria-hidden={stage !== index}
                     >
-                        <p className="po-understanding-line">{message}</p>
+                        <p className="po-understanding-line">{renderEmphasis(message)}</p>
                     </div>
                 ))}
 
@@ -507,9 +540,19 @@ function UnderstandingSequence({ stage }: { stage: HeroSequenceStage }) {
                     aria-hidden={stage !== 4}
                 >
                     <p className="po-understanding-final-copy">
-                        {t('hero.sequenceFinal')}
+                        {renderEmphasis(t('hero.sequenceFinal'))}
                     </p>
                 </div>
+            </div>
+            <div className="po-understanding-progress" aria-hidden>
+                {messages.map((_, index) => (
+                    <span
+                        key={index}
+                        className={`po-understanding-dot ${
+                            stage === index ? 'po-understanding-dot-active' : ''
+                        } ${stage > index || stage === 4 ? 'po-understanding-dot-done' : ''}`}
+                    />
+                ))}
             </div>
         </div>
     )

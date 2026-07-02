@@ -17,15 +17,15 @@
         "headlineTop": "Votre monde financier.",
         "headlineAccent": "Compris.",
         "sequence": [
-            "Lecture des documents que vous choisissez.",
-            "Compréhension de vos entités et de vos années.",
-            "Mémorisation de l'essentiel — en privé.",
-            "Préparation d'un travail digne de confiance."
+            "Lecture des {a:documents que vous choisissez}.",
+            "Compréhension de vos {a:entités et de vos années}.",
+            "Mémorisation de l'{s:essentiel} — {k:en privé}.",
+            "Préparation d'un {s:travail digne de confiance}."
         ],
-        "sequenceFinal": "PromptTax lit les documents que vous choisissez, retient ce qui compte au fil des années et explique chaque recommandation avec des preuves — le tout sur votre propre ordinateur.",
+        "sequenceFinal": "PromptTax lit les documents que vous choisissez, retient ce qui compte au fil des années et {a:explique chaque recommandation avec des preuves} — le tout sur {s:votre propre ordinateur}.",
         "ctaPrimary": "Télécharger gratuitement",
         "ctaSecondary": "Voir comment ça marche",
-        "disclaimer": "PromptTax fonctionne entièrement sur votre ordinateur. Il ne synchronise jamais vos documents en silence, ne dépose rien de lui-même et n'invente aucune donnée financière. Rien ne quitte votre bureau sans votre autorisation, et chaque conclusion reste traçable jusqu'à sa source."
+        "disclaimer": "PromptTax fonctionne entièrement sur votre ordinateur. Il ne synchronise {s:jamais} vos documents en silence, ne dépose rien de lui-même et n'invente aucune donnée financière. Rien ne quitte votre bureau sans votre autorisation, et {a:chaque conclusion reste traçable jusqu'à sa source}."
     },
     "marquee": [
         "Extraction du Schedule K-1",
@@ -131,6 +131,26 @@
             }
         ]
     },
+    "aiModels": {
+        "badge": "Modèles d'IA, à votre façon",
+        "headingTop": "Apportez votre propre intelligence.",
+        "headingAccent": "Local ou cloud — vous décidez.",
+        "copy": "PromptTax ne vous enferme jamais dans un seul modèle et n'envoie pas vos documents dans une boîte noire. Exécutez tout hors ligne sur votre propre machine, ou connectez un fournisseur en qui vous avez déjà confiance.",
+        "cards": [
+            {
+                "title": "Modèles locaux avec Ollama",
+                "body": "Installez Ollama et exécutez des modèles ouverts entièrement sur votre ordinateur. Sans internet, sans clé d'API et sans qu'aucune donnée ne quitte votre bureau — idéal pour vos déclarations les plus sensibles."
+            },
+            {
+                "title": "Apportez votre propre clé d'API",
+                "body": "Vous préférez un modèle de pointe ? Collez votre propre clé OpenAI, Anthropic ou compatible. PromptTax l'utilise directement, et votre clé comme votre usage restent sous votre contrôle."
+            },
+            {
+                "title": "Local ou cloud, en toute clarté",
+                "body": "Les modèles locaux conservent chaque document sur l'appareil. Les modèles cloud n'envoient que le texte nécessaire pour répondre — et PromptTax indique toujours quel mode est actif avant que quoi que ce soit ne quitte votre machine."
+            }
+        ]
+    },
     "testimonials": {
         "eyebrow": "Premiers utilisateurs",
         "heading": "Conçu pour ceux qui mènent des vies financières complexes.",
@@ -177,7 +197,26 @@
         "comingSoon": "Bientôt disponible",
         "notifyArtifact": "Prévenez-moi au lancement",
         "allReleases": "Toutes les versions et sommes de contrôle",
-        "getNotified": "Être prévenu à l'ouverture des téléchargements"
+        "getNotified": "Être prévenu à l'ouverture des téléchargements",
+        "close": "Fermer",
+        "confirmTitle": "Confirmez votre téléchargement",
+        "confirmSubtitle": "Vous êtes sur le point de télécharger l'installateur de bureau PromptTax. Vérifiez les détails, puis confirmez pour commencer.",
+        "confirmPlatformLabel": "Plateforme",
+        "confirmFileLabel": "Installateur",
+        "confirmSourceLabel": "Distribué depuis",
+        "confirmSourceValue": "Distribution sécurisée PromptTax",
+        "confirmAssure1": "L'installateur s'exécute entièrement sur votre propre ordinateur.",
+        "confirmAssure2": "Aucun compte ni connexion n'est requis pour installer.",
+        "confirmAssure3": "Vos documents ne quittent jamais votre bureau.",
+        "confirmCancel": "Annuler",
+        "confirmProceed": "Confirmer et télécharger",
+        "confirmStarted": "Téléchargement démarré",
+        "confirmStartedNote": "Si votre téléchargement ne démarre pas automatiquement, relancez-le ci-dessous.",
+        "confirmRetry": "Relancer le téléchargement",
+        "confirmDone": "Terminé",
+        "mobileTitle": "Ordinateur requis",
+        "mobileBody": "PromptTax est une application de bureau pour Windows. Ouvrez cette page sur votre ordinateur Windows pour installer, ou envoyez-vous le lien par e-mail pour plus tard.",
+        "mobileAction": "M'envoyer le lien"
     },
     "footer": {
         "kicker": "Intelligence Financière Personnelle",

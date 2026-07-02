@@ -20,7 +20,7 @@ export function PromptOSFooter({ downloadHref = '/#download' }: { downloadHref?:
     const nav: { label: string; href: string; external?: boolean }[] = [
         { label: t('footer.nav.download'), href: '/download' },
         { label: t('footer.nav.pricing'), href: '/pricing' },
-        { label: t('footer.nav.documentation'), href: '/#product' },
+        { label: t('footer.nav.documentation'), href: '/setup' },
         { label: t('footer.nav.support'), href: 'mailto:hi@prompt.tax', external: true },
         { label: t('footer.nav.privacy'), href: '/privacy' },
         { label: t('footer.nav.terms'), href: '/terms' },

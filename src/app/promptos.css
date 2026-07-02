@@ -328,7 +328,28 @@
 }
 
 .promptos .po-headline-soft {
-    color: rgba(216, 229, 255, 0.92);
+    font-weight: 700;
+    background: linear-gradient(180deg, #f3f7ff 0%, #9bbcff 52%, #3b6ff5 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+/* Reusable copy emphasis utilities ----------------------------------------- */
+.promptos .po-em-accent {
+    color: #7aa2ff;
+    font-weight: 600;
+}
+
+.promptos .po-em-strong {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.promptos .po-em-ok {
+    color: var(--po-ok);
+    font-weight: 600;
 }
 
 .promptos .po-hero-chip {
@@ -355,23 +376,20 @@
     align-items: center;
     justify-content: center;
     opacity: 0;
-    filter: blur(6px);
-    transform: translateY(-8px);
+    filter: blur(8px);
+    transform: translateY(12px) scale(0.92);
     transition:
-        opacity 250ms ease,
-        filter 250ms ease,
-        transform 250ms ease;
+        opacity 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+        filter 340ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
     pointer-events: none;
+    will-change: opacity, transform, filter;
 }
 
 .promptos .po-understanding-panel-active {
     opacity: 1;
     filter: blur(0);
-    transform: translateY(0);
-    transition:
-        opacity 350ms cubic-bezier(0.22, 1, 0.36, 1),
-        filter 350ms cubic-bezier(0.22, 1, 0.36, 1),
-        transform 350ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateY(0) scale(1);
 }
 
 .promptos .po-understanding-line {
@@ -379,8 +397,8 @@
     max-width: 680px;
     font-size: 21px;
     line-height: 1.4;
-    letter-spacing: -0.025em;
-    color: rgba(225, 235, 255, 0.9);
+    letter-spacing: -0.03em;
+    color: rgba(225, 235, 255, 0.82);
 }
 
 .promptos .po-understanding-panel-final {
@@ -392,7 +410,34 @@
     max-width: 700px;
     font-size: 16px;
     line-height: 1.72;
-    color: var(--po-muted);
+    color: rgba(255, 255, 255, 0.56);
+}
+
+/* Sequence progress indicator ---------------------------------------------- */
+.promptos .po-understanding-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.promptos .po-understanding-dot {
+    width: 22px;
+    height: 3px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    transition: background 320ms ease, width 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms ease;
+}
+
+.promptos .po-understanding-dot-done {
+    background: rgba(122, 162, 255, 0.55);
+}
+
+.promptos .po-understanding-dot-active {
+    width: 34px;
+    background: linear-gradient(90deg, #7aa2ff, #3b6ff5);
+    box-shadow: 0 0 14px rgba(59, 111, 245, 0.5);
 }
 
 .promptos .po-hero-shell {
@@ -1074,14 +1119,14 @@
 }
 
 .promptos .po-hero-disclaimer {
-    margin: 1.25rem auto 0;
+    margin: 1.5rem auto 0;
     max-width: 640px;
     padding: 0 1rem;
     font-size: 0.8125rem;
     line-height: 1.65;
     text-align: center;
     text-wrap: balance;
-    color: rgba(255, 255, 255, 0.46);
+    color: rgba(255, 255, 255, 0.52);
 }
 
 .promptos .po-hero-disclaimer-tight {
@@ -1529,6 +1574,18 @@
 
 .promptos .po-release-card-soon {
     cursor: pointer;
+}
+
+/* Hosted-installer cards are <button> elements (no href = obfuscated link).
+   Reset native button chrome so they match the anchor cards exactly. */
+.promptos .po-release-card-button {
+    width: 100%;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .promptos .po-back-to-top {
@@ -3834,4 +3891,728 @@
     from { opacity: 0; transform: translate(-50%, 6px); }
     to { opacity: 1; transform: translate(-50%, 0); }
 }
+
+/* ==========================================================================
+   Secure download confirmation dialog
+   Rendered through a portal to <body> so it escapes the transformed
+   .po-app-content ancestor (a transform makes position:fixed resolve against
+   that element instead of the viewport). Selectors are therefore unscoped and
+   use literal colors instead of the .promptos CSS variables.
+   ========================================================================== */
+.po-dl-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(4, 5, 8, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    animation: po-dl-fade 180ms ease;
+}
+
+.po-dl-modal {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 22px;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(71, 101, 166, 0.14), transparent 55%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+        rgba(10, 11, 15, 0.98);
+    box-shadow: 0 40px 120px rgba(0, 0, 0, 0.6);
+    animation: po-dl-rise 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.po-dl-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.46);
+    cursor: pointer;
+    transition: color 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.po-dl-close:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.po-dl-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 34px 30px 28px;
+    text-align: center;
+}
+
+.po-dl-shield,
+.po-dl-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    margin-bottom: 18px;
+}
+
+.po-dl-shield {
+    border: 1px solid rgba(107, 160, 255, 0.28);
+    background: radial-gradient(circle at 50% 30%, rgba(71, 101, 166, 0.28), transparent 70%), rgba(255, 255, 255, 0.03);
+    color: rgba(186, 207, 247, 0.92);
+}
+
+.po-dl-check {
+    border: 1px solid rgba(120, 205, 140, 0.34);
+    background: radial-gradient(circle at 50% 30%, rgba(90, 170, 110, 0.26), transparent 70%), rgba(255, 255, 255, 0.03);
+    color: rgba(150, 225, 170, 0.95);
+}
+
+.po-dl-title {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #fff;
+}
+
+.po-dl-subtitle {
+    margin: 8px 0 0;
+    max-width: 360px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.46);
+}
+
+.po-dl-meta {
+    width: 100%;
+    margin: 22px 0 0;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.02);
+    overflow: hidden;
+}
+
+.po-dl-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 11px 16px;
+    font-size: 13px;
+}
+
+.po-dl-meta-row + .po-dl-meta-row {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.po-dl-meta-row dt {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.46);
+}
+
+.po-dl-meta-row dd {
+    margin: 0;
+    color: #fff;
+    text-align: right;
+}
+
+.po-dl-mono {
+    font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    letter-spacing: -0.01em;
+}
+
+.po-dl-assure {
+    width: 100%;
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.po-dl-assure li {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: left;
+    color: rgba(225, 235, 255, 0.82);
+}
+
+.po-dl-assure li svg {
+    flex-shrink: 0;
+    color: rgba(150, 225, 170, 0.9);
+}
+
+.po-dl-actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    margin-top: 26px;
+}
+
+.po-dl-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 120ms ease;
+}
+
+.po-dl-btn:active {
+    transform: scale(0.98);
+}
+
+.po-dl-btn-ghost {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.po-dl-btn-ghost:hover {
+    border-color: rgba(255, 255, 255, 0.26);
+    color: #fff;
+}
+
+.po-dl-btn-primary {
+    border: 1px solid transparent;
+    background: #fff;
+    color: #000;
+}
+
+.po-dl-btn-primary:hover {
+    background: rgba(255, 255, 255, 0.88);
+}
+
+@keyframes po-dl-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes po-dl-rise {
+    from { opacity: 0; transform: translateY(14px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 480px) {
+    .po-dl-actions {
+        flex-direction: column-reverse;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .po-dl-overlay,
+    .po-dl-modal {
+        animation: none !important;
+    }
+}
+
+/* ==========================================================================
+   Watcher rings — keep circles round + fully visible on small screens.
+   The ring shells use fixed pixel sizes (largest ~584px). On narrow
+   viewports we scale the whole group uniformly so the circles never get
+   clipped into ellipses or overflow the viewport. Overflow stays visible so
+   the outer rings are never sliced off.
+   ========================================================================== */
+.promptos .po-watcher-visual {
+    overflow: visible;
+}
+
+@media (max-width: 900px) {
+    .promptos .po-ring-container {
+        transform: scale(0.82);
+    }
+}
+
+@media (max-width: 640px) {
+    .promptos .po-ring-container {
+        transform: scale(0.62);
+    }
+}
+
+@media (max-width: 480px) {
+    .promptos .po-ring-container {
+        transform: scale(0.5);
+    }
+}
+
+@media (max-width: 380px) {
+    .promptos .po-ring-container {
+        transform: scale(0.42);
+    }
+}
+
+/* ==========================================================================
+   AI models section — distinct from Trust: rotating glow-border only,
+   brand logos, static hover-lift (no float, no vertical beam).
+   ========================================================================== */
+.promptos .po-ai-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.promptos .po-ai-aura {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(60% 42% at 50% 0%, rgba(59, 111, 245, 0.1), transparent 70%),
+        radial-gradient(40% 30% at 82% 100%, rgba(76, 195, 138, 0.06), transparent 70%);
+}
+
+.promptos .po-ai-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.promptos .po-ai-card {
+    position: relative;
+    border-radius: 22px;
+    isolation: isolate;
+}
+
+.promptos .po-ai-card-inner {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    padding: 26px;
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015)),
+        rgba(8, 10, 14, 0.72);
+    backdrop-filter: blur(16px);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 24px 60px rgba(0, 0, 0, 0.32);
+    transition:
+        transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 260ms ease,
+        box-shadow 260ms ease;
+}
+
+.promptos .po-ai-card:hover .po-ai-card-inner,
+.promptos .po-ai-card:focus-within .po-ai-card-inner {
+    transform: translateY(-6px);
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.07),
+        0 34px 84px rgba(0, 0, 0, 0.44);
+}
+
+.promptos .po-ai-visual {
+    display: flex;
+    align-items: center;
+    min-height: 46px;
+    margin-bottom: 22px;
+}
+
+.promptos .po-ai-logos {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.promptos .po-ai-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    background: #ffffff;
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+    transition: transform 220ms ease;
+}
+
+.promptos .po-ai-card:hover .po-ai-logo {
+    transform: translateY(-2px);
+}
+
+.promptos .po-ai-logo img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+}
+
+.promptos .po-ai-chips {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.promptos .po-ai-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 34px;
+    padding: 0 13px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.03);
+    font-size: 12.5px;
+    font-weight: 500;
+    color: rgba(225, 235, 255, 0.85);
+}
+
+.promptos .po-ai-chip svg {
+    width: 15px;
+    height: 15px;
+}
+
+.promptos .po-ai-chip-local svg {
+    color: #7aa2ff;
+}
+
+.promptos .po-ai-chip-cloud svg {
+    color: var(--po-ok);
+}
+
+.promptos .po-ai-card-title {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+}
+
+.promptos .po-ai-card-body {
+    margin: 10px 0 0;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--po-muted);
+}
+
+@media (max-width: 860px) {
+    .promptos .po-ai-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+}
+
+/* ==========================================================================
+   Setup / installation guide page
+   ========================================================================== */
+.promptos .po-doc-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    height: 56px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--po-border);
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(18px);
+}
+
+.promptos .po-doc-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.promptos .po-doc-nav-link {
+    font-size: 13px;
+    color: var(--po-muted);
+    transition: color 160ms ease;
+}
+
+.promptos .po-doc-nav-link:hover {
+    color: var(--po-fg);
+}
+
+.promptos .po-doc-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 72px 24px 40px;
+    text-align: center;
+}
+
+.promptos .po-doc-hero-inner {
+    position: relative;
+    margin: 0 auto;
+    max-width: 720px;
+}
+
+.promptos .po-doc-title {
+    margin: 14px 0 0;
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+}
+
+.promptos .po-doc-lede {
+    margin: 18px auto 0;
+    max-width: 600px;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--po-muted);
+}
+
+.promptos .po-doc-toc {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 26px;
+}
+
+.promptos .po-doc-toc a {
+    display: inline-flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1px solid var(--po-border-med);
+    font-size: 12.5px;
+    color: var(--po-muted);
+    transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.promptos .po-doc-toc a:hover {
+    color: var(--po-fg);
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.promptos .po-doc-main {
+    margin: 0 auto;
+    max-width: 980px;
+    padding: 24px 24px 40px;
+}
+
+.promptos .po-doc-section {
+    padding: 40px 0;
+    border-top: 1px solid var(--po-border);
+}
+
+.promptos .po-doc-section:first-child {
+    border-top: none;
+}
+
+.promptos .po-doc-section-eyebrow {
+    font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--po-muted);
+}
+
+.promptos .po-doc-section-heading {
+    margin: 10px 0 0;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+
+.promptos .po-doc-step {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 28px;
+    align-items: center;
+    padding: 30px 0;
+    border-top: 1px solid var(--po-border);
+}
+
+.promptos .po-doc-step:first-of-type {
+    border-top: none;
+}
+
+.promptos .po-doc-step-index {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid rgba(107, 160, 255, 0.28);
+    background: radial-gradient(circle at 50% 30%, rgba(71, 101, 166, 0.28), transparent 70%), rgba(255, 255, 255, 0.03);
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 14px;
+    color: rgba(186, 207, 247, 0.92);
+}
+
+.promptos .po-doc-step-title {
+    margin: 16px 0 0;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.promptos .po-doc-step-body {
+    margin: 10px 0 0;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--po-muted);
+}
+
+.promptos .po-doc-substeps {
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.promptos .po-doc-substeps li {
+    display: flex;
+    gap: 10px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: rgba(225, 235, 255, 0.8);
+}
+
+.promptos .po-doc-substeps li svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: rgba(150, 225, 170, 0.9);
+}
+
+/* Screenshot placeholder — drop a real <Image> in later; the label documents
+   exactly what belongs here. */
+.promptos .po-doc-shot {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    aspect-ratio: 16 / 10;
+    border-radius: 16px;
+    border: 1px dashed rgba(255, 255, 255, 0.16);
+    background:
+        radial-gradient(circle at 50% 0%, rgba(71, 101, 166, 0.1), transparent 60%),
+        repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.015) 0 12px, transparent 12px 24px),
+        rgba(10, 11, 15, 0.6);
+    color: var(--po-muted);
+    text-align: center;
+    padding: 20px;
+}
+
+.promptos .po-doc-shot svg {
+    opacity: 0.5;
+}
+
+.promptos .po-doc-shot-tag {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--po-faint);
+}
+
+.promptos .po-doc-shot-label {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 320px;
+}
+
+.promptos .po-doc-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.promptos .po-doc-feature-card {
+    border: 1px solid var(--po-border);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 18px;
+}
+
+.promptos .po-doc-feature-card .po-doc-shot {
+    aspect-ratio: 16 / 9;
+    margin-bottom: 16px;
+}
+
+.promptos .po-doc-feature-title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.promptos .po-doc-feature-body {
+    margin: 6px 0 0;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--po-muted);
+}
+
+.promptos .po-doc-callout {
+    margin-top: 26px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.promptos .po-doc-mini {
+    border: 1px solid var(--po-border);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 20px;
+}
+
+.promptos .po-doc-mini h4 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.promptos .po-doc-mini ol {
+    margin: 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--po-muted);
+}
+
+@media (max-width: 760px) {
+    .promptos .po-doc-step {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .promptos .po-doc-feature-grid,
+    .promptos .po-doc-callout {
+        grid-template-columns: 1fr;
+    }
+}
+
+
 

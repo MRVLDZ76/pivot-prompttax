@@ -23,11 +23,15 @@ export interface DownloadTarget {
     /** Matches asset names in the GitHub release for OS detection. */
     matchers: RegExp[]
     /**
-     * Direct download URL for a hosted installer. When set, the card is
-     * immediately live and links straight to this file, bypassing the
-     * GitHub release gating. Leave undefined for platforms without a build.
+     * Base64-encoded direct download URL for a hosted installer. When set, the
+     * card is immediately live and downloads this file, bypassing the GitHub
+     * release gating. It is stored encoded so the raw object-storage path never
+     * appears in the rendered DOM, an anchor hover tooltip, or a casual "view
+     * source". This is not a security boundary (a public installer is public)
+     * — it simply keeps the direct link out of trivial reach. Decoded only at
+     * click time. Leave undefined for platforms without a build.
      */
-    directUrl?: string
+    directUrlEnc?: string
 }
 
 export interface Testimonial {
@@ -118,18 +122,16 @@ export const PILLARS: { icon: LucideIcon; title: string; body: string; floatDura
     },
 ]
 
-// Public CDN prefix where signed installers are hosted (DigitalOcean Spaces).
-export const DOWNLOAD_BASE =
-    'https://businessesppall.nyc3.cdn.digitaloceanspaces.com/downloads/'
-
 export const DOWNLOADS: DownloadTarget[] = [
     {
         os: 'windows',
         label: 'Windows',
         sublabel: 'Windows 10 & 11',
-        artifactName: 'latest.msi',
+        artifactName: 'PromptTax-Setup.exe',
         matchers: [/latest\.msi$/i, /\.msi$/i, /\.exe$/i],
-        directUrl: `${DOWNLOAD_BASE}PromptTax-Setup.exe`,
+        // base64('https://businessesppall.nyc3.cdn.digitaloceanspaces.com/downloads/PromptTax-Setup.exe')
+        directUrlEnc:
+            'aHR0cHM6Ly9idXNpbmVzc2VzcHBhbGwubnljMy5jZG4uZGlnaXRhbG9jZWFuc3BhY2VzLmNvbS9kb3dubG9hZHMvUHJvbXB0VGF4LVNldHVwLmV4ZQ==',
     },
     {
         os: 'macos',
@@ -202,3 +204,14 @@ export const RELEASE_CHANNEL_LIVE = true
 // Where "Get notified" and support links point.
 export const NOTIFY_EMAIL = 'hi@prompt.tax'
 export const NOTIFY_MAILTO = `mailto:${NOTIFY_EMAIL}?subject=Notify%20me%20when%20PromptTax%20desktop%20is%20available`
+
+// Optional endpoint that receives download telemetry (confirmation click +
+// system info + download metadata) via navigator.sendBeacon. Leave empty to
+// keep events client-side only (localStorage counter + GTM dataLayer). Set to
+// an absolute or same-origin path (e.g. '/api/track/download') when a
+// collector is available.
+export const DOWNLOAD_TELEMETRY_URL = ''
+
+// LocalStorage key for the client-side download counter used to build simple
+// confidence metrics without a backend round-trip.
+export const DOWNLOAD_COUNT_KEY = 'promptos-download-count'
