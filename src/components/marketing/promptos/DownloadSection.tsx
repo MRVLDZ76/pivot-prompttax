@@ -447,6 +447,13 @@ export function DownloadSection() {
                                       </div>
                                       <h3 id="po-dl-title" className="po-dl-title">{t('download.confirmStarted')}</h3>
                                       <p className="po-dl-subtitle">{t('download.confirmStartedNote')}</p>
+                                      <div className="po-dl-smartscreen">
+                                          <ShieldCheck className="po-dl-smartscreen-icon h-4 w-4" strokeWidth={1.7} />
+                                          <div>
+                                              <p className="po-dl-smartscreen-title">{t('download.confirmSmartScreenTitle')}</p>
+                                              <p className="po-dl-smartscreen-body">{t('download.confirmSmartScreen')}</p>
+                                          </div>
+                                      </div>
                                       <div className="po-dl-actions">
                                           <button type="button" className="po-dl-btn po-dl-btn-ghost" onClick={retryDownload}>
                                               {t('download.confirmRetry')}

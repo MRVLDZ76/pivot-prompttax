@@ -212,6 +212,8 @@
         "confirmProceed": "Confirmer et télécharger",
         "confirmStarted": "Téléchargement démarré",
         "confirmStartedNote": "Si votre téléchargement ne démarre pas automatiquement, relancez-le ci-dessous.",
+        "confirmSmartScreenTitle": "Un avertissement Windows s'affiche ?",
+        "confirmSmartScreen": "Windows peut afficher un écran bleu “Windows a protégé votre ordinateur” car cette version bêta n'est pas encore signée. Cliquez sur Informations complémentaires, puis sur Exécuter quand même. L'installateur est sûr et s'exécute entièrement sur votre propre ordinateur.",
         "confirmRetry": "Relancer le téléchargement",
         "confirmDone": "Terminé",
         "mobileTitle": "Ordinateur requis",

@@ -296,6 +296,22 @@
     text-shadow: 0 0 18px rgba(108, 148, 255, 0.08);
 }
 
+.promptos .po-beta-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+    border: 1px solid rgba(122, 162, 255, 0.4);
+    background: rgba(122, 162, 255, 0.12);
+    color: #9bbcff;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1;
+    text-shadow: none;
+}
+
 .promptos .po-logo-stage {
     position: relative;
     display: inline-flex;
@@ -4060,6 +4076,39 @@
 .po-dl-assure li svg {
     flex-shrink: 0;
     color: rgba(150, 225, 170, 0.9);
+}
+
+.po-dl-smartscreen {
+    width: 100%;
+    margin: 18px 0 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid rgba(122, 162, 255, 0.28);
+    border-radius: 14px;
+    background: rgba(122, 162, 255, 0.08);
+    text-align: left;
+}
+
+.po-dl-smartscreen-icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: #9bbcff;
+}
+
+.po-dl-smartscreen-title {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #cfe0ff;
+}
+
+.po-dl-smartscreen-body {
+    margin: 3px 0 0;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: rgba(225, 235, 255, 0.68);
 }
 
 .po-dl-actions {

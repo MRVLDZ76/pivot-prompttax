@@ -212,6 +212,8 @@
         "confirmProceed": "Confirm and download",
         "confirmStarted": "Download started",
         "confirmStartedNote": "If your download doesn't begin automatically, restart it below.",
+        "confirmSmartScreenTitle": "Seeing a Windows warning?",
+        "confirmSmartScreen": "Windows may show a blue \u201cWindows protected your PC\u201d screen because this beta build isn't code-signed yet. Click More info, then Run anyway. The installer is safe and runs entirely on your computer.",
         "confirmRetry": "Restart download",
         "confirmDone": "Done",
         "mobileTitle": "Desktop required",

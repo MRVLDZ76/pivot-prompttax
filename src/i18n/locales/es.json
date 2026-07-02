@@ -212,6 +212,8 @@
         "confirmProceed": "Confirmar y descargar",
         "confirmStarted": "Descarga iniciada",
         "confirmStartedNote": "Si la descarga no comienza automáticamente, reiníciala abajo.",
+        "confirmSmartScreenTitle": "¿Ves una advertencia de Windows?",
+        "confirmSmartScreen": "Windows puede mostrar una pantalla azul “Windows protegió tu PC” porque esta versión beta aún no está firmada. Haz clic en Más información y luego en Ejecutar de todas formas. El instalador es seguro y se ejecuta por completo en tu propio equipo.",
         "confirmRetry": "Reiniciar descarga",
         "confirmDone": "Listo",
         "mobileTitle": "Se requiere un ordenador",

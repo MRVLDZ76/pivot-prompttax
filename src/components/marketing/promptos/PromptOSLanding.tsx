@@ -241,6 +241,7 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                     <Link href="/" className="flex items-center gap-3 text-sm font-medium text-white">
                         <DesktopBrandMark />
                         <span className="po-brand-wordmark">Prompt.tax</span>
+                        <span className="po-beta-badge">Beta</span>
                     </Link>
                     <div className="hidden gap-6 md:flex">
                         {[
