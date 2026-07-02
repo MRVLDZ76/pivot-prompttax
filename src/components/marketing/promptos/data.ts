@@ -139,6 +139,9 @@ export const DOWNLOADS: DownloadTarget[] = [
         sublabel: 'Apple Silicon & Intel',
         artifactName: 'latest.dmg',
         matchers: [/latest\.dmg$/i, /\.dmg$/i],
+        // base64('https://businessesppall.nyc3.cdn.digitaloceanspaces.com/downloads/latest.dmg')
+        directUrlEnc:
+            'aHR0cHM6Ly9idXNpbmVzc2VzcHBhbGwubnljMy5jZG4uZGlnaXRhbG9jZWFuc3BhY2VzLmNvbS9kb3dubG9hZHMvbGF0ZXN0LmRtZw==',
     },
     {
         os: 'linux',
@@ -146,6 +149,9 @@ export const DOWNLOADS: DownloadTarget[] = [
         sublabel: 'Universal AppImage',
         artifactName: 'latest.AppImage',
         matchers: [/latest\.appimage$/i, /\.appimage$/i, /\.deb$/i],
+        // base64('https://businessesppall.nyc3.cdn.digitaloceanspaces.com/downloads/latest.AppImage')
+        directUrlEnc:
+            'aHR0cHM6Ly9idXNpbmVzc2VzcHBhbGwubnljMy5jZG4uZGlnaXRhbG9jZWFuc3BhY2VzLmNvbS9kb3dubG9hZHMvbGF0ZXN0LkFwcEltYWdl',
     },
 ]
 
