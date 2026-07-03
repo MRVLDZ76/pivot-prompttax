@@ -14,7 +14,7 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 import { PILLARS } from './data'
 import { useI18n } from '@/i18n/I18nProvider'
 
-type HeroSequenceStage = 0 | 1 | 2 | 3 | 4
+type HeroSequenceStage = number
 
 function DesktopBrandMark({ size = 22, dim = false }: { size?: number; dim?: boolean }) {
     return (
@@ -153,15 +153,7 @@ const BOOT_DURATION_MS = 1650
 const BOOT_REVEAL_MS = 460
 const BOOT_SKIP_DURATION_MS = 120
 const BOOT_SKIP_REVEAL_MS = 280
-const HERO_SEQUENCE_HOLD_MS = 1300
-const HERO_SEQUENCE_TRANSITION_MS = 350
-
-const HERO_SEQUENCE_MESSAGES = [
-    'Reading the documents you choose.',
-    'Understanding your entities and years.',
-    'Remembering what matters — privately.',
-    'Preparing work you can actually trust.',
-] as const
+const HERO_QUOTES_INTERVAL_MS = 2800
 
 interface PromptOSLandingProps {
     initialSection?: 'download'
@@ -169,6 +161,7 @@ interface PromptOSLandingProps {
 
 export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
     const { t, tx } = useI18n()
+    const heroSequence = tx<string[]>('hero.sequence')
     const [bootState, setBootState] = useState<'booting' | 'revealing' | 'done'>('booting')
     const [heroSequenceStage, setHeroSequenceStage] = useState<HeroSequenceStage>(0)
 
@@ -208,28 +201,16 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
     }, [initialSection])
 
     useEffect(() => {
-        if (bootState !== 'done') return
+        if (bootState !== 'done' || heroSequence.length <= 1) return
 
-        const timers: number[] = []
-
-        HERO_SEQUENCE_MESSAGES.forEach((_, index) => {
-            timers.push(
-                window.setTimeout(() => {
-                    setHeroSequenceStage(index as HeroSequenceStage)
-                }, index * (HERO_SEQUENCE_HOLD_MS + HERO_SEQUENCE_TRANSITION_MS)),
-            )
-        })
-
-        timers.push(
-            window.setTimeout(() => {
-                setHeroSequenceStage(4)
-            }, HERO_SEQUENCE_MESSAGES.length * (HERO_SEQUENCE_HOLD_MS + HERO_SEQUENCE_TRANSITION_MS)),
-        )
+        const timer = window.setInterval(() => {
+            setHeroSequenceStage((prev) => (prev + 1) % heroSequence.length)
+        }, HERO_QUOTES_INTERVAL_MS)
 
         return () => {
-            timers.forEach((timer) => window.clearTimeout(timer))
+            window.clearInterval(timer)
         }
-    }, [bootState])
+    }, [bootState, heroSequence])
 
     return (
         <div className={`promptos po-app-shell po-app-shell-${bootState}`}>
@@ -297,7 +278,10 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                         </h1>
                     </Reveal>
                     <Reveal delay={0.1}>
-                        <UnderstandingSequence stage={heroSequenceStage} />
+                        <HeroQuoteCards
+                            stage={heroSequenceStage}
+                            messages={heroSequence}
+                        />
                     </Reveal>
                     <Reveal delay={0.15}>
                         <div className="mt-9 flex items-center justify-center gap-2.5">
@@ -315,11 +299,6 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                             </a>
                         </div>
                     </Reveal>
-                    <Reveal delay={0.21}>
-                        <p className="po-hero-disclaimer">
-                            {renderEmphasis(t('hero.disclaimer'))}
-                        </p>
-                    </Reveal>
                 </div>
 
                 <Reveal delay={0.2} className="relative mx-auto mt-16 w-full max-w-[1320px] px-0 sm:px-2">
@@ -327,6 +306,8 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                     <div className="po-glow -bottom-20 left-1/2 h-[200px] w-[600px] -translate-x-1/2" aria-hidden />
                 </Reveal>
             </header>
+
+            <TrustBoundariesSection />
 
             {/* CAPABILITY MARQUEE */}
             <div className="po-marquee-wrap overflow-hidden border-y border-[var(--po-border)] py-4">
@@ -520,42 +501,87 @@ function renderEmphasis(text: string): ReactNode {
     return parts
 }
 
-function UnderstandingSequence({ stage }: { stage: HeroSequenceStage }) {
-    const { t, tx } = useI18n()
-    const messages = tx<string[]>('hero.sequence')
-    return (
-        <div className="po-understanding-wrap mx-auto mt-6 max-w-[760px]" aria-live="polite">
-            <div className="po-understanding-stage">
-                {messages.map((message, index) => (
-                    <div
-                        key={index}
-                        className={`po-understanding-panel ${stage === index ? 'po-understanding-panel-active' : ''}`}
-                        aria-hidden={stage !== index}
-                    >
-                        <p className="po-understanding-line">{renderEmphasis(message)}</p>
-                    </div>
-                ))}
+function HeroQuoteCards({
+    stage,
+    messages,
+}: {
+    stage: HeroSequenceStage
+    messages: string[]
+}) {
+    const { tx } = useI18n()
+    if (!messages.length) return null
+    const normalized = ((stage % messages.length) + messages.length) % messages.length
+    const statusPills = tx<string[]>('hero.statusPills')
 
-                <div
-                    className={`po-understanding-panel po-understanding-panel-final ${stage === 4 ? 'po-understanding-panel-active' : ''}`}
-                    aria-hidden={stage !== 4}
-                >
-                    <p className="po-understanding-final-copy">
-                        {renderEmphasis(t('hero.sequenceFinal'))}
-                    </p>
-                </div>
+    return (
+        <div className="po-understanding-wrap mx-auto mt-6 max-w-[680px]" aria-live="polite">
+            <div className="po-quote-rail" aria-hidden>
+                {statusPills.slice(0, 3).map((pill) => (
+                    <span key={pill} className="po-quote-rail-pill">
+                        {pill}
+                    </span>
+                ))}
+            </div>
+            <div className="po-quote-cards" role="status" aria-label="PromptTax quote messages">
+                <div className="po-quote-cards-glow" aria-hidden />
+                <AnimatePresence mode="wait" initial={false}>
+                    <motion.article
+                        key={normalized}
+                        className="po-quote-card po-quote-card-active"
+                        initial={{ opacity: 0, y: 10, filter: 'blur(5px)' }}
+                        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                        exit={{ opacity: 0, y: -10, filter: 'blur(5px)' }}
+                        transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                        <div className="po-quote-card-shine" aria-hidden />
+                         
+                        <h3 className="po-trust-boundaries-title">{renderEmphasis(messages[normalized])}</h3>
+                    </motion.article>
+                </AnimatePresence>
             </div>
             <div className="po-understanding-progress" aria-hidden>
                 {messages.map((_, index) => (
                     <span
                         key={index}
-                        className={`po-understanding-dot ${
-                            stage === index ? 'po-understanding-dot-active' : ''
-                        } ${stage > index || stage === 4 ? 'po-understanding-dot-done' : ''}`}
+                        className={`po-understanding-dot ${normalized === index ? 'po-understanding-dot-active' : ''}`}
                     />
                 ))}
             </div>
         </div>
+    )
+}
+
+function TrustBoundariesSection() {
+    const { t, tx } = useI18n()
+    const statusPills = tx<string[]>('hero.statusPills')
+    const boundaryCopy = `${t('hero.sequenceFinal')} ${t('hero.disclaimer')}`
+
+    return (
+        <section className="po-trust-boundaries border-t border-b border-[var(--po-border)] px-6 py-20 sm:px-10 sm:py-24">
+            <div className="po-trust-boundaries-grid mx-auto max-w-3xl">
+                <Reveal className="po-trust-boundaries-intro" delay={0.05}>
+                    <div className="po-section-badge">
+                        <span className="po-section-badge-text">{t('trustBoundaries.badge')}</span>
+                    </div>
+                    <h2 className="po-trust-boundaries-title">{t('trustBoundaries.title')}</h2>
+                    <p className="po-trust-boundaries-lead">{t('trustBoundaries.lead')}</p>
+                </Reveal>
+
+                <Reveal className="po-boundary-statement po-glow-border" delay={0.1}>
+                    <p className="po-boundary-statement-copy">{renderEmphasis(boundaryCopy)}</p>
+                    <div className="po-boundary-rules">
+                        {statusPills.slice(0, 3).map((pill) => (
+                            <div key={pill} className="po-boundary-rule">
+                                <span className="po-boundary-rule-check">
+                                    <Check className="h-3.5 w-3.5" strokeWidth={2.5} />
+                                </span>
+                                <span>{pill}</span>
+                            </div>
+                        ))}
+                    </div>
+                </Reveal>
+            </div>
+        </section>
     )
 }
 

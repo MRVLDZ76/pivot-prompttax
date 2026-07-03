@@ -17,15 +17,25 @@
         "headlineTop": "Votre monde financier.",
         "headlineAccent": "Compris.",
         "sequence": [
-            "Lecture des {a:documents que vous choisissez}.",
-            "Compréhension de vos {a:entités et de vos années}.",
-            "Mémorisation de l'{s:essentiel} — {k:en privé}.",
-            "Préparation d'un {s:travail digne de confiance}."
+            "{s:Vous choisissez} ce que PromptTax lit.",
+            "PromptTax cartographie {a:entités et années fiscales} automatiquement.",
+            "Il retient l'essentiel, {k:en privé}.",
+            "Chaque recommandation est {a:traçable à sa preuve}."
+        ],
+        "statusPills": [
+            "Exécution locale",
+            "Lié aux preuves",
+            "Aucune action cachée"
         ],
         "sequenceFinal": "PromptTax lit les documents que vous choisissez, retient ce qui compte au fil des années et {a:explique chaque recommandation avec des preuves} — le tout sur {s:votre propre ordinateur}.",
         "ctaPrimary": "Télécharger gratuitement",
         "ctaSecondary": "Voir comment ça marche",
         "disclaimer": "PromptTax fonctionne entièrement sur votre ordinateur. Il ne synchronise {s:jamais} vos documents en silence, ne dépose rien de lui-même et n'invente aucune donnée financière. Rien ne quitte votre bureau sans votre autorisation, et {a:chaque conclusion reste traçable jusqu'à sa source}."
+    },
+    "trustBoundaries": {
+        "badge": "Limites du produit",
+        "title": "Calme, privé et toujours explicable.",
+        "lead": "PromptTax réduit le stress fiscal sans effectuer d'actions cachées en votre nom."
     },
     "marquee": [
         "Extraction du Schedule K-1",

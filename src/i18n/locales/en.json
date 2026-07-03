@@ -17,15 +17,25 @@
         "headlineTop": "Your financial world.",
         "headlineAccent": "Understood.",
         "sequence": [
-            "Reading the {a:documents you choose}.",
-            "Understanding your {a:entities and years}.",
-            "Remembering what {s:matters} — {k:privately}.",
-            "Preparing {s:work you can actually trust}."
+            "{s:You choose} what PromptTax reads.",
+            "PromptTax maps {a:entities and tax years} automatically.",
+            "It remembers what matters, {k:privately}.",
+            "Every recommendation is {a:traceable to evidence}."
+        ],
+        "statusPills": [
+            "Local runtime",
+            "Evidence-linked",
+            "No hidden actions"
         ],
         "sequenceFinal": "PromptTax reads the documents you choose, remembers what matters across years, and {a:explains every recommendation with evidence} — all on {s:your own computer}.",
         "ctaPrimary": "Download free",
         "ctaSecondary": "See how it works",
         "disclaimer": "PromptTax runs entirely on your computer. It {s:never} silently syncs your documents, files on its own, or invents financial facts. Nothing leaves your desktop without your permission, and {a:every conclusion stays traceable to its source}."
+    },
+    "trustBoundaries": {
+        "badge": "Product boundaries",
+        "title": "Calm, private, and always explainable.",
+        "lead": "PromptTax reduces tax stress without taking hidden actions on your behalf."
     },
     "marquee": [
         "Schedule K-1 extraction",
