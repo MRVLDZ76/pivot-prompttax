@@ -522,7 +522,7 @@ function HeroQuoteCards({
                     </span>
                 ))}
             </div>
-            <div className="po-quote-cards" role="status" aria-label="PromptTax quote messages">
+            <div className="po-quote-cards" style={{ marginTop: 10 }} role="status" aria-label="PromptTax quote messages">
                 <div className="po-quote-cards-glow" aria-hidden />
                 <AnimatePresence mode="wait" initial={false}>
                     <motion.article
@@ -535,7 +535,7 @@ function HeroQuoteCards({
                     >
                         <div className="po-quote-card-shine" aria-hidden />
                          
-                        <h3 className="po-trust-boundaries-title">{renderEmphasis(messages[normalized])}</h3>
+                        <p className="po-quote-card-lead">{renderEmphasis(messages[normalized])}</p>
                     </motion.article>
                 </AnimatePresence>
             </div>
