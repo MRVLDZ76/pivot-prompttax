@@ -522,6 +522,7 @@ function HeroQuoteCards({
                     </span>
                 ))}
             </div>
+            <br className="po-quote-rail-break" aria-hidden />
             <div className="po-quote-cards" style={{ marginTop: 10 }} role="status" aria-label="PromptTax quote messages">
                 <div className="po-quote-cards-glow" aria-hidden />
                 <AnimatePresence mode="wait" initial={false}>
