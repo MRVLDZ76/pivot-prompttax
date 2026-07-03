@@ -554,7 +554,7 @@ function HeroQuoteCards({
 function TrustBoundariesSection() {
     const { t, tx } = useI18n()
     const statusPills = tx<string[]>('hero.statusPills')
-    const boundaryCopy = `${t('hero.sequenceFinal')} ${t('hero.disclaimer')}`
+    const boundaryCopy = `${t('hero.disclaimer')}`
 
     return (
         <section className="po-trust-boundaries border-t border-b border-[var(--po-border)] px-6 py-20 sm:px-10 sm:py-24">
