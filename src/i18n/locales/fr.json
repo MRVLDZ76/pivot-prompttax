@@ -18,8 +18,8 @@
         "headlineAccent": "Compris.",
         "sequence": [
             "{s:Vous choisissez} ce que PromptTax lit.",
-            "PromptTax cartographie {a:entités et années fiscales} automatiquement.",
-            "Il retient l'essentiel, {k:en privé}.",
+            "Il cartographie {a:entités et années fiscales} automatiquement.",
+            "Il retient l'essentiel, {a:en privé}.",
             "Chaque recommandation est {a:traçable à sa preuve}."
         ],
         "statusPills": [

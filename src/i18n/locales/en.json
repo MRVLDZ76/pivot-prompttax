@@ -18,8 +18,8 @@
         "headlineAccent": "Understood.",
         "sequence": [
             "{s:You choose} what PromptTax reads.",
-            "PromptTax maps {a:entities and tax years} automatically.",
-            "It remembers what matters, {k:privately}.",
+            "It maps {a:entities and tax years} automatically.",
+            "It remembers what matters, {a:privately}.",
             "Every recommendation is {a:traceable to evidence}."
         ],
         "statusPills": [

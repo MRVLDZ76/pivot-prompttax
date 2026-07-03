@@ -18,8 +18,8 @@
         "headlineAccent": "Entendido.",
         "sequence": [
             "{s:Tú eliges} lo que PromptTax lee.",
-            "PromptTax mapea {a:entidades y años fiscales} automáticamente.",
-            "Recuerda lo que importa, {k:en privado}.",
+            "Mapea {a:entidades y años fiscales} automáticamente.",
+            "Recuerda lo que importa, {a:en privado}.",
             "Cada recomendación es {a:rastreable a su evidencia}."
         ],
         "statusPills": [
