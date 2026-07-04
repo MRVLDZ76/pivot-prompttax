@@ -1,6 +1,7 @@
 {
     "nav": {
         "product": "Product",
+        "useCases": "Use cases",
         "download": "Download",
         "terms": "Terms",
         "privacy": "Privacy",
@@ -26,6 +27,11 @@
             "Local runtime",
             "Evidence-linked",
             "No hidden actions"
+        ],
+        "proofPoints": [
+            "Private by default",
+            "Every figure sourced",
+            "Nothing acts without you"
         ],
         "sequenceFinal": "PromptTax reads the documents you choose, remembers what matters across years, and {a:explains every recommendation with evidence} — all on {s:your own computer}.",
         "ctaPrimary": "Download free",
@@ -244,6 +250,7 @@
             "download": "Download",
             "pricing": "Pricing",
             "documentation": "Documentation",
+            "useCases": "Use cases",
             "support": "Support",
             "privacy": "Privacy",
             "terms": "Terms"

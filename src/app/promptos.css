@@ -431,6 +431,226 @@
     color: rgba(198, 217, 252, 0.64);
 }
 
+/* Static proof strip (replaces the flipping quote cards). All three proof
+   points at once, side by side, separated by hairlines. Zero animation. */
+.promptos .po-proof-strip {
+    list-style: none;
+    margin: 22px auto 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.promptos .po-proof-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 4px 22px;
+    font-size: 14px;
+    line-height: 1.2;
+    color: rgba(214, 226, 248, 0.86);
+    white-space: nowrap;
+}
+
+/* Hairline separators between items (not before the first). */
+.promptos .po-proof-item + .po-proof-item {
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.promptos .po-proof-icon {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+    color: rgba(150, 178, 240, 0.9);
+}
+
+.promptos .po-proof-text {
+    font-weight: 450;
+    letter-spacing: -0.01em;
+}
+
+@media (max-width: 560px) {
+    .promptos .po-proof-strip {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .promptos .po-proof-item {
+        padding: 0;
+    }
+    .promptos .po-proof-item + .po-proof-item {
+        border-left: 0;
+    }
+}
+
+/* ============ Use Cases / Personas page ============ */
+.promptos .po-uc-tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 2px 12px;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+}
+.promptos .po-uc-tabs::-webkit-scrollbar { height: 6px; }
+.promptos .po-uc-tabs::-webkit-scrollbar-thumb { background: var(--po-border-med); border-radius: 999px; }
+
+.promptos .po-uc-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex: 0 0 auto;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--po-border);
+    background: var(--po-panel);
+    color: var(--po-muted);
+    font-size: 13px;
+    font-weight: 450;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.promptos .po-uc-tab:hover {
+    color: #fff;
+    border-color: var(--po-border-med);
+}
+.promptos .po-uc-tab-active {
+    color: #fff;
+    background: var(--po-accent-soft);
+    border-color: rgba(59, 111, 245, 0.5);
+}
+
+.promptos .po-uc-panel {
+    border: 1px solid var(--po-border);
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(14, 16, 22, 0.9), rgba(8, 8, 10, 0.9));
+    padding: 28px;
+}
+@media (max-width: 640px) { .promptos .po-uc-panel { padding: 20px; } }
+
+.promptos .po-uc-panel-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+.promptos .po-uc-panel-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 auto;
+    border-radius: 12px;
+    border: 1px solid var(--po-border-med);
+    background: var(--po-accent-soft);
+    color: #bcd0fb;
+}
+.promptos .po-uc-panel-heading { min-width: 0; }
+
+.promptos .po-uc-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+.promptos .po-uc-badge-ready {
+    color: var(--po-ok);
+    background: rgba(76, 195, 138, 0.13);
+    border: 1px solid rgba(76, 195, 138, 0.3);
+}
+.promptos .po-uc-badge-soon {
+    color: #9db8f5;
+    background: var(--po-accent-soft);
+    border: 1px solid rgba(59, 111, 245, 0.35);
+}
+
+.promptos .po-uc-workflow {
+    margin-top: 20px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--po-border);
+    background: rgba(255, 255, 255, 0.02);
+}
+.promptos .po-uc-workflow-label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--po-muted);
+}
+.promptos .po-uc-workflow-text {
+    margin-top: 5px;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.promptos .po-uc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin-top: 22px;
+}
+@media (max-width: 720px) { .promptos .po-uc-grid { grid-template-columns: 1fr; gap: 20px; } }
+
+.promptos .po-uc-col-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+.promptos .po-uc-col-title-ready { color: var(--po-ok); }
+.promptos .po-uc-col-title-soon { color: #9db8f5; }
+
+.promptos .po-uc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+.promptos .po-uc-li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.82);
+}
+.promptos .po-uc-li-icon {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+    margin-top: 2px;
+}
+.promptos .po-uc-li-icon-ready { color: var(--po-ok); }
+.promptos .po-uc-li-icon-soon { color: #7fa0ef; }
+
+.promptos .po-uc-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid var(--po-border);
+}
+
+.promptos .po-uc-closing {
+    text-align: center;
+    padding: 44px 24px;
+    border-radius: 20px;
+    border: 1px solid var(--po-border);
+    background: radial-gradient(120% 140% at 50% 0%, rgba(59, 111, 245, 0.12), transparent 60%), var(--po-panel-deep);
+}
+
 .promptos .po-quote-cards {
     position: relative;
     min-height: 90px;

@@ -4,7 +4,7 @@ import { useEffect, useState, type ReactNode } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowRight, ArrowUp, Check, Eye, Activity, FolderOpen, FileText, Download, Users, Grid2X2 } from 'lucide-react'
+import { ArrowRight, ArrowUp, Check, Eye, Activity, FolderOpen, FileText, Download, Users, Grid2X2, ShieldCheck, BadgeCheck, Lock } from 'lucide-react'
 import { Reveal } from './Reveal'
 import { HeroMock } from './HeroMock'
 import { DownloadSection } from './DownloadSection'
@@ -227,6 +227,7 @@ export function PromptOSLanding({ initialSection }: PromptOSLandingProps = {}) {
                     <div className="hidden gap-6 md:flex">
                         {[
                             { label: t('nav.product'), href: '#product' },
+                            { label: t('nav.useCases'), href: '/use-cases' },
                             { label: t('nav.download'), href: '#download' },
                             { label: t('nav.terms'), href: '/terms' },
                             { label: t('nav.privacy'), href: '/privacy' },
@@ -509,12 +510,14 @@ function HeroQuoteCards({
     messages: string[]
 }) {
     const { tx } = useI18n()
-    if (!messages.length) return null
-    const normalized = ((stage % messages.length) + messages.length) % messages.length
+    void stage
+    void messages
     const statusPills = tx<string[]>('hero.statusPills')
+    const proofPoints = tx<string[]>('hero.proofPoints')
+    const proofIcons = [ShieldCheck, BadgeCheck, Lock]
 
     return (
-        <div className="po-understanding-wrap mx-auto mt-6 max-w-[680px]" aria-live="polite">
+        <div className="po-understanding-wrap mx-auto mt-6 max-w-[680px]">
             <div className="po-quote-rail" aria-hidden>
                 {statusPills.slice(0, 3).map((pill) => (
                     <span key={pill} className="po-quote-rail-pill">
@@ -522,32 +525,20 @@ function HeroQuoteCards({
                     </span>
                 ))}
             </div>
-            <br className="po-quote-rail-break" aria-hidden />
-            <div className="po-quote-cards" style={{ marginTop: 10 }} role="status" aria-label="PromptTax quote messages">
-                <div className="po-quote-cards-glow" aria-hidden />
-                <AnimatePresence mode="wait" initial={false}>
-                    <motion.article
-                        key={normalized}
-                        className="po-quote-card po-quote-card-active"
-                        initial={{ opacity: 0, y: 10, filter: 'blur(5px)' }}
-                        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                        exit={{ opacity: 0, y: -10, filter: 'blur(5px)' }}
-                        transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                        <div className="po-quote-card-shine" aria-hidden />
-                         
-                        <p className="po-quote-card-lead">{renderEmphasis(messages[normalized])}</p>
-                    </motion.article>
-                </AnimatePresence>
-            </div>
-            <div className="po-understanding-progress" aria-hidden>
-                {messages.map((_, index) => (
-                    <span
-                        key={index}
-                        className={`po-understanding-dot ${normalized === index ? 'po-understanding-dot-active' : ''}`}
-                    />
-                ))}
-            </div>
+            {/* Static proof strip — all three proof points at once, side by side,
+                separated by hairlines. Zero animation, nothing to "flip": the
+                honesty of the claim is that it is not selling one thing at a time. */}
+            <ul className="po-proof-strip" role="list">
+                {proofPoints.slice(0, 3).map((point, index) => {
+                    const Icon = proofIcons[index] ?? ShieldCheck
+                    return (
+                        <li key={point} className="po-proof-item" role="listitem">
+                            <Icon className="po-proof-icon" strokeWidth={1.75} aria-hidden />
+                            <span className="po-proof-text">{point}</span>
+                        </li>
+                    )
+                })}
+            </ul>
         </div>
     )
 }

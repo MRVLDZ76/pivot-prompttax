@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hero proof-line — redesign options</title>
+<style>
+  :root{
+    --bg: #06070d;
+    --bg-glow: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(88,101,242,0.22), transparent 60%);
+    --panel: #0b0d16;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.14);
+    --text-primary: #f4f5f8;
+    --text-secondary: #9aa0b4;
+    --text-muted: #676d80;
+    --accent: #8b9bff;
+    --accent-dim: rgba(139,155,255,0.12);
+    --font: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background: var(--bg);
+    font-family: var(--font);
+    color: var(--text-primary);
+    padding: 48px 24px 80px;
+  }
+  .wrap{max-width: 880px; margin: 0 auto;}
+  .page-title{
+    text-align:center;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .page-sub{
+    text-align:center;
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 56px;
+  }
+  .option{
+    margin-bottom: 64px;
+  }
+  .option-label{
+    display:flex;
+    align-items:baseline;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .option-tag{
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid rgba(139,155,255,0.25);
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+  .option-name{
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .option-desc{
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    margin: 6px 0 20px;
+    line-height: 1.6;
+    max-width: 560px;
+  }
+  .stage{
+    background: var(--panel);
+    background-image: var(--bg-glow);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 56px 32px 44px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .badges{
+    display:flex;
+    justify-content:center;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+  .badge{
+    font-size: 10.5px;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    border: 1px solid var(--border-strong);
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+  .headline{
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 6px;
+  }
+  .headline .accent{color: var(--accent);}
+
+  /* ---- Option A: inline status ticker ---- */
+  .status-line{
+    display:inline-flex;
+    align-items:center;
+    gap: 9px;
+    margin-top: 22px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .status-dot{
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 3px rgba(74,222,128,0.15);
+    flex-shrink:0;
+  }
+  .status-text{position:relative; display:inline-block;}
+  .status-text span{
+    position:absolute; left:0; top:0; white-space:nowrap;
+    opacity:0; animation: cycleA 9s infinite;
+  }
+  .status-text span:nth-child(1){animation-delay:0s;}
+  .status-text span:nth-child(2){animation-delay:3s;}
+  .status-text span:nth-child(3){animation-delay:6s;}
+  .status-text .sizer{position:static; opacity:0; animation:none; pointer-events:none;}
+  @keyframes cycleA{
+    0%{opacity:1; transform:translateY(0);}
+    28%{opacity:1; transform:translateY(0);}
+    33%{opacity:0; transform:translateY(-4px);}
+    99%{opacity:0; transform:translateY(4px);}
+    100%{opacity:1; transform:translateY(0);}
+  }
+  .status-text .em{color: var(--accent); font-weight:600;}
+
+  /* ---- Option B: static proof strip ---- */
+  .proof-strip{
+    display:inline-flex;
+    align-items:center;
+    gap: 18px;
+    margin-top: 24px;
+    padding: 10px 20px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .proof-item{display:flex; align-items:center; gap:7px; white-space:nowrap;}
+  .proof-item svg{flex-shrink:0; opacity:0.85;}
+  .proof-div{width:1px; height:14px; background: var(--border-strong);}
+
+  /* ---- Option C: word-swap headline ---- */
+  .swap-line{
+    margin-top: 22px;
+    font-size: 15px;
+    color: var(--text-secondary);
+  }
+  .swap-word{
+    position:relative;
+    display:inline-block;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .swap-word span{
+    position:absolute; left:0; top:0; white-space:nowrap;
+    opacity:0; animation: cycleC 9s infinite;
+    border-bottom: 1px solid rgba(139,155,255,0.35);
+  }
+  .swap-word span:nth-child(1){animation-delay:0s;}
+  .swap-word span:nth-child(2){animation-delay:3s;}
+  .swap-word span:nth-child(3){animation-delay:6s;}
+  .swap-word .sizer{position:static; opacity:0; animation:none; border:none;}
+  @keyframes cycleC{
+    0%{opacity:1; filter:blur(0);}
+    28%{opacity:1;}
+    33%{opacity:0; filter:blur(2px);}
+    99%{opacity:0; filter:blur(2px);}
+    100%{opacity:1; filter:blur(0);}
+  }
+
+  .why{
+    margin-top:18px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    text-align:left;
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+  }
+  .why b{color: var(--text-secondary); font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="page-title">Hero proof-line — redesign options</div>
+  <div class="page-sub">Replacing the bordered card-flipper under the headline</div>
+
+  <!-- OPTION A -->
+  <div class="option">
+    <div class="option-label">
+      <span class="option-tag">Recommended</span>
+      <span class="option-name">A · Live status line</span>
+    </div>
+    <p class="option-desc">A single quiet line with a status dot, styled like a live system readout rather than a slide. No box, no dots, no border — it reads as ambient truth about the product, not a promo carousel.</p>
+    <div class="stage">
+      <div class="badges">
+        <span class="badge">LOCAL RUNTIME</span>
+        <span class="badge">EVIDENCE-LINKED</span>
+        <span class="badge">NO HIDDEN ACTIONS</span>
+      </div>
+      <h1 class="headline">Your financial world.<br><span class="accent">Understood.</span></h1>
+      <div class="status-line">
+        <span class="status-dot"></span>
+        <span class="status-text">
+          <span class="sizer">Verifying every number against its source</span>
+          <span>Remembers what matters, <span class="em">privately</span></span>
+          <span>Verifying every number against <span class="em">its source</span></span>
+          <span>Runs on your machine, <span class="em">not the cloud</span></span>
+        </span>
+      </div>
+    </div>
+    <div class="why"><b>Why it works:</b> the dot signals "this is live," which fits an OS-style product. Rotation still happens, but nothing about the layout says "carousel" — there's no chrome to make ugly.</div>
+  </div>
+
+  <!-- OPTION B -->
+  <div class="option">
+    <div class="option-label">
+      <span class="option-tag" style="color:#9aa0b4;background:rgba(255,255,255,0.06);border-color:var(--border-strong)">Safest</span>
+      <span class="option-name">B · Static proof strip</span>
+    </div>
+    <p class="option-desc">Show all three proof points at once, side by side, separated by hairlines. Zero animation, zero timing risk, and nothing to "flip" — the honesty of the claim is that it's not selling one thing at a time.</p>
+    <div class="stage">
+      <div class="badges">
+        <span class="badge">LOCAL RUNTIME</span>
+        <span class="badge">EVIDENCE-LINKED</span>
+        <span class="badge">NO HIDDEN ACTIONS</span>
+      </div>
+      <h1 class="headline">Your financial world.<br><span class="accent">Understood.</span></h1>
+      <div class="proof-strip">
+        <div class="proof-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8b9bff" stroke-width="2"><path d="M12 2l7 4v6c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-4z"/></svg>
+          Private by default
+        </div>
+        <div class="proof-div"></div>
+        <div class="proof-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8b9bff" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+          Every figure sourced
+        </div>
+        <div class="proof-div"></div>
+        <div class="proof-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8b9bff" stroke-width="2"><rect x="4" y="9" width="16" height="11" rx="1"/><path d="M8 9V6a4 4 0 018 0v3"/></svg>
+          Nothing acts without you
+        </div>
+      </div>
+    </div>
+    <div class="why"><b>Why it works:</b> no cycle, no motion to get wrong, no accessibility concerns. Trade-off: it's a fixed sentence, so pick the three claims that matter most and commit.</div>
+  </div>
+
+  <!-- OPTION C -->
+  <div class="option">
+    <div class="option-label">
+      <span class="option-tag" style="color:#9aa0b4;background:rgba(255,255,255,0.06);border-color:var(--border-strong)">Closest to original</span>
+      <span class="option-name">C · Single-word swap</span>
+    </div>
+    <p class="option-desc">Keep the original sentence structure people already saw and liked, but only the trailing phrase animates — everything else on the line stays fixed. The motion is contained to one word so it never reads as a slide.</p>
+    <div class="stage">
+      <div class="badges">
+        <span class="badge">LOCAL RUNTIME</span>
+        <span class="badge">EVIDENCE-LINKED</span>
+        <span class="badge">NO HIDDEN ACTIONS</span>
+      </div>
+      <h1 class="headline">Your financial world.<br><span class="accent">Understood.</span></h1>
+      <div class="swap-line">
+        It remembers what matters,
+        <span class="swap-word">
+          <span class="sizer">confidentially</span>
+          <span>privately.</span>
+          <span>securely.</span>
+          <span>instantly.</span>
+        </span>
+      </div>
+    </div>
+    <div class="why"><b>Why it works:</b> lowest change from the current copy and layout, so it's the easiest sell internally. Slightly less distinctive than A, but removes the box and dots entirely.</div>
+  </div>
+
+</div>
+</body>
+</html>
